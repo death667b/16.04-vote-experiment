@@ -390,7 +390,7 @@ public abstract class Election {
 	 * @return <code>String</code> containing the value parsed 
 	 * @throws <code>ElectionException</code> if <code>isNull(line) OR isInvalid(line) OR isIncomplete(line)</code>
 	 */
-	public String parseStringFromLine(String line, String label)
+	private String parseStringFromLine(String line, String label)
 			throws ElectionException {
 		if (line == null) {
 			throw new ElectionException("Null Election Line at: " + label);
