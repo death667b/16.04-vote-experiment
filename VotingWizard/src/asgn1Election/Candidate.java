@@ -80,6 +80,7 @@ public class Candidate {
 	 * @throws ElectionException - see {@link #Candidate(String,String,String,int)}. 
 	 */
 	public Candidate copy() throws ElectionException {
+		return new Candidate(name, party, abbrev, voteCount);
 		
 	}
 
@@ -89,7 +90,7 @@ public class Candidate {
 	 * @return <code>String</code> containing <code>name</code> 
 	 */
 	public String getName() {
-		
+		return name;
 	}
 
 	/**
@@ -98,7 +99,7 @@ public class Candidate {
 	 * @return <code>String</code> containing <code>party</code> 
 	 */
 	public String getParty() {
-		
+		return party;
 	}
 
 	/**
@@ -107,7 +108,7 @@ public class Candidate {
 	 * @return <code>int</code> containing <code>voteCount</code> 
 	 */
 	public int getVoteCount() {
-		
+		return voteCount;
 	}
 
 	/**
@@ -116,14 +117,14 @@ public class Candidate {
 	 * @return <code>String</code> containing text version of <code>voteCount</code> 
 	 */
 	public String getVoteCountString() {
-		
+		return Integer.toString(voteCount);
 	}
 
 	/**
 	 * Simple method to increment the vote count for the candidate
 	 */
 	public void incrementVoteCount() {
-		
+		voteCount++;
 	}
 
 	/*
