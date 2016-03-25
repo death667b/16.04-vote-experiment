@@ -47,20 +47,38 @@ public class Candidate {
 	 * @throws ElectionException if <code>isNullOrEmpty(candName,candParty,candAbbrev) OR voteCount < 0 </code>
 	 */
 	public Candidate(String candName, String candParty, String candAbbrev, int voteCount) throws ElectionException {
-		if (candName != null && !"".equals(candName.trim())){
+		final int minimumStringLength = 1; 
+		
+		// Test candName for Not Null or Empty also checking for length
+		if (candName != null && candName.trim().length() >= minimumStringLength){
 			if (candName.trim().length() <= ElectionManager.NameField){
 		        name = candName.trim();
 			} else {
-				throw new ElectionException("Name field must be less than or equal to 20 characters");
+				throw new ElectionException("Name field must be less than or equal to " + ElectionManager.NameField + " characters");
 			}
 		} else {
 			throw new ElectionException("Name field can not be blank");
 		}
 
+		// Test candParty for Not Null or Empty also checking for length
+		if (candParty != null && candParty.trim().length() >= minimumStringLength){
+			if (candParty.trim().length() <= ElectionManager.FullPartyField){
+		        name = candParty.trim();
+			} else {
+				throw new ElectionException("Party Name field must be less than or equal to " + ElectionManager.FullPartyField + " characters");
+			}
+		} else {
+			throw new ElectionException("Party Name field can not be blank");
+		}
 		
-		this.party = candParty;
-		this.abbrev = candAbbrev;
+		// Test candAbbrev for Not Null or Empty
+		if (candAbbrev != null && candAbbrev.trim().length() >= minimumStringLength){
+		    name = candAbbrev.trim();
+		} else {
+			throw new ElectionException("Acronym field can not be blank");
+		}
 		
+		// Test voteCount for Not Null or Empty
 		if (voteCount >= 0){
 		    this.voteCount = voteCount;
 		} else {

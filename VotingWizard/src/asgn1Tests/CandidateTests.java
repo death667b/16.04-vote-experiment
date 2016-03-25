@@ -29,24 +29,32 @@ public class CandidateTests {
 	 * @throws ElectionException 
 	 */
 	@Test
+	/*
+	 *    Test Section for Candidate Constructor - Expected Working
+	 */
 	public void testCandidatePassNormal() throws ElectionException {
 		@SuppressWarnings("unused")
 		Candidate candi = new Candidate("MARSHALL, John", "The Greens", "GRN", 0);
 	}
+	
+	
+	/*
+	 *    Test Section for Candidate Constructor focusing on Name
+	 */
 	@Test(expected = ElectionException.class)
-	public void testCandidateFailMissingNameNoSpaces() throws ElectionException {
+	public void testCandidateMissingNameFailWithNoSpaces() throws ElectionException {
 		@SuppressWarnings("unused")
 		Candidate candi = new Candidate("", "The Greens", "GRN", 0);
 	}
 	
 	@Test(expected = ElectionException.class)
-	public void testCandidateFailMissingNameWithSpaces() throws ElectionException {
+	public void testCandidateMissingNameFailWithSpaces() throws ElectionException {
 		@SuppressWarnings("unused")
 		Candidate candi = new Candidate("   ", "The Greens", "GRN", 0);
 	}
 	
 	@Test(expected = ElectionException.class)
-	public void testCandidateFailMissingNameWithNull() throws ElectionException {
+	public void testCandidateMissingNameFailWithNull() throws ElectionException {
 		@SuppressWarnings("unused")
 		Candidate candi = new Candidate(null, "The Greens", "GRN", 0);
 	}
@@ -74,6 +82,115 @@ public class CandidateTests {
 		@SuppressWarnings("unused")
 		Candidate candi = new Candidate("   123456789012345678901   ", "The Greens", "GRN", 0);
 	}
+	/*
+	 *    *END* Test Section for Candidate Constructor focusing on Name *END*
+	 */
+	
+	
+	/*
+	 *    Test Section for Candidate Constructor focusing on Party Name
+	 */
+	@Test(expected = ElectionException.class)
+	public void testCandidateMissingPartyNameFailNoSpaces() throws ElectionException {
+		@SuppressWarnings("unused")
+		Candidate candi = new Candidate("MARSHALL, John", "", "GRN", 0);
+	}
+	
+	@Test(expected = ElectionException.class)
+	public void testCandidateMissingPartyNameFailWithSpaces() throws ElectionException {
+		@SuppressWarnings("unused")
+		Candidate candi = new Candidate("MARSHALL, John", "   ", "GRN", 0);
+	}
+	
+	@Test(expected = ElectionException.class)
+	public void testCandidateMissingPartyNameFailWithNull() throws ElectionException {
+		@SuppressWarnings("unused")
+		Candidate candi = new Candidate("MARSHALL, John", null, "GRN", 0);
+	}
+	
+	@Test
+	public void testCandidatePartyNameLengthBorderCasePassWith30() throws ElectionException {
+		@SuppressWarnings("unused")
+		Candidate candi = new Candidate("MARSHALL, John", "123456789012345678901234567890", "GRN", 0);
+	}
+	
+	@Test(expected = ElectionException.class)
+	public void testCandidatePartyNameLengthBorderCaseFailWith31() throws ElectionException {
+		@SuppressWarnings("unused")
+		Candidate candi = new Candidate("MARSHALL, John", "1234567890123456789012345678901", "GRN", 0);
+	}
+	
+	@Test
+	public void testCandidatePartyNameLengthBorderCasePassWith30AndSpaces() throws ElectionException {
+		@SuppressWarnings("unused")
+		Candidate candi = new Candidate("MARSHALL, John", "   123456789012345678901234567890   ", "GRN", 0);
+	}
+
+	@Test(expected = ElectionException.class)
+	public void testCandidatePartyNameLengthBorderCaseFailWith31AndSpaces() throws ElectionException {
+		@SuppressWarnings("unused")
+		Candidate candi = new Candidate("MARSHALL, John", "   1234567890123456789012345678901   ", "GRN", 0);
+	}
+	/*
+	 *    *END* Test Section for Candidate Constructor focusing on Party Name *END*
+	 */
+	
+	
+	/*
+	 *    Test Section for Candidate Constructor focusing on voteCount
+	 */
+	@Test(expected = ElectionException.class)
+	public void testCandidateAcronymFailBorderCaseFailNegitive() throws ElectionException {
+		@SuppressWarnings("unused")
+		Candidate candi = new Candidate("MARSHALL, John", "The Greens", "GRN", -1);
+	}
+	
+	@Test
+	public void testCandidateAcronymFailBorderCasePassPositiveNonZero() throws ElectionException {
+		@SuppressWarnings("unused")
+		Candidate candi = new Candidate("MARSHALL, John", "The Greens", "GRN", 1);
+	}
+	
+	@Test(expected = ElectionException.class)
+	public void testCandidateAcronymFailExtremeCaseFailLargeNegitive() throws ElectionException {
+		@SuppressWarnings("unused")
+		Candidate candi = new Candidate("MARSHALL, John", "The Greens", "GRN", -100000000);
+	}
+	
+	@Test
+	public void testCandidateAcronymFailExtremeCasePassLargePositiveNonZero() throws ElectionException {
+		@SuppressWarnings("unused")
+		Candidate candi = new Candidate("MARSHALL, John", "The Greens", "GRN", 100000000);
+	}
+	/*
+	 *    *END* Test Section for Candidate Constructor focusing on voteCount *END*
+	 */
+	
+	
+	/*
+	 *    Test Section for Candidate Constructor focusing on voteCount
+	 */
+	@Test(expected = ElectionException.class)
+	public void testCandidateMissingvoteCountFailNoSpaces() throws ElectionException {
+		@SuppressWarnings("unused")
+		Candidate candi = new Candidate("MARSHALL, John", "The Greens", "", 0);
+	}
+	
+	@Test(expected = ElectionException.class)
+	public void testCandidateMissingvoteCountFailWithSpaces() throws ElectionException {
+		@SuppressWarnings("unused")
+		Candidate candi = new Candidate("MARSHALL, John", "The Greens", "   ", 0);
+	}
+	
+	@Test(expected = ElectionException.class)
+	public void testCandidateMissingvoteCountFailWithNull() throws ElectionException {
+		@SuppressWarnings("unused")
+		Candidate candi = new Candidate("MARSHALL, John", "The Greens", null, 0);
+	}
+	/*
+	 *    *END* Test Section for Candidate Constructor focusing on Acronym Field *END*
+	 */
+	
 	
 	/**
 	 * Test method for {@link asgn1Election.Candidate#candidateListing()}.
