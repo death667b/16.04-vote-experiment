@@ -18,7 +18,7 @@ import asgn1Util.Strings;
  * includes name, party acronym and vote count - and <code>candidateListing()</code>, which 
  * includes the full party name.</p>
  * 
- * @author hogan
+ * @author hogan and n5372828 Ian Daniel
  * 
  */
 public class Candidate {
@@ -47,10 +47,25 @@ public class Candidate {
 	 * @throws ElectionException if <code>isNullOrEmpty(candName,candParty,candAbbrev) OR voteCount < 0 </code>
 	 */
 	public Candidate(String candName, String candParty, String candAbbrev, int voteCount) throws ElectionException {
-		name = candName;
-		party = candParty;
-		abbrev = candAbbrev;
-		this.voteCount = voteCount;
+		if (candName != null && !"".equals(candName.trim())){
+			if (candName.trim().length() <= ElectionManager.NameField){
+		        name = candName.trim();
+			} else {
+				throw new ElectionException("Name field must be less than or equal to 20 characters");
+			}
+		} else {
+			throw new ElectionException("Name field can not be blank");
+		}
+
+		
+		this.party = candParty;
+		this.abbrev = candAbbrev;
+		
+		if (voteCount >= 0){
+		    this.voteCount = voteCount;
+		} else {
+			throw new ElectionException("Vote count must be a positive number");
+		}
 	}
 
 	/**
