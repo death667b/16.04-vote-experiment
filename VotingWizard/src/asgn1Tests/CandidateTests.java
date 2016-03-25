@@ -140,25 +140,25 @@ public class CandidateTests {
 	 *    Test Section for Candidate Constructor focusing on voteCount
 	 */
 	@Test(expected = ElectionException.class)
-	public void testCandidateAcronymFailBorderCaseFailNegitive() throws ElectionException {
+	public void testCandidateVoteCountFailBorderCaseFailNegitive() throws ElectionException {
 		@SuppressWarnings("unused")
 		Candidate candi = new Candidate("MARSHALL, John", "The Greens", "GRN", -1);
 	}
 	
 	@Test
-	public void testCandidateAcronymFailBorderCasePassPositiveNonZero() throws ElectionException {
+	public void testCandidateVoteCountFailBorderCasePassPositiveNonZero() throws ElectionException {
 		@SuppressWarnings("unused")
 		Candidate candi = new Candidate("MARSHALL, John", "The Greens", "GRN", 1);
 	}
 	
 	@Test(expected = ElectionException.class)
-	public void testCandidateAcronymFailExtremeCaseFailLargeNegitive() throws ElectionException {
+	public void testCandidateVoteCountFailExtremeCaseFailLargeNegitive() throws ElectionException {
 		@SuppressWarnings("unused")
 		Candidate candi = new Candidate("MARSHALL, John", "The Greens", "GRN", -100000000);
 	}
 	
 	@Test
-	public void testCandidateAcronymFailExtremeCasePassLargePositiveNonZero() throws ElectionException {
+	public void testCandidateVoteCountFailExtremeCasePassLargePositiveNonZero() throws ElectionException {
 		@SuppressWarnings("unused")
 		Candidate candi = new Candidate("MARSHALL, John", "The Greens", "GRN", 100000000);
 	}
@@ -168,22 +168,22 @@ public class CandidateTests {
 	
 	
 	/*
-	 *    Test Section for Candidate Constructor focusing on voteCount
+	 *    Test Section for Candidate Constructor focusing on Acronym Field
 	 */
 	@Test(expected = ElectionException.class)
-	public void testCandidateMissingvoteCountFailNoSpaces() throws ElectionException {
+	public void testCandidateMissingAcronymFailWithNoSpaces() throws ElectionException {
 		@SuppressWarnings("unused")
 		Candidate candi = new Candidate("MARSHALL, John", "The Greens", "", 0);
 	}
 	
 	@Test(expected = ElectionException.class)
-	public void testCandidateMissingvoteCountFailWithSpaces() throws ElectionException {
+	public void testCandidateMissingAcronymFailWithSpaces() throws ElectionException {
 		@SuppressWarnings("unused")
 		Candidate candi = new Candidate("MARSHALL, John", "The Greens", "   ", 0);
 	}
 	
 	@Test(expected = ElectionException.class)
-	public void testCandidateMissingvoteCountFailWithNull() throws ElectionException {
+	public void testCandidateMissingAcronymFailWithNull() throws ElectionException {
 		@SuppressWarnings("unused")
 		Candidate candi = new Candidate("MARSHALL, John", "The Greens", null, 0);
 	}
