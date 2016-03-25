@@ -152,7 +152,9 @@ public class Candidate {
 	 * @return <code>String</code> containing text version of <code>voteCount</code> 
 	 */
 	public String getVoteCountString() {
-		return Integer.toString(voteCount);
+		String returnString = "" + voteCount;
+		
+		return returnString.trim();
 	}
 
 	/**

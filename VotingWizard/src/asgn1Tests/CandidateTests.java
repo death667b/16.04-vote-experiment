@@ -239,68 +239,323 @@ public class CandidateTests {
 	 */
 	
 	
-	
+	/*
+	 *    Test Section for Candidate.Copy()
+	 */
 	/**
 	 * Test method for {@link asgn1Election.Candidate#copy()}.
 	 */
 	@Test
-	public void testCopy() throws ElectionException {
-		//fail("Not yet implemented"); // TODO
+	public void testCopyGetName() throws ElectionException {
+		Candidate candiOne = new Candidate("MARSHALL, John", "The Greens", "GRN", 0);
+		Candidate candiTwo;
+		
+		candiTwo = candiOne.copy();
+		
+		assertTrue(candiOne.getName() == candiTwo.getName());
 	}
+	
+	@Test
+	public void testCopyGetParty() throws ElectionException {
+		Candidate candiOne = new Candidate("MARSHALL, John", "The Greens", "GRN", 0);
+		Candidate candiTwo;
+		
+		candiTwo = candiOne.copy();
+		
+		assertTrue(candiOne.getParty() == candiTwo.getParty());
+	}
+	
+	@Test
+	public void testCopyGetVoteCount() throws ElectionException {
+		Candidate candiOne = new Candidate("MARSHALL, John", "The Greens", "GRN", 0);
+		Candidate candiTwo;
+		
+		candiTwo = candiOne.copy();
+		
+		assertTrue(candiOne.getVoteCount() == candiTwo.getVoteCount());
+	}
+	
+	@Test
+	public void testCopyGetVoteCountString() throws ElectionException {
+		Candidate candiOne = new Candidate("MARSHALL, John", "The Greens", "GRN", 0);
+		Candidate candiTwo;
+		
+		candiTwo = candiOne.copy();
 
+		assertTrue(candiOne.getVoteCountString().equals(candiTwo.getVoteCountString()));
+	}
+	
+	@Test
+	public void testCopyCandidateListing() throws ElectionException {
+		Candidate candiOne = new Candidate("MARSHALL, John", "The Greens", "GRN", 0);
+		Candidate candiTwo;
+		
+		candiTwo = candiOne.copy();
+		
+		assertTrue(candiOne.candidateListing().equals(candiTwo.candidateListing()));
+	}
+	
+	@Test
+	public void testCopyToString() throws ElectionException {
+		Candidate candiOne = new Candidate("MARSHALL, John", "The Greens", "GRN", 0);
+		Candidate candiTwo;
+		
+		candiTwo = candiOne.copy();
+		
+		assertTrue(candiOne.toString().equals(candiTwo.toString()));
+	}
+	
+	@Test
+	public void testCopyConfirmDifferentObjects() throws ElectionException {
+		Candidate candiOne = new Candidate("MARSHALL, John", "The Greens", "GRN", 0);
+		Candidate candiTwo;
+		
+		candiTwo = candiOne.copy();
+		assertNotSame(candiOne, candiTwo);		
+	}
+	/*
+	 *    *END* Test Section for Candidate.copy() *END*
+	 */
+	
+	
+	/*
+	 *    Test Section for Candidate.getName()
+	 */
 	/**
 	 * Test method for {@link asgn1Election.Candidate#getName()}.
 	 */
 	@Test
-	public void testGetName() throws ElectionException {
-		Candidate candi = new Candidate("MARSHALL, John", "The Greens", "GRN", -100000000);
-
+	public void testGetNameNormal() throws ElectionException {
+		Candidate candi = new Candidate("MARSHALL, John", "The Greens", "GRN", 0);
+		assertEquals("MARSHALL, John", candi.getName());
 	}
+	
+	@Test
+	public void testGetNameShort() throws ElectionException {
+		Candidate candi = new Candidate("x", "The Greens", "GRN", 0);
+		assertEquals("x", candi.getName());
+	}
+	
+	@Test
+	public void testGetNameLong() throws ElectionException {
+		Candidate candi = new Candidate("xxxxxxxxxxxHOWARTHxxxxxxxxxxx, xxxxxxxxxxxLukexxxxxxxxxxx", 
+				"The Greens", "GRN", 0);
+		assertEquals("xxxxxxxxxxxHOWARTHxxxxxxxxxxx, xxxxxxxxxxxLukexxxxxxxxxxx", candi.getName());
+	}
+	
+	@Test
+	public void testGetNameWithSpacesAtStart() throws ElectionException {
+		Candidate candi = new Candidate("   MARSHALL, John", "The Greens", "GRN", 0);
+		assertEquals("MARSHALL, John", candi.getName());
+	}
+	
+	@Test
+	public void testGetNameWithSpacesAtEnd() throws ElectionException {
+		Candidate candi = new Candidate("MARSHALL, John   ", "The Greens", "GRN", 0);
+		assertEquals("MARSHALL, John", candi.getName());
+	}
+	/*
+	 *    *END* Test Section for Candidate.getName() *END*
+	 */
+	
 
+	/*
+	 *    Test Section for Candidate.getParty()
+	 */
 	/**
 	 * Test method for {@link asgn1Election.Candidate#getParty()}.
 	 */
 	@Test
-	public void testGetParty() throws ElectionException {
-		//fail("Not yet implemented"); // TODO
+	public void testGetPartyNormal() throws ElectionException {
+		Candidate candi = new Candidate("MARSHALL, John", "The Greens", "GRN", 0);
+		assertEquals("The Greens", candi.getParty());
 	}
+	
+	@Test
+	public void testGetPartyShort() throws ElectionException {
+		Candidate candi = new Candidate("MARSHALL, John", "x", "GRN", 0);
+		assertEquals("x", candi.getParty());
+	}
+	
+	@Test
+	public void testGetPartyLong() throws ElectionException {
+		Candidate candi = new Candidate("MARSHALL, John", 
+				"xxxxxxxxxxxxxxxxxxxxxxxThe Greensxxxxxxxxxxxxxxxxxxxxxxx", "GRN", 0);
+		assertEquals("xxxxxxxxxxxxxxxxxxxxxxxThe Greensxxxxxxxxxxxxxxxxxxxxxxx", candi.getParty());
+	}
+	
+	@Test
+	public void testGetPartyWithSpacesAtStart() throws ElectionException {
+		Candidate candi = new Candidate("MARSHALL, John", "   The Greens", "GRN", 0);
+		assertEquals("The Greens", candi.getParty());
+	}
+	
+	@Test
+	public void testGetPartyWithSpacesAtEnd() throws ElectionException {
+		Candidate candi = new Candidate("MARSHALL, John", "The Greens   ", "GRN", 0);
+		assertEquals("The Greens", candi.getParty());
+	}
+	/*
+	 *    *END* Test Section for Candidate.getParty() *END*
+	 */
 
+
+	/*
+	 *    Test Section for Candidate.getVoteCount()
+	 */
 	/**
 	 * Test method for {@link asgn1Election.Candidate#getVoteCount()}.
 	 */
 	@Test
-	public void testGetVoteCount() throws ElectionException {
-		//fail("Not yet implemented"); // TODO
+	public void testGetVoteCountNormal() throws ElectionException {
+		Candidate candi = new Candidate("MARSHALL, John", "The Greens", "GRN", 0);
+		assertEquals(0, candi.getVoteCount());
 	}
 
+	@Test
+	public void testGetVoteCountHighNumber() throws ElectionException {
+		Candidate candi = new Candidate("MARSHALL, John", "The Greens", "GRN", 1234567890);
+		assertEquals(1234567890, candi.getVoteCount());
+	}
+	/*
+	 *    *END* Test Section for Candidate.getVoteCount() *END*
+	 */
+	
+	
+	/*
+	 *    Test Section for Candidate.GetVoteCountString()
+	 */
 	/**
 	 * Test method for {@link asgn1Election.Candidate#getVoteCountString()}.
 	 */
 	@Test
-	public void testGetVoteCountString() throws ElectionException {
-		//fail("Not yet implemented"); // TODO
+	public void testGetVoteCountStringNormal() throws ElectionException {
+		Candidate candi = new Candidate("MARSHALL, John", "The Greens", "GRN", 5);
+		assertEquals("5", candi.getVoteCountString());
 	}
-
+	
+	@Test
+	public void testGetVoteCountStringHighNumber() throws ElectionException {
+		Candidate candi = new Candidate("MARSHALL, John", "The Greens", "GRN", 1234567890);
+		assertEquals("1234567890", candi.getVoteCountString());
+	}
+	/*
+	 *    *END* Test Section for Candidate.GetVoteCountString() *END*
+	 */
+	
+	
+	/*
+	 *    Test Section for Candidate.incrementVoteCount()
+	 */
 	/**
 	 * Test method for {@link asgn1Election.Candidate#incrementVoteCount()}.
 	 */
 	@Test
-	public void testIncrementVoteCount() throws ElectionException {
-		//fail("Not yet implemented"); // TODO
+	public void testIncrementVoteCountNormal() throws ElectionException {
+		Candidate candi = new Candidate("MARSHALL, John", "The Greens", "GRN", 0);
+		candi.incrementVoteCount();
+		assertEquals(1, candi.getVoteCount());
 	}
+	
+	@Test
+	public void testIncrementVoteCountAddOneToHighNumber() throws ElectionException {
+		int highNumber = 1234567890;
+		int finalHighNumber = highNumber + 1;
+		
+		Candidate candi = new Candidate("MARSHALL, John", "The Greens", "GRN", highNumber);
+		candi.incrementVoteCount();
+		assertEquals(finalHighNumber, candi.getVoteCount());
+	}
+	
+	@Test
+	public void testIncrementVoteCountAddSeventyMillionVotes() throws ElectionException {
+		int AddSeventyMillion = 70000000;
+		Candidate candi = new Candidate("MARSHALL, John", "The Greens", "GRN", 0);
+				
+		for (int i = 0; i < AddSeventyMillion; i++){
+			candi.incrementVoteCount();
+		}
+		
+		assertEquals(AddSeventyMillion, candi.getVoteCount());
+	}
+	
+	@Test
+	public void testIncrementVoteCountAddSeventyMillionVotesToHighNumber() throws ElectionException {
+		int AddSeventyMillion = 70000000;
+		int highNumber = 1234567890;
+		int finalHighNumber = AddSeventyMillion + highNumber;
+		Candidate candi = new Candidate("MARSHALL, John", "The Greens", "GRN", highNumber);
 
+		for (int i = 0; i < AddSeventyMillion; i++){
+			candi.incrementVoteCount();
+		}
+		
+		assertEquals(finalHighNumber, candi.getVoteCount());
+	}
+	/*
+	 *    *END* Test Section for Candidate.incrementVoteCount() *END*
+	 */
+	
+	
+	/*
+	 *    Test Section for Candidate.ToString()
+	 */
 	/**
 	 * Test method for {@link asgn1Election.Candidate#toString()}.
 	 */
 	@Test
-	public void testToString() throws ElectionException {
-		//fail("Not yet implemented"); // TODO
+	public void testToStringNormal() throws ElectionException {
+		// ElectionManager.DisplayFieldWidth - length of both testName and testAbbr
+		String emptySpace = "         "; // 30 - 21 = 9 Spaces 
+		String answerText, testName, testAbbr;
+		int testVote;
 		
-		/*
-		 * displayfieldwidth max 30 - maybe
-		 * 
-		 * 
-		 */
+		testName = "MARSHALL, John";
+		testAbbr = "GRN";
+		testVote = 0;
+		
+		answerText = testName + " (" + testAbbr + ")" + emptySpace + testVote + "\n";
+		
+		Candidate candi = new Candidate(testName, "The Greens", testAbbr, testVote);
+		
+		assertEquals(answerText, candi.toString());
 	}
-
+	
+	@Test
+	public void testToStringExtraShortNames() throws ElectionException {
+		// ElectionManager.DisplayFieldWidth - length of both testName and testAbbr
+		String emptySpace = "                        "; // 30 - 6 = 24 Spaces
+		String answerText, testName, testAbbr;
+		int testVote;
+		
+		testName = "a";
+		testAbbr = "b";
+		testVote = 0;
+		
+		answerText = testName + " (" + testAbbr + ")" + emptySpace + testVote + "\n";
+		
+		Candidate candi = new Candidate(testName, "The Greens", testAbbr, testVote);
+		
+		assertEquals(answerText, candi.toString());
+	}
+	
+	public void testToStringExtraLongNames() throws ElectionException {
+		// ElectionManager.DisplayFieldWidth - length of both testName and testAbbr
+		String emptySpace = ""; // 0 Spaces, the sum is much greater than 30
+		String answerText, testName, testAbbr;
+		int testVote;
+		
+		testName = "xxxxxxxxxxxxxMARSHALL, Johnxxxxxxxxxxxxx";
+		testAbbr = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+		testVote = 1234567890;
+		
+		answerText = testName + " (" + testAbbr + ")" + emptySpace + testVote + "\n";
+		
+		Candidate candi = new Candidate(testName, "The Greens", testAbbr, testVote);
+		
+		assertEquals(answerText, candi.toString());
+	}
+	/*
+	 *    *END* Test Section for Candidate.ToString() *END*
+	 */
 }
