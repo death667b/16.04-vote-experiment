@@ -51,29 +51,31 @@ public class Candidate {
 		
 		// Test candName for Not Null or Empty also checking for length
 		if (candName != null && candName.trim().length() >= minimumStringLength){
-			if (candName.trim().length() <= ElectionManager.NameField){
-		        name = candName.trim();
+			this.name = candName.trim();
+			/*if (candName.trim().length() <= ElectionManager.NameField){
+		        this.name = candName.trim();
 			} else {
 				throw new ElectionException("Name field must be less than or equal to " + ElectionManager.NameField + " characters");
-			}
+			}*/
 		} else {
 			throw new ElectionException("Name field can not be blank");
 		}
 
 		// Test candParty for Not Null or Empty also checking for length
 		if (candParty != null && candParty.trim().length() >= minimumStringLength){
-			if (candParty.trim().length() <= ElectionManager.FullPartyField){
-		        name = candParty.trim();
+			this.party = candParty.trim();
+			/*if (candParty.trim().length() <= ElectionManager.FullPartyField){
+		        this.party = candParty.trim();
 			} else {
 				throw new ElectionException("Party Name field must be less than or equal to " + ElectionManager.FullPartyField + " characters");
-			}
+			}*/
 		} else {
 			throw new ElectionException("Party Name field can not be blank");
 		}
 		
 		// Test candAbbrev for Not Null or Empty
 		if (candAbbrev != null && candAbbrev.trim().length() >= minimumStringLength){
-		    name = candAbbrev.trim();
+			this.abbrev = candAbbrev.trim();
 		} else {
 			throw new ElectionException("Acronym field can not be blank");
 		}
