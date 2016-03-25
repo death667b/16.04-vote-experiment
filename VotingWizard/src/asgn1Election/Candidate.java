@@ -40,14 +40,17 @@ public class Candidate {
 	 * <code>asgn1Collection</code> lexicon, and 
 	 * so requires keywords from across the collection for initialisation.  
 	 * 
-	 * @param candName <code>String<code> containing candidate name
-	 * @param candParty <code>String<code> containing full party name
-	 * @param candAbbrev <code>String<code> containing party acronym
+	 * @param candName <code>String</code> containing candidate name
+	 * @param candParty <code>String</code> containing full party name
+	 * @param candAbbrev <code>String</code> containing party acronym
 	 * @param voteCount <code>int</code> containing initial number of votes (usually 0). 
-	 * @throws ElectionException if <code>isNullOrEmpty(candName,candParty,candAbbrev) OR voteCount <0</code>
+	 * @throws ElectionException if <code>isNullOrEmpty(candName,candParty,candAbbrev) OR voteCount < 0 </code>
 	 */
 	public Candidate(String candName, String candParty, String candAbbrev, int voteCount) throws ElectionException {
-		
+		name = candName;
+		party = candParty;
+		abbrev = candAbbrev;
+		this.voteCount = voteCount;
 	}
 
 	/**
