@@ -27,7 +27,8 @@ public class PrefElection extends Election {
 	 * @param name <code>String</code> containing the Election name
 	 */
 	public PrefElection(String name) {
-		
+		super(name);
+		type = Election.PrefVoting;
 	}
 
 	/*
