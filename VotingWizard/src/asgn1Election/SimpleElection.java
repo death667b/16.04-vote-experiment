@@ -37,7 +37,7 @@ public class SimpleElection extends Election {
 	 */
 	@Override
 	public String findWinner() {
-		return "STRING - findWinner(simple)"; //TODO
+		return "STRING - findWinner(simple) " + name; //TODO
 	}
 
 	/* 
