@@ -54,6 +54,8 @@ public class VoteCollection implements Collection {
 		} else {
 			throw new ElectionException("Number of candidates is out of range.");
 		}
+		
+		voteList = new ArrayList<Vote>();
 	}
 	
 	/* 

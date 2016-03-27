@@ -7,6 +7,7 @@
 package asgn1Election;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 import asgn1Util.Strings;
 
@@ -46,7 +47,19 @@ public class SimpleElection extends Election {
 	 */
 	@Override
 	public boolean isFormal(Vote v) {
-		return true; //TODO
+		boolean returnValue = true;
+		int voteValue;
+		
+		Iterator iter = v.iterator();
+		
+		while(iter.hasNext()){
+			voteValue = (int) iter.next();
+			if (voteValue > this.numCandidates){
+				returnValue = false;
+			}
+		}
+		
+		return returnValue; //TODO
 	}
 
 	/*
