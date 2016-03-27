@@ -104,7 +104,7 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public int getFormalCount() {
-		return 666; //TODO
+		return voteList.size();
 	}
 
 	/*
@@ -114,7 +114,7 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public int getInformalCount() {
-		 return 777; //TODO
+		 return informalCount; 
 	}
 
 	
@@ -125,7 +125,7 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public void includeFormalVote(Vote v) {
-	
+		voteList.add(v);
 	}
 
 	/*
@@ -135,7 +135,7 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public void updateInformalCount() {
-		
+		this.informalCount++;
 	}
 	
 	/**
