@@ -104,7 +104,7 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public int getFormalCount() {
-	
+		return 666; //TODO
 	}
 
 	/*
@@ -114,7 +114,7 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public int getInformalCount() {
-		
+		 return 777; //TODO
 	}
 
 	
@@ -158,7 +158,7 @@ public class VoteCollection implements Collection {
 	 * 
 	 */
 	private CandidateIndex getPrefthKey(Vote v,TreeMap<CandidateIndex, Candidate> cds, int pref) {
-
+		return null; //TODO
 	}
 
 	/**
@@ -170,6 +170,6 @@ public class VoteCollection implements Collection {
 	 * @return <code>CandidateIndex</code> of the first preference candidate
 	 */
 	private CandidateIndex getPrimaryKey(Vote v) {
-        
+        return null; //TODO
     }
 }

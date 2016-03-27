@@ -89,14 +89,14 @@ public class VoteList implements Vote {
 	 */
 	@Override
 	public Vote invertVote() {
-		Vote newVote;
+		/*Vote newVote;
 		
 		for (int i : this){
 			newVote[this[i]] = i;
-		}
+		}*/
 		
 		
-		return new VoteList(5);
+		return null; //TODO
 
 	}
 
