@@ -49,7 +49,11 @@ public class VoteCollection implements Collection {
 	 * @throws ElectionException if <code>NOT inRange(numCandidates)</code>
 	 */
 	public VoteCollection(int numCandidates) throws ElectionException {
-		
+		if (CandidateIndex.inRange(numCandidates)){
+			this.numCandidates = numCandidates;
+		} else {
+			throw new ElectionException("Number of candidates is out of range.");
+		}
 	}
 	
 	/* 
@@ -60,7 +64,17 @@ public class VoteCollection implements Collection {
 	@Override
 	public void countPrefVotes(TreeMap<CandidateIndex, Candidate> cds,
 			CandidateIndex elim) {
-	
+		
+		/*for ( CandidateIndex key : cds.keySet() ) {
+		    System.out.println( key );
+		}*/
+		
+		
+		
+		
+		
+		
+		
 	}
 
 	/*
