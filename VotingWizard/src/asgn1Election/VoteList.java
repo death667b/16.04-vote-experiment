@@ -7,6 +7,7 @@
 package asgn1Election;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -34,7 +35,8 @@ public class VoteList implements Vote {
 	 * this seat. 
 	 */
 	public VoteList(int numCandidates) {
-		
+		this.numCandidates = numCandidates;
+		vote = new ArrayList<Integer>();
 	}
 
 	/*
@@ -44,7 +46,12 @@ public class VoteList implements Vote {
 	 */
 	@Override
 	public boolean addPref(int index) {
-		
+		if (vote.size() < numCandidates){
+			vote.add(index);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/*
@@ -54,7 +61,7 @@ public class VoteList implements Vote {
 	 */
 	@Override
 	public Vote copyVote() {
-		
+		return new VoteList(numCandidates);
 	}
 
 	/*
@@ -62,9 +69,10 @@ public class VoteList implements Vote {
 	 * 
 	 * @see asgn1Election.Vote#getPreference(int)
 	 */
+	
 	@Override
 	public CandidateIndex getPreference(int cand) {
-
+		return new CandidateIndex(cand);
 	}
 
 	/*
@@ -72,8 +80,23 @@ public class VoteList implements Vote {
 	 * 
 	 * @see asgn1Election.Vote#invertVote()
 	 */
+	
+	/**
+	 * Method to invert the vote to yield the preference order of candidates.
+	 * 
+	 * @return <code>Vote newVote</code> such that for all entries <code>i</code> of 
+	 * <code>this</code>, <code>newVote[this[i]] = i</code>
+	 */
 	@Override
 	public Vote invertVote() {
+		/*Vote newVote;
+		
+		for (int i : this){
+			newVote[this[i]] = i;
+		}*/
+		
+		
+		return null; //TODO
 
 	}
 
@@ -84,7 +107,28 @@ public class VoteList implements Vote {
 	 */
 	@Override
 	public Iterator<Integer> iterator() {
+		Iterator<Integer> listInt = new Iterator<Integer>(){
+			private int currentSize = vote.size();
+			private int currentPosition = 0;
+			
+			@Override
+			public boolean hasNext(){
+				return (currentSize > currentPosition);
+			}
+			
+			@Override
+			public Integer next(){
+				currentPosition++;
+				return vote.get(currentPosition - 1);
+			}
+			
+			@Override
+			public void remove(){
+				throw new UnsupportedOperationException();
+			}
+		};
 		
+		return listInt;
 	}
 
 	/*

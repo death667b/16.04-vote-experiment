@@ -49,7 +49,11 @@ public class VoteCollection implements Collection {
 	 * @throws ElectionException if <code>NOT inRange(numCandidates)</code>
 	 */
 	public VoteCollection(int numCandidates) throws ElectionException {
-		
+		if (CandidateIndex.inRange(numCandidates)){
+			this.numCandidates = numCandidates;
+		} else {
+			throw new ElectionException("Number of candidates is out of range.");
+		}
 	}
 	
 	/* 
@@ -60,7 +64,17 @@ public class VoteCollection implements Collection {
 	@Override
 	public void countPrefVotes(TreeMap<CandidateIndex, Candidate> cds,
 			CandidateIndex elim) {
-	
+		
+		/*for ( CandidateIndex key : cds.keySet() ) {
+		    System.out.println( key );
+		}*/
+		
+		
+		
+		
+		
+		
+		
 	}
 
 	/*
@@ -90,7 +104,7 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public int getFormalCount() {
-	
+		return voteList.size();
 	}
 
 	/*
@@ -100,7 +114,7 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public int getInformalCount() {
-		
+		 return informalCount; 
 	}
 
 	
@@ -111,7 +125,7 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public void includeFormalVote(Vote v) {
-	
+		voteList.add(v);
 	}
 
 	/*
@@ -121,7 +135,7 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public void updateInformalCount() {
-		
+		this.informalCount++;
 	}
 	
 	/**
@@ -144,7 +158,7 @@ public class VoteCollection implements Collection {
 	 * 
 	 */
 	private CandidateIndex getPrefthKey(Vote v,TreeMap<CandidateIndex, Candidate> cds, int pref) {
-
+		return null; //TODO
 	}
 
 	/**
@@ -156,6 +170,6 @@ public class VoteCollection implements Collection {
 	 * @return <code>CandidateIndex</code> of the first preference candidate
 	 */
 	private CandidateIndex getPrimaryKey(Vote v) {
-        
+        return null; //TODO
     }
 }

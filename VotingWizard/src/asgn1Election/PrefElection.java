@@ -27,7 +27,8 @@ public class PrefElection extends Election {
 	 * @param name <code>String</code> containing the Election name
 	 */
 	public PrefElection(String name) {
-		
+		super(name);
+		type = Election.PrefVoting;
 	}
 
 	/*
@@ -37,7 +38,7 @@ public class PrefElection extends Election {
 	 */
 	@Override
 	public String findWinner() {
-		
+		return "STRING - FindWinner(pref)";  //TODO
 	}
 
 	/* 
@@ -47,7 +48,7 @@ public class PrefElection extends Election {
 	 */
 	@Override
 	public boolean isFormal(Vote v) {
-		
+		return true; //TODO
 	}
 
 	/*
@@ -70,8 +71,9 @@ public class PrefElection extends Election {
 	 * @see asgn1Election.Election#clearWinner(int)
 	 */
 	@Override
-	protected Candidate clearWinner(int winVotes) {
-
+	protected Candidate clearWinner(int winVotes)  {
+		//TODO
+		return null;
 	}
 
 	/**
@@ -114,6 +116,7 @@ public class PrefElection extends Election {
 	 * @return <code>CandidateIndex</code> of candidate with fewest votes
 	 */
 	private CandidateIndex selectLowestCandidate() {
+		return new CandidateIndex(666);  //TODO
 
 	}
 }

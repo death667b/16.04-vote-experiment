@@ -18,7 +18,7 @@ import asgn1Util.Strings;
  * 
  */
 public class SimpleElection extends Election {
-
+	
 	/**
 	 * Simple Constructor for <code>SimpleElection</code>, takes name and also sets the 
 	 * election type internally. 
@@ -26,7 +26,8 @@ public class SimpleElection extends Election {
 	 * @param name <code>String</code> containing the Election name
 	 */
 	public SimpleElection(String name) {
-
+		super(name);
+		type = Election.SimpleVoting;
 	}
 
 	/*
@@ -36,7 +37,7 @@ public class SimpleElection extends Election {
 	 */
 	@Override
 	public String findWinner() {
-		
+		return "STRING - findWinner(simple) " + name; //TODO
 	}
 
 	/* 
@@ -45,7 +46,7 @@ public class SimpleElection extends Election {
 	 */
 	@Override
 	public boolean isFormal(Vote v) {
-		
+		return true; //TODO
 	}
 
 	/*
@@ -68,7 +69,7 @@ public class SimpleElection extends Election {
 	 */
 	@Override
 	protected Candidate clearWinner(int wVotes) {
-		
+		return null;  //TODO
 	}
 
 	/**
