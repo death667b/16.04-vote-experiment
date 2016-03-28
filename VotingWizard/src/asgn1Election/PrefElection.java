@@ -202,7 +202,7 @@ public class PrefElection extends Election {
 			}
 			
 		}
-		
+		//TODO Deal with a tie
 		return indexToReturn;
 
 	}
