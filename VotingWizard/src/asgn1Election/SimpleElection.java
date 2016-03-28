@@ -38,7 +38,17 @@ public class SimpleElection extends Election {
 	 */
 	@Override
 	public String findWinner() {
-		return "STRING - findWinner(simple) " + name; //TODO
+		String returnString = "";
+		
+		returnString += showResultHeader();
+		returnString += "Counting primary votes;\n";
+		vc.countPrimaryVotes(cds);
+	
+		winner = clearWinner(findWinningVotes());
+		
+		returnString += reportCountResult();
+		returnString += reportWinner(winner);
+		return returnString;
 	}
 
 	/* 
@@ -82,7 +92,24 @@ public class SimpleElection extends Election {
 	 */
 	@Override
 	protected Candidate clearWinner(int wVotes) {
-		return null;  //TODO
+		//winner and winIndex
+		
+		Candidate candWin = null;
+
+		java.util.Collection<Candidate> coll = this.cds.values();
+
+		do{
+			for (Candidate cand : coll) {
+				if (cand.getVoteCount() >= wVotes){
+					candWin = cand;
+					return candWin;
+				}
+			}
+			
+			wVotes--;
+		} while (candWin == null && wVotes > 0);
+
+		return candWin;
 	}
 
 	/**
@@ -105,5 +132,18 @@ public class SimpleElection extends Election {
 				- voteStr.length();
 		str += cast + Strings.createPadding(' ', length) + voteStr + "\n\n";
 		return str;
+	}
+	
+	/**
+	 * Find the number of winning votes required for a clear win.  
+	 * Number of Votes divided by two plus one
+	 * @return Minimum votes required for clear win.
+	 */
+	private int findWinningVotes(){
+		int returnVoteRequired = 0;
+		
+		returnVoteRequired = numVotes / 2;
+		returnVoteRequired++;
+		return returnVoteRequired;
 	}
 }

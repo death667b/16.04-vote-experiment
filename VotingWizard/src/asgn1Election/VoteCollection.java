@@ -7,6 +7,7 @@
 package asgn1Election;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.TreeMap;
 
 /**
@@ -86,7 +87,16 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public void countPrimaryVotes(TreeMap<CandidateIndex, Candidate> cds) {
+		CandidateIndex canIndex;
+		Candidate candi;
 		
+		for (Vote vl : voteList){
+			canIndex = getPrimaryKey(vl);
+			candi = cds.get(canIndex);
+			candi.incrementVoteCount();
+			
+			cds.put(canIndex, candi);
+		}
 	}
 
 	/*
@@ -172,6 +182,20 @@ public class VoteCollection implements Collection {
 	 * @return <code>CandidateIndex</code> of the first preference candidate
 	 */
 	private CandidateIndex getPrimaryKey(Vote v) {
-        return null; //TODO
+		int voteValue, voteCounter = 1;
+		CandidateIndex newCandi = null;
+		
+		Iterator iter = v.iterator();
+		
+		while(iter.hasNext()){
+			voteValue = (int) iter.next();
+			if (voteValue == 1){
+				newCandi = new CandidateIndex(voteCounter);
+			}
+			
+			voteCounter++;
+		}
+		
+		return newCandi;
     }
 }
