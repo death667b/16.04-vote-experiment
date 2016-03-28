@@ -71,18 +71,27 @@ public class VoteCollection implements Collection {
 		int candiToRemove = Integer.parseInt(elim.toString().trim());
 		CandidateIndex canIndex;
 		Candidate candi;
+		Vote vote;
+		int voteCounter = 0;
+		
+		//elim.setValue(2);
 		
 		cds.remove(elim);
+
+		voteList.
 		
 		for (Vote vl: voteList){
 			
+			vote = vl.invertVote();
+			voteList.set(voteCounter, vote);
 			
-			
-			canIndex = getPrefthKey(vl, cds, candiToRemove);
+			/*canIndex = getPrefthKey(vote, cds, candiToRemove);
 			candi = cds.get(canIndex);
 			candi.incrementVoteCount();
 			
-			cds.put(canIndex, candi);
+			cds.put(canIndex, candi);*/
+			
+			voteCounter++;
 		}
 	}
 
@@ -112,7 +121,7 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public void emptyTheCollection() {
-		//TODO
+		voteList.clear();
 	}
 
 	/*

@@ -95,14 +95,13 @@ public class VoteList implements Vote {
 	 */
 	@Override
 	public Vote invertVote() {
-		/*Vote newVote;
+		Vote newVote = new VoteList(numCandidates);
 		
-		for (int i : this){
-			newVote[this[i]] = i;
-		}*/
+		for (int i : this.vote){
+			newVote.addPref(i-1);
+		}
 		
-		
-		return null; //TODO
+		return newVote; //TODO
 
 	}
 
