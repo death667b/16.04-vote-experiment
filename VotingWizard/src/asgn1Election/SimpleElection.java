@@ -6,7 +6,6 @@
  */
 package asgn1Election;
 
-import java.util.Collection;
 import java.util.Iterator;
 
 import asgn1Util.Strings;
@@ -44,7 +43,7 @@ public class SimpleElection extends Election {
 		returnString += "Counting primary votes;\n";
 		vc.countPrimaryVotes(cds);
 	
-		winner = clearWinner(findWinningVotes());
+		winner = clearWinner(findWinningVotesRequired());
 		
 		returnString += reportCountResult();
 		returnString += reportWinner(winner);
@@ -57,19 +56,33 @@ public class SimpleElection extends Election {
 	 */
 	@Override
 	public boolean isFormal(Vote v) {
-		boolean returnValue = true;
-		int voteValue;
+		int voteValue, loopCounter, objCounter = 0;
+		Object voteObject;
 		
-		Iterator iter = v.iterator();
+		Iterator<Integer> iter = v.iterator();
+		
 		
 		while(iter.hasNext()){
-			voteValue = (int) iter.next();
+			voteObject = iter.next();
+			voteValue = (int) voteObject;
+			objCounter++;
+			loopCounter = 0;			
+			
+			// Test to see if there is a duplicate vote
+			// Skipping the current vote being tested
+			for (Object obj : v){
+				loopCounter++;
+				if (obj.equals(voteObject) && objCounter != loopCounter){
+					return false;
+				}
+			}
+			
+			//Test to see if the voted number is higher than the available candidates
 			if (voteValue > this.numCandidates){
-				returnValue = false;
+				return false;
 			}
 		}
-		
-		return returnValue; //TODO
+		return true;
 	}
 
 	/*
@@ -139,10 +152,10 @@ public class SimpleElection extends Election {
 	 * Number of Votes divided by two plus one
 	 * @return Minimum votes required for clear win.
 	 */
-	private int findWinningVotes(){
+	private int findWinningVotesRequired(){
 		int returnVoteRequired = 0;
 		
-		returnVoteRequired = numVotes / 2;
+		returnVoteRequired = vc.getFormalCount() / 2;
 		returnVoteRequired++;
 		return returnVoteRequired;
 	}

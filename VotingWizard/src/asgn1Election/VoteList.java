@@ -61,7 +61,13 @@ public class VoteList implements Vote {
 	 */
 	@Override
 	public Vote copyVote() {
-		return new VoteList(numCandidates);
+		Vote returnVote = new VoteList(numCandidates);
+		
+		for (Integer index : this.vote) {
+			returnVote.addPref(index);
+		}
+		
+		return returnVote;
 	}
 
 	/*
