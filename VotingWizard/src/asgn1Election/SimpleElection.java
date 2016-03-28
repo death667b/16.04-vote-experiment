@@ -105,8 +105,6 @@ public class SimpleElection extends Election {
 	 */
 	@Override
 	protected Candidate clearWinner(int wVotes) {
-		//winner and winIndex
-		
 		Candidate candWin = null;
 
 		java.util.Collection<Candidate> coll = this.cds.values();

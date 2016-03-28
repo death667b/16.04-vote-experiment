@@ -67,17 +67,23 @@ public class VoteCollection implements Collection {
 	@Override
 	public void countPrefVotes(TreeMap<CandidateIndex, Candidate> cds,
 			CandidateIndex elim) {
+
+		int candiToRemove = Integer.parseInt(elim.toString().trim());
+		CandidateIndex canIndex;
+		Candidate candi;
 		
-		/*for ( CandidateIndex key : cds.keySet() ) {
-		    System.out.println( key );
-		}*/
+		cds.remove(elim);
 		
-		
-		
-		
-		
-		
-		
+		for (Vote vl: voteList){
+			
+			
+			
+			canIndex = getPrefthKey(vl, cds, candiToRemove);
+			candi = cds.get(canIndex);
+			candi.incrementVoteCount();
+			
+			cds.put(canIndex, candi);
+		}
 	}
 
 	/*
@@ -106,7 +112,7 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public void emptyTheCollection() {
-		
+		//TODO
 	}
 
 	/*
@@ -116,7 +122,7 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public int getFormalCount() {
-		return voteList.size();
+		return formalCount;
 	}
 
 	/*
@@ -138,6 +144,7 @@ public class VoteCollection implements Collection {
 	@Override
 	public void includeFormalVote(Vote v) {
 		voteList.add(v);
+		formalCount++;
 	}
 
 	/*
@@ -170,6 +177,11 @@ public class VoteCollection implements Collection {
 	 * 
 	 */
 	private CandidateIndex getPrefthKey(Vote v,TreeMap<CandidateIndex, Candidate> cds, int pref) {
+		
+		
+		
+		
+		
 		return null; //TODO
 	}
 
@@ -185,7 +197,7 @@ public class VoteCollection implements Collection {
 		int voteValue, voteCounter = 1;
 		CandidateIndex newCandi = null;
 		
-		Iterator iter = v.iterator();
+		Iterator<Integer> iter = v.iterator();
 		
 		while(iter.hasNext()){
 			voteValue = (int) iter.next();

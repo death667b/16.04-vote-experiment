@@ -7,6 +7,9 @@
 package asgn1Election;
 
 import java.util.BitSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.TreeMap;
 
 import asgn1Util.Strings;
 
@@ -38,7 +41,33 @@ public class PrefElection extends Election {
 	 */
 	@Override
 	public String findWinner() {
-		return "STRING - FindWinner(pref)";  //TODO
+		String returnString = "";
+		int winningVotesRequired = findWinningVotesRequired();
+		CandidateIndex canIndex = null;
+		
+		returnString += showResultHeader();
+		returnString += "Counting primary votes; ";
+		returnString += getNumCandidates() + " alternatives available\n";
+		
+		vc.countPrimaryVotes(cds);
+		
+		do{
+			returnString += reportCountStatus();			
+			canIndex = selectLowestCandidate();
+			returnString += prefDistMessage(cds.get(canIndex));
+			
+			vc.countPrefVotes(cds, canIndex);
+			
+		} while(clearWinner(winningVotesRequired) == null);
+		
+		
+		
+	
+		
+		winner = clearWinner(winningVotesRequired);
+		
+		//returnString += reportWinner(winner);
+		return returnString;
 	}
 
 	/* 
@@ -48,7 +77,33 @@ public class PrefElection extends Election {
 	 */
 	@Override
 	public boolean isFormal(Vote v) {
-		return true; //TODO
+		int voteValue, loopCounter, objCounter = 0;
+		Object voteObject;
+		
+		Iterator<Integer> iter = v.iterator();
+		
+		
+		while(iter.hasNext()){
+			voteObject = iter.next();
+			voteValue = (int) voteObject;
+			objCounter++;
+			loopCounter = 0;			
+			
+			// Test to see if there is a duplicate vote
+			// Skipping the current vote being tested
+			for (Object obj : v){
+				loopCounter++;
+				if (obj.equals(voteObject) && objCounter != loopCounter){
+					return false;
+				}
+			}
+			
+			//Test to see if the voted number is higher than the available candidates
+			if (voteValue > this.numCandidates){
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/*
@@ -72,7 +127,25 @@ public class PrefElection extends Election {
 	 */
 	@Override
 	protected Candidate clearWinner(int winVotes)  {
-		//TODO
+		Candidate candWin = null;
+
+		java.util.Collection<Candidate> coll = this.cds.values();
+
+		if (coll.size() <= 2){
+			do{
+				for (Candidate cand : coll) {
+					if (cand.getVoteCount() >= winVotes){
+						candWin = cand;
+						return candWin;
+					}
+				}
+				
+				winVotes--;
+			} while (candWin == null && winVotes > 0);
+	
+			return candWin;
+		}
+		
 		return null;
 	}
 
@@ -116,7 +189,34 @@ public class PrefElection extends Election {
 	 * @return <code>CandidateIndex</code> of candidate with fewest votes
 	 */
 	private CandidateIndex selectLowestCandidate() {
-		return new CandidateIndex(666);  //TODO
+		int voteCount = -1;
+		CandidateIndex indexToReturn = null;
 
+		for (Map.Entry<CandidateIndex, Candidate> entry : cds.entrySet()) {
+			Candidate mapValue = entry.getValue();
+			CandidateIndex mapKey = entry.getKey();
+			
+			if (voteCount == -1 || voteCount > mapValue.getVoteCount()){
+				voteCount = mapValue.getVoteCount();
+				indexToReturn = mapKey.copy();
+			}
+			
+		}
+		
+		return indexToReturn;
+
+	}
+	
+	/**
+	 * Find the number of winning votes required for a clear win.  
+	 * Number of Votes divided by two plus one
+	 * @return Minimum votes required for clear win.
+	 */
+	private int findWinningVotesRequired(){
+		int returnVoteRequired = 0;
+		
+		returnVoteRequired = vc.getFormalCount() / 2;
+		returnVoteRequired++;
+		return returnVoteRequired;
 	}
 }
