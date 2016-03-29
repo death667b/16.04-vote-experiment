@@ -70,62 +70,81 @@ public class VoteCollection implements Collection {
 
 		
 		/*
-		get last pref number (numCandidates - CandidatesRemaining + 1) = (3 - 3 + 1 = 1)
-		get elim position number
-		remove elim from cds
+		**get last pref number (numCandidates - CandidatesRemaining + 1) = (3 - 3 + 1 = 1)
+		**get elim position number
+		**remove elim from cds
 		
 		while(lastPref = elimPos) { maybe for(vote : votes) ??
 		
 			reorder the vote(invertVote)
-			compare current vote order to inverted vote
-			adjust a copy of candidate list to match inverted vote
+			clone cds
+			
+			-compare current vote order to inverted vote
+			-adjust a copy of candidate list to match inverted vote
 			
 			find new pref number (numCandidates - CandidatesRemaining + 1) = (3 - 2 + 1 = 2)
 		
-			(in getPrefthKey(v,cds,pref) ) based of the votes from the elim candidate find the candiListing for the newPrefNumber (2)
+			(in getPrefthKey(vote,cdsClone,nextPrefNumber) ) based of the votes from the elim candidate find the candiListing for the newPrefNumber (2)
 			
 			incrementVote for that candidate
 		
 		} 
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
 		*/
 		
+		int nextPrefNumber, previousPrefNumber = getPrefNumber(cds);
+		int elimPostionNumber = Integer.parseInt(elim.toString());
+		Vote orderedVote;
+		TreeMap<CandidateIndex, Candidate> cdsReordered = null;
 		
-		int candiToRemove = Integer.parseInt(elim.toString().trim());
+		for (Vote vote : voteList){
+			for (int vl : vote){  // So only working for eliminated votes
+				if (previousPrefNumber == vl){  //TODO need to link the if to prevPrefNum
+					orderedVote = vote.invertVote();
+					cdsReordered = sortCandidatesAndVotes(vote, orderedVote, cds);
+					
+					//cds.remove(elim);
+					nextPrefNumber = getPrefNumber(cds);
+				}
+			}
+
+		}
+		
+		
+		
+		
+		
+		
+		
+		/**********/
+		
+		
+		
+		/*int candiToRemove = Integer.parseInt(elim.toString().trim());
 		CandidateIndex canIndex;
 		Candidate candi;
 		Vote vote;
 		int voteCounter = 0;
 		
-		//elim.setValue(2);
+		elim.setValue(2);
 		
-		cds.remove(elim);
+		
 
-		//voteList.
+		voteList.
 		
 		for (Vote vl: voteList){
 			
 			vote = vl.invertVote();
 			voteList.set(voteCounter, vote);
 			
-			/*canIndex = getPrefthKey(vote, cds, candiToRemove);
+			canIndex = getPrefthKey(vote, cds, candiToRemove);
 			candi = cds.get(canIndex);
 			candi.incrementVoteCount();
 			
-			cds.put(canIndex, candi);*/
+			cds.put(canIndex, candi);
 			
 			voteCounter++;
-		}
+		}*/
 	}
 
 	/*
@@ -263,5 +282,71 @@ public class VoteCollection implements Collection {
 		int returnCount = numCandidates - currentCandidateSize + 1;
 		
 		return returnCount;
+	}
+	
+	/**
+	 * 
+	 * @param vote
+	 * @param orderedVote
+	 * @param cds
+	 * @return
+	 */
+	private TreeMap<CandidateIndex, Candidate> sortCandidatesAndVotes(Vote vote, Vote orderedVote, 
+			TreeMap<CandidateIndex, Candidate> cds){
+		
+		CandidateIndex newCanIndex = null, oldCanIndex = null;
+		Candidate newCandidate = null;
+		TreeMap<CandidateIndex, Candidate> newCandidateList = new TreeMap<CandidateIndex, Candidate>();
+		int voteCounter;
+		
+		for (int newVote : orderedVote){
+			voteCounter = 0;
+			
+			for (int oldVote : vote){
+				voteCounter++;
+				
+				if (newVote == oldVote){
+					oldCanIndex = new CandidateIndex(voteCounter);
+					newCanIndex = new CandidateIndex(newVote);
+					newCandidate = cds.get(oldCanIndex);
+					newCandidateList.put(newCanIndex, newCandidate);
+				}		
+			}
+		}
+		
+		
+		//TODO Fix up description
+		
+		//cdsClone.
+		
+		/*
+			candi = cds.get(canIndex);
+			candi.incrementVoteCount();
+			
+			cds.put(canIndex, candi);
+		 * 
+		 * Would the idea of invertVote simply be create a new Vote object and assign the votes 1, 2, 3,...,n.
+
+Then in the prefcount method, where I would be calling invertVote it then compares the orig vote to the new  vote and move the candidates in the list according to the new position of the new ordered vote object.
+
+For example
+Original Vote  [3, 1, 2]
+New Vote  [1, 2, 3]
+
+So the candidate in the list that was in position 1 would move to position 3
+Candidate in position 2 would move to position 1
+Candidate in position 3 moves to position 2
+
+The moving of the candidates position would be on a copy of candidatelisting.
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 */
+		
+		
+		
+		return newCandidateList;
 	}
 }
