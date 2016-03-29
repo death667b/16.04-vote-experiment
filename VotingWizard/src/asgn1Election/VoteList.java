@@ -97,12 +97,11 @@ public class VoteList implements Vote {
 	public Vote invertVote() {
 		Vote newVote = new VoteList(numCandidates);
 		
-		for (int i : this.vote){
-			newVote.addPref(i-1);
+		for (int i = 1; i <= numCandidates; i++){
+			newVote.addPref(i);
 		}
 		
-		return newVote; //TODO
-
+		return newVote;
 	}
 
 	/* 

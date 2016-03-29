@@ -68,6 +68,39 @@ public class VoteCollection implements Collection {
 	public void countPrefVotes(TreeMap<CandidateIndex, Candidate> cds,
 			CandidateIndex elim) {
 
+		
+		/*
+		get last pref number (numCandidates - CandidatesRemaining + 1) = (3 - 3 + 1 = 1)
+		get elim position number
+		remove elim from cds
+		
+		while(lastPref = elimPos) { maybe for(vote : votes) ??
+		
+			reorder the vote(invertVote)
+			compare current vote order to inverted vote
+			adjust a copy of candidate list to match inverted vote
+			
+			find new pref number (numCandidates - CandidatesRemaining + 1) = (3 - 2 + 1 = 2)
+		
+			(in getPrefthKey(v,cds,pref) ) based of the votes from the elim candidate find the candiListing for the newPrefNumber (2)
+			
+			incrementVote for that candidate
+		
+		} 
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		*/
+		
+		
 		int candiToRemove = Integer.parseInt(elim.toString().trim());
 		CandidateIndex canIndex;
 		Candidate candi;
@@ -78,7 +111,7 @@ public class VoteCollection implements Collection {
 		
 		cds.remove(elim);
 
-		voteList.
+		//voteList.
 		
 		for (Vote vl: voteList){
 			
@@ -219,4 +252,16 @@ public class VoteCollection implements Collection {
 		
 		return newCandi;
     }
+	
+	/**
+	 * Find the preference number based on the original number of candidates and
+	 * the current active list of candidates after preferences have been counted.
+	 * @return int numCandidates - CandidateCollection.size() + 1
+	 */
+	private int getPrefNumber(TreeMap<CandidateIndex, Candidate> cds){
+		int currentCandidateSize = cds.size();
+		int returnCount = numCandidates - currentCandidateSize + 1;
+		
+		return returnCount;
+	}
 }
