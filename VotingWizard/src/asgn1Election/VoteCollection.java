@@ -68,7 +68,6 @@ public class VoteCollection implements Collection {
 	@Override
 	public void countPrefVotes(TreeMap<CandidateIndex, Candidate> cds,
 			CandidateIndex elim) {
-		//TODO Refactor countPrefVotes
 		
 		int elimPostionNumber = Integer.parseInt(elim.toString());
 		
@@ -78,10 +77,13 @@ public class VoteCollection implements Collection {
 		for (Vote vote : voteList){		
 			addVoteToIndex = getPrefthKey(vote,cds,elimPostionNumber);
 			
-			addVotetoCandidate = cds.get(addVoteToIndex);
-			addVotetoCandidate.incrementVoteCount();
-			
-			cds.put(addVoteToIndex, addVotetoCandidate);
+			if (addVoteToIndex != null){
+				addVotetoCandidate = cds.get(addVoteToIndex);
+				addVotetoCandidate.incrementVoteCount();
+				
+				cds.put(addVoteToIndex, addVotetoCandidate);
+			}
+
 		}
 		cds.remove(elim);
 	}
@@ -177,30 +179,36 @@ public class VoteCollection implements Collection {
 	 * 
 	 */
 	private CandidateIndex getPrefthKey(Vote v,TreeMap<CandidateIndex, Candidate> cds, int pref) {
-		int positionCounter, nextPrefNumber, previousPrefNumber = getPrefNumber(cds);
+		int positionCounter, previousPrefNumber = getPrefNumber(cds);
 		TreeMap<CandidateIndex, Candidate> cdsReordered = null;
 		Vote orderedVote = v.invertVote();
 		Candidate origCandi = null, findCandi = null;
-		CandidateIndex newCandi = null, findIndex = null;
+		CandidateIndex newCandi = null;
+		ArrayList<Integer> previousPrefList = new ArrayList<Integer>();
 		
-		nextPrefNumber = previousPrefNumber + 1;
+		for (int i = previousPrefNumber; i > 0; i--){
+			previousPrefList.add(i);
+		}
+		
 		positionCounter = 0;
 		for (int vl : v){  // So only working for eliminated votes
 			positionCounter++;
-			if ((pref == positionCounter) && (previousPrefNumber == vl)){ 
+			if ((pref == positionCounter) && (previousPrefList.contains(vl))){   //   (previousPrefNumber == vl)
 				//Found pref to count
 				cdsReordered = orderCandidatesAndVotes(v, orderedVote, cds);
-				findIndex = new CandidateIndex(nextPrefNumber);
-				findCandi = cdsReordered.get(findIndex);
+				findCandi = getNextAvailableCandidate(vl, cdsReordered);
 			}
 		}
 		
-		for (Map.Entry<CandidateIndex, Candidate> findRealIndex : cds.entrySet()){
-			origCandi = findRealIndex.getValue();
-			if (origCandi.equals(findCandi)){
-				newCandi = findRealIndex.getKey();
+		if (cdsReordered != null){
+			for (Map.Entry<CandidateIndex, Candidate> findRealIndex : cds.entrySet()){
+				origCandi = findRealIndex.getValue();
+				if (origCandi.equals(findCandi)){
+					newCandi = findRealIndex.getKey();
+				}
 			}
 		}
+
 
 		//TODO Finish
 
@@ -246,13 +254,13 @@ public class VoteCollection implements Collection {
 	}
 	
 	/**
-	 * 
-	 * @param vote
-	 * @param orderedVote
-	 * @param cds
-	 * @return
+	 * Reorder the list of candidates to align with a new ordered list of votes 
+	 * this is sorted by preference order
+	 * @param vote Original collection of vote
+	 * @param orderedVote Reordered collection of votes eg. 1,2,...,n = numCandidates
+	 * @param cds Original list of candidates
+	 * @return Reordered list of candidates sorted by preference
 	 */
-	//TODO Fix description
 	private TreeMap<CandidateIndex, Candidate> orderCandidatesAndVotes(Vote vote, Vote orderedVote, 
 			TreeMap<CandidateIndex, Candidate> cds){
 		
@@ -277,5 +285,31 @@ public class VoteCollection implements Collection {
 		}
 	
 		return newCandidateList;
+	}
+	
+	/**
+	 * Get the next preference available Candidate.
+	 * The supplied nextPref is preferred unless that candidate has already been eliminated
+	 * @param nextPref Preferred next candidateIndex number
+	 * @return Next available Candidate object
+	 */
+	private Candidate getNextAvailableCandidate(int nextPref, TreeMap<CandidateIndex, Candidate> cdsReordered){
+		
+		int nextPrefNumber = nextPref + 1;
+		int listCount = cdsReordered.size();
+		CandidateIndex findIndex = null;
+		Candidate candiHolder = null;
+
+		for (;nextPrefNumber <= listCount; nextPrefNumber++){
+			findIndex = new CandidateIndex(nextPrefNumber);
+			candiHolder = cdsReordered.get(findIndex);
+			if (candiHolder != null){
+				return candiHolder;
+			}
+		}	
+		
+	    int stopHere = 5;
+		
+		return null;
 	}
 }
