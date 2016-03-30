@@ -76,11 +76,11 @@ public class VoteCollection implements Collection {
 		
 		while(lastPref = elimPos) { maybe for(vote : votes) ??
 		
-			reorder the vote(invertVote)
-			clone cds
+			**reorder the vote(invertVote)
+			**clone cds
 			
-			-compare current vote order to inverted vote
-			-adjust a copy of candidate list to match inverted vote
+			**-compare current vote order to inverted vote
+			**-adjust a copy of candidate list to match inverted vote
 			
 			find new pref number (numCandidates - CandidatesRemaining + 1) = (3 - 2 + 1 = 2)
 		
@@ -96,6 +96,8 @@ public class VoteCollection implements Collection {
 		int positionCounter, elimPostionNumber = Integer.parseInt(elim.toString());
 		Vote orderedVote;
 		TreeMap<CandidateIndex, Candidate> cdsReordered = null;
+		CandidateIndex addVoteToIndex = null;
+		Candidate addVotetoCandidate = null;
 		
 		for (Vote vote : voteList){
 			positionCounter = 0;
@@ -105,16 +107,22 @@ public class VoteCollection implements Collection {
 					orderedVote = vote.invertVote();
 					cdsReordered = sortCandidatesAndVotes(vote, orderedVote, cds);
 					
-					//cds.remove(elim);
+					cds.remove(elim);
 					nextPrefNumber = getPrefNumber(cds);
+					
+					addVoteToIndex = getPrefthKey(orderedVote,cdsReordered,nextPrefNumber);
+					
+					addVotetoCandidate = cds.get(addVoteToIndex);
+					addVotetoCandidate.incrementVoteCount();
+					
+					cds.put(addVoteToIndex, addVotetoCandidate);
 				}
 			}
 
 		}
 		
 		
-		
-		
+		//TODO Clean up
 		
 		
 		
@@ -240,12 +248,9 @@ public class VoteCollection implements Collection {
 	 * 
 	 */
 	private CandidateIndex getPrefthKey(Vote v,TreeMap<CandidateIndex, Candidate> cds, int pref) {
+		CandidateIndex newCandi = new CandidateIndex(pref);
 		
-		
-		
-		
-		
-		return null; //TODO
+		return newCandi;
 	}
 
 	/**
@@ -318,6 +323,7 @@ public class VoteCollection implements Collection {
 		
 		
 		//TODO Fix up description
+		//TODO Clean up
 		
 		//cdsClone.
 		
