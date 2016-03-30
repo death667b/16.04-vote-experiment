@@ -8,6 +8,7 @@ package asgn1Election;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.TreeMap;
 
 /**
@@ -67,94 +68,22 @@ public class VoteCollection implements Collection {
 	@Override
 	public void countPrefVotes(TreeMap<CandidateIndex, Candidate> cds,
 			CandidateIndex elim) {
-
+		//TODO Refactor countPrefVotes
 		
-		/*
-		**get last pref number (numCandidates - CandidatesRemaining + 1) = (3 - 3 + 1 = 1)
-		**get elim position number
-		**remove elim from cds
+		int elimPostionNumber = Integer.parseInt(elim.toString());
 		
-		while(lastPref = elimPos) { maybe for(vote : votes) ??
-		
-			**reorder the vote(invertVote)
-			**clone cds
-			
-			**-compare current vote order to inverted vote
-			**-adjust a copy of candidate list to match inverted vote
-			
-			find new pref number (numCandidates - CandidatesRemaining + 1) = (3 - 2 + 1 = 2)
-		
-			(in getPrefthKey(vote,cdsClone,nextPrefNumber) ) based of the votes from the elim candidate find the candiListing for the newPrefNumber (2)
-			
-			incrementVote for that candidate
-		
-		} 
-
-		*/
-		
-		int nextPrefNumber, previousPrefNumber = getPrefNumber(cds);
-		int positionCounter, elimPostionNumber = Integer.parseInt(elim.toString());
-		Vote orderedVote;
-		TreeMap<CandidateIndex, Candidate> cdsReordered = null;
 		CandidateIndex addVoteToIndex = null;
 		Candidate addVotetoCandidate = null;
-		
-		for (Vote vote : voteList){
-			positionCounter = 0;
-			for (int vl : vote){  // So only working for eliminated votes
-				positionCounter++;
-				if ((elimPostionNumber == positionCounter) && (previousPrefNumber == vl)){
-					orderedVote = vote.invertVote();
-					cdsReordered = sortCandidatesAndVotes(vote, orderedVote, cds);
-					
-					cds.remove(elim);
-					nextPrefNumber = getPrefNumber(cds);
-					
-					addVoteToIndex = getPrefthKey(orderedVote,cdsReordered,nextPrefNumber);
-					
-					addVotetoCandidate = cds.get(addVoteToIndex);
-					addVotetoCandidate.incrementVoteCount();
-					
-					cds.put(addVoteToIndex, addVotetoCandidate);
-				}
-			}
 
+		for (Vote vote : voteList){		
+			addVoteToIndex = getPrefthKey(vote,cds,elimPostionNumber);
+			
+			addVotetoCandidate = cds.get(addVoteToIndex);
+			addVotetoCandidate.incrementVoteCount();
+			
+			cds.put(addVoteToIndex, addVotetoCandidate);
 		}
-		
-		
-		//TODO Clean up
-		
-		
-		
-		/**********/
-		
-		
-		
-		/*int candiToRemove = Integer.parseInt(elim.toString().trim());
-		CandidateIndex canIndex;
-		Candidate candi;
-		Vote vote;
-		int voteCounter = 0;
-		
-		elim.setValue(2);
-		
-		
-
-		voteList.
-		
-		for (Vote vl: voteList){
-			
-			vote = vl.invertVote();
-			voteList.set(voteCounter, vote);
-			
-			canIndex = getPrefthKey(vote, cds, candiToRemove);
-			candi = cds.get(canIndex);
-			candi.incrementVoteCount();
-			
-			cds.put(canIndex, candi);
-			
-			voteCounter++;
-		}*/
+		cds.remove(elim);
 	}
 
 	/*
@@ -248,9 +177,34 @@ public class VoteCollection implements Collection {
 	 * 
 	 */
 	private CandidateIndex getPrefthKey(Vote v,TreeMap<CandidateIndex, Candidate> cds, int pref) {
-		CandidateIndex newCandi = new CandidateIndex(pref);
+		int positionCounter, nextPrefNumber, previousPrefNumber = getPrefNumber(cds);
+		TreeMap<CandidateIndex, Candidate> cdsReordered = null;
+		Vote orderedVote = v.invertVote();
+		Candidate origCandi = null, findCandi = null;
+		CandidateIndex newCandi = null, findIndex = null;
 		
-		return newCandi;
+		nextPrefNumber = previousPrefNumber + 1;
+		positionCounter = 0;
+		for (int vl : v){  // So only working for eliminated votes
+			positionCounter++;
+			if ((pref == positionCounter) && (previousPrefNumber == vl)){ 
+				//Found pref to count
+				cdsReordered = orderCandidatesAndVotes(v, orderedVote, cds);
+				findIndex = new CandidateIndex(nextPrefNumber);
+				findCandi = cdsReordered.get(findIndex);
+			}
+		}
+		
+		for (Map.Entry<CandidateIndex, Candidate> findRealIndex : cds.entrySet()){
+			origCandi = findRealIndex.getValue();
+			if (origCandi.equals(findCandi)){
+				newCandi = findRealIndex.getKey();
+			}
+		}
+
+		//TODO Finish
+
+		return newCandi; //Return the index to add pref vote to
 	}
 
 	/**
@@ -298,7 +252,8 @@ public class VoteCollection implements Collection {
 	 * @param cds
 	 * @return
 	 */
-	private TreeMap<CandidateIndex, Candidate> sortCandidatesAndVotes(Vote vote, Vote orderedVote, 
+	//TODO Fix description
+	private TreeMap<CandidateIndex, Candidate> orderCandidatesAndVotes(Vote vote, Vote orderedVote, 
 			TreeMap<CandidateIndex, Candidate> cds){
 		
 		CandidateIndex newCanIndex = null, oldCanIndex = null;
@@ -320,41 +275,7 @@ public class VoteCollection implements Collection {
 				}		
 			}
 		}
-		
-		
-		//TODO Fix up description
-		//TODO Clean up
-		
-		//cdsClone.
-		
-		/*
-			candi = cds.get(canIndex);
-			candi.incrementVoteCount();
-			
-			cds.put(canIndex, candi);
-		 * 
-		 * Would the idea of invertVote simply be create a new Vote object and assign the votes 1, 2, 3,...,n.
-
-Then in the prefcount method, where I would be calling invertVote it then compares the orig vote to the new  vote and move the candidates in the list according to the new position of the new ordered vote object.
-
-For example
-Original Vote  [3, 1, 2]
-New Vote  [1, 2, 3]
-
-So the candidate in the list that was in position 1 would move to position 3
-Candidate in position 2 would move to position 1
-Candidate in position 3 moves to position 2
-
-The moving of the candidates position would be on a copy of candidatelisting.
-		 * 
-		 * 
-		 * 
-		 * 
-		 * 
-		 */
-		
-		
-		
+	
 		return newCandidateList;
 	}
 }
