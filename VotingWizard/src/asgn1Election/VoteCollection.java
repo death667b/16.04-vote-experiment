@@ -93,13 +93,15 @@ public class VoteCollection implements Collection {
 		*/
 		
 		int nextPrefNumber, previousPrefNumber = getPrefNumber(cds);
-		int elimPostionNumber = Integer.parseInt(elim.toString());
+		int positionCounter, elimPostionNumber = Integer.parseInt(elim.toString());
 		Vote orderedVote;
 		TreeMap<CandidateIndex, Candidate> cdsReordered = null;
 		
 		for (Vote vote : voteList){
+			positionCounter = 0;
 			for (int vl : vote){  // So only working for eliminated votes
-				if (previousPrefNumber == vl){  //TODO need to link the if to prevPrefNum
+				positionCounter++;
+				if ((elimPostionNumber == positionCounter) && (previousPrefNumber == vl)){
 					orderedVote = vote.invertVote();
 					cdsReordered = sortCandidatesAndVotes(vote, orderedVote, cds);
 					
