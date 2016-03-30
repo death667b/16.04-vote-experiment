@@ -193,8 +193,7 @@ public class VoteCollection implements Collection {
 		positionCounter = 0;
 		for (int vl : v){  // So only working for eliminated votes
 			positionCounter++;
-			if ((pref == positionCounter) && (previousPrefList.contains(vl))){   //   (previousPrefNumber == vl)
-				//Found pref to count
+			if ((pref == positionCounter) && (previousPrefList.contains(vl))){
 				cdsReordered = orderCandidatesAndVotes(v, orderedVote, cds);
 				findCandi = getNextAvailableCandidate(vl, cdsReordered);
 			}
@@ -209,10 +208,7 @@ public class VoteCollection implements Collection {
 			}
 		}
 
-
-		//TODO Finish
-
-		return newCandi; //Return the index to add pref vote to
+		return newCandi;
 	}
 
 	/**
@@ -308,7 +304,7 @@ public class VoteCollection implements Collection {
 			}
 		}	
 		
-	    int stopHere = 5;
+	    int stopHereBecauseError = 666;
 		
 		return null;
 	}
