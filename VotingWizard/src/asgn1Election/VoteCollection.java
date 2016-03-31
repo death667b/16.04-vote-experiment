@@ -181,6 +181,7 @@ public class VoteCollection implements Collection {
 	private CandidateIndex getPrefthKey(Vote v,TreeMap<CandidateIndex, Candidate> cds, int pref) {
 		int positionCounter, previousPrefNumber = getPrefNumber(cds);
 		TreeMap<CandidateIndex, Candidate> cdsReordered = null;
+		TreeMap<CandidateIndex, Candidate> cdsCloned = null;
 		Vote orderedVote = v.invertVote();
 		Candidate origCandi = null, findCandi = null;
 		CandidateIndex newCandi = null;
@@ -190,27 +191,87 @@ public class VoteCollection implements Collection {
 			previousPrefList.add(i);
 		}
 		//TODO Fault: adding phantom votes
-		positionCounter = 0;
-		for (int vl : v){  // So only working for eliminated votes
-			positionCounter++;
-			if ((pref == positionCounter) && (previousPrefList.contains(vl))){ //THIS LINE BROKEN  1 x2 3 5 x4 
-				cdsReordered = orderCandidatesAndVotes(v, orderedVote, cds);
-				findCandi = getNextAvailableCandidate(vl, cdsReordered);
-			}
-		}
+		CandidateIndex testIndex = new CandidateIndex(pref);
+
 		
-		if (cdsReordered != null){
-			for (Map.Entry<CandidateIndex, Candidate> findRealIndex : cds.entrySet()){
-				origCandi = findRealIndex.getValue();
-				if (origCandi.equals(findCandi)){
-					newCandi = findRealIndex.getKey();
+		cdsCloned = cloneCandidateList(cds);
+		
+		cdsCloned.remove(testIndex);
+		cdsReordered = orderCandidatesAndVotes(v, orderedVote, cdsCloned);
+		
+		
+		/*
+		 * 
+		 * maybe change the vote to negitive once it has been counted
+		 * add this to the broken line as an extra filter to avoid double counting
+		 * 
+		 * 
+		 */
+		
+		
+
+		
+		
+		
+		positionCounter = 0;
+		if(deadVote(cdsReordered, v)){  // So only working for eliminated votes 
+			for (int vl : v){
+				positionCounter++;
+				if ((pref == positionCounter) && (previousPrefList.contains(vl))){ //THIS LINE BROKEN  1 x2 3 5 x4 
+					
+					findCandi = getNextAvailableCandidate(vl, cdsReordered);
+				}
+			}
+			
+			if (findCandi != null){
+				for (Map.Entry<CandidateIndex, Candidate> findRealIndex : cds.entrySet()){
+					origCandi = findRealIndex.getValue();
+					if (origCandi.equals(findCandi)){
+						newCandi = findRealIndex.getKey();
+					}
 				}
 			}
 		}
-
 		return newCandi;
 	}
 
+	private TreeMap<CandidateIndex, Candidate> cloneCandidateList (TreeMap<CandidateIndex, Candidate> cds){
+		TreeMap<CandidateIndex, Candidate> clone = new TreeMap<CandidateIndex, Candidate>();
+		
+		for (Map.Entry<CandidateIndex, Candidate> cloneIter : cds.entrySet()){
+			clone.put(cloneIter.getKey(), cloneIter.getValue());
+		}
+		
+		return clone;
+	}
+	
+	private boolean deadVote(TreeMap<CandidateIndex, Candidate> cdsReordered, Vote v){
+		//TODO change name to countThisVote
+		int[] intArr = new int[numCandidates];
+		String[] stringArr = new String[numCandidates];
+		Candidate candi = null;
+		int counter = 0;
+		
+		for (int vote : v){
+			intArr[counter] = vote;
+			counter++;
+		}
+	
+		counter = 0;
+		for (Map.Entry<CandidateIndex, Candidate> findDeadVote : cdsReordered.entrySet()){
+			candi = findDeadVote.getValue();
+			if (candi != null){
+				stringArr[counter] = candi.toString();
+			} else {
+				stringArr[counter] = null;
+			}
+			counter++;
+		}
+		
+		return true;
+	}
+	
+	
 	/**
 	 * <p>Important helper method to find the first choice candidate in the current 
 	 * vote. This is always undertaken prior to distribution of preferences and so it 
