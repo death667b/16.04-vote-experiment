@@ -193,7 +193,7 @@ public class VoteCollection implements Collection {
 		positionCounter = 0;
 		for (int vl : v){  // So only working for eliminated votes
 			positionCounter++;
-			if ((pref == positionCounter) && (previousPrefList.contains(vl))){ //THIS LINE BROKEN
+			if ((pref == positionCounter) && (previousPrefList.contains(vl))){ //THIS LINE BROKEN  1 x2 3 5 x4 
 				cdsReordered = orderCandidatesAndVotes(v, orderedVote, cds);
 				findCandi = getNextAvailableCandidate(vl, cdsReordered);
 			}
