@@ -189,7 +189,7 @@ public class VoteCollection implements Collection {
 		for (int i = previousPrefNumber; i > 0; i--){
 			previousPrefList.add(i);
 		}
-		
+		//TODO Fault: adding phantom votes
 		positionCounter = 0;
 		for (int vl : v){  // So only working for eliminated votes
 			positionCounter++;

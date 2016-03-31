@@ -41,7 +41,7 @@ public class PrefElection extends Election {
 	@Override
 	public String findWinner() {
 		String returnString = "";
-		int winningVotesRequired = findWinningVotesRequired();
+		int infLoopPrevention = 0, winningVotesRequired = findWinningVotesRequired();
 		CandidateIndex canIndex = null;
 		
 		returnString += showResultHeader();
@@ -53,19 +53,17 @@ public class PrefElection extends Election {
 		do{
 			returnString += reportCountStatus();			
 			canIndex = selectLowestCandidate();
-			returnString += prefDistMessage(cds.get(canIndex));
+			returnString += prefDistMessage(cds.get(canIndex)) + "\n";
 			
 			vc.countPrefVotes(cds, canIndex);
 			
-		} while(clearWinner(winningVotesRequired) == null);
-		//TODO Fixed while loop so it is protected from infinite loop
-		
+			infLoopPrevention++;
+			winner = clearWinner(winningVotesRequired);
+		} while(winner == null && infLoopPrevention <= numCandidates);
 		
 	
-		
-		winner = clearWinner(winningVotesRequired);
-		
-		//returnString += reportWinner(winner);
+		returnString += reportCountStatus();
+		returnString += reportWinner(winner);
 		return returnString;
 	}
 
@@ -127,7 +125,7 @@ public class PrefElection extends Election {
 	@Override
 	protected Candidate clearWinner(int winVotes)  {
 		Candidate candWin = null;
-
+		//TODO Dear with multiple candidates over winVotes
 		java.util.Collection<Candidate> coll = this.cds.values();
 
 		if (coll.size() <= 2){
