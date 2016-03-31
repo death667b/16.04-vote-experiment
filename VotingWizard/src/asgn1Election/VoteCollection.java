@@ -295,7 +295,8 @@ public class VoteCollection implements Collection {
 		int listCount = cdsReordered.size();
 		CandidateIndex findIndex = null;
 		Candidate candiHolder = null;
-
+		//TODO - Check if nextPrefNumber is braking the count; 
+		//Should it be starting from 1??
 		for (;nextPrefNumber <= listCount; nextPrefNumber++){
 			findIndex = new CandidateIndex(nextPrefNumber);
 			candiHolder = cdsReordered.get(findIndex);
