@@ -304,7 +304,7 @@ public class VoteCollection implements Collection {
 			}
 		}	
 		
-	    int stopHereBecauseError = 666;
+	    int stopHereBecauseError = 666; //TODO get working
 		
 		return null;
 	}
