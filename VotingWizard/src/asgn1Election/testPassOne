@@ -2,37 +2,49 @@ Shelob (MSP)                 9     -  First count
 Gorbag (FOP)                 5
 Shagrat (SOP)                4
 Black Rider (NP)             9
-Mouth of Sauron (WSSP)       3
+Mouth of Sauron (WSSP)       3*   1st Redistribute
 
-5 3 2 4 1	-WSSP
-1 3 5 4 2	-MSP	
-4 5 2 3 1	-WSSP
-3 1 5 4 2 	-FOP
-2 1 5 4 3 	-FOP
-1 5 4 3 2 	-MSP
-4 5 2 1 3 	-NP
-1 3 2 5 4 	-MSP
-4 1 2 5 3 	-FOP
-4 5 2 1 3 	-NP
-4 5 2 1 3 	-NP
-1 3 5 4 2 	-MSP
-5 4 2 1 3 	-NP
-4 5 3 2 1 	-WSSP
-2 1 3 5 4 	-FOP
-5 4 2 1 3 	-NP
-5 4 1 3 2 	-SOP
-4 5 2 1 3 	-NP
-1 3 2 5 4 	-MSP
-4 1 5 2 3 	-FOP
-5 4 2 1 3 	-NP
-1 5 4 3 2 	-MSP
-2 3 1 5 4 	-SOP	
-1 5 2 3 4 	-MSP
-4 5 2 1 3 	-NP
-1 3 2 4 5 	-MSP
-4 5 2 1 3 	-NP
-4 5 1 3 2 	-SOP
-4 5 1 2 3 	-SOP
-1 2 3 5 4	-MSP
+Shelob (MSP)                 9	   -  Second count
+Gorbag (FOP)                 5**   2nd Redistribute
+Shagrat (SOP)                6
+Black Rider (NP)            10
+
+Shelob (MSP)                12	   - Third count
+Shagrat (SOP)                7***   3rd Redistribute
+Black Rider (NP)            11
+
+Shelob (MSP)                14
+Black Rider (NP)            16
+
+5 x3 x2 4 x1		-*SOP
+1 x3 x5 4 x2		-MSP	
+4 x5 x2 3 x1		-*SOP
+3 x1 x5 4 x2 		-**MSP
+2 x1 x5 4 x3 		-**MSP
+1 x5 x4 3 x2 		-MSP
+4 x5 x2 1 x3 		-NP
+1 x3 x2 5 x4 		-MSP
+4 x1 x2 5 x3 		-**SOP
+4 x5 x2 1 x3 		-NP
+4 x5 x2 1 x3 		-NP
+1 x3 x5 4 x2 		-MSP
+5 x4 x2 1 x3 		-NP
+4 x5 x3 2 x1 		-*NP
+2 x1 x3 5 x4	 	-**MSP
+5 x4 x2 1 x3	 	-NP
+5 x4 x1 3 x2 		-SOP
+4 x5 x2 1 x3 		-NP
+1 x3 x2 5 x4 		-MSP
+4 x1 x5 2 x3 		-**NP
+5 x4 x2 1 x3 		-NP
+1 x5 x4 3 x2 		-MSP
+2 x3 x1 5 x4 		-SOP	
+1 x5 x2 3 x4 		-MSP
+4 x5 x2 1 x3 		-NP
+1 x3 x2 4 x5 		-MSP
+4 x5 x2 1 x3 		-NP
+4 x5 x1 3 x2 		-SOP
+4 x5 x1 2 x3 		-SOP
+1 x2 x3 5 x4		-MSP
 
 
