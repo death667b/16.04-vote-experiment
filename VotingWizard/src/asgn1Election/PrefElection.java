@@ -58,7 +58,7 @@ public class PrefElection extends Election {
 			vc.countPrefVotes(cds, canIndex);
 			
 		} while(clearWinner(winningVotesRequired) == null);
-		
+		//TODO Fixed while loop so it is protected from infinite loop
 		
 		
 	
