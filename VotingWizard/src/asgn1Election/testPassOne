@@ -19,15 +19,15 @@ Shelob (MSP)                14
 Black Rider (NP)            16
 
   2  3    1
-5 x3 x2 4 x1		-* ***NP
+5 x3 x2 4 x1		-*SOP ***NP
 1 x3 x5 4 x2		-MSP	
-4 x5 x2 3 x1		-* ***NP
+4 x5 x2 3 x1		-*SOP ***NP
 3 x1 x5 4 x2 		-**MSP
 2 x1 x5 4 x3 		-**MSP
 1 x5 x4 3 x2 		-MSP
 4 x5 x2 1 x3 		-NP
 1 x3 x2 5 x4 		-MSP
-4 x1 x2 5 x3 		-** ***MSP
+4 x1 x2 5 x3 		-**SOP ***MSP
 4 x5 x2 1 x3 		-NP
 4 x5 x2 1 x3 		-NP
 1 x3 x5 4 x2 		-MSP
