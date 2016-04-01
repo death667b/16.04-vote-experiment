@@ -111,30 +111,6 @@ public class VoteList implements Vote {
 	@Override
 	public Iterator<Integer> iterator() {
 		return vote.iterator();
-		//TODO Confirm iterator still works
-		/*
-		Iterator<Integer> listInt = new Iterator<Integer>(){
-			private int currentSize = vote.size();
-			private int currentPosition = 0;
-			
-			@Override
-			public boolean hasNext(){
-				return (currentSize > currentPosition);
-			}
-			
-			@Override
-			public Integer next(){
-				currentPosition++;
-				return vote.get(currentPosition - 1);
-			}
-			
-			@Override
-			public void remove(){
-				throw new UnsupportedOperationException();
-			}
-		};
-		
-		return listInt;*/
 	}
 
 	/*

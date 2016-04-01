@@ -222,7 +222,7 @@ public class VoteCollection implements Collection {
 	 */
 	private Candidate filterVotes(Vote v, int pref,	TreeMap<CandidateIndex, Candidate> cds) {
 		TreeMap<CandidateIndex, Candidate> cdsReordered = null, cdsDeepCopy = null;
-		int positionCounter, previousPrefNumber;
+		int positionCounter, previousPrefNumber, firstPreference;
 		CandidateIndex removeCandiIndex = null;
 		ArrayList<Integer> previousPrefList;
 		Candidate findCandi = null;
@@ -232,13 +232,14 @@ public class VoteCollection implements Collection {
 		//Setup to find the Candidate
 		orderedVote = v.invertVote();
 		positionCounter = 0;
+		firstPreference = 1;
 		
 		previousPrefNumber = getPrefNumber(cds);
 		
 		removeCandiIndex = new CandidateIndex(pref);
 		previousPrefList = new ArrayList<Integer>();
 		
-		for (; previousPrefNumber > 0; previousPrefNumber--){
+		for (; previousPrefNumber >= firstPreference; previousPrefNumber--){
 			previousPrefList.add(previousPrefNumber);
 		}
 
@@ -340,14 +341,16 @@ public class VoteCollection implements Collection {
 	 * @return <code>CandidateIndex</code> of the first preference candidate
 	 */
 	private CandidateIndex getPrimaryKey(Vote v) {
-		int voteValue, voteCounter = 1;
+		int voteValue, voteCounter, primaryVote;
 		CandidateIndex newCandiIndex = null;
 		
+		primaryVote = 1;
+		voteCounter = 1;
 		Iterator<Integer> iterator = v.iterator();
 		
 		while(iterator.hasNext()){
 			voteValue = (int) iterator.next();
-			if (voteValue == 1){
+			if (voteValue == primaryVote){
 				newCandiIndex = new CandidateIndex(voteCounter);
 			}
 			
