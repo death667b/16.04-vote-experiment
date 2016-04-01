@@ -96,8 +96,8 @@ public class VoteList implements Vote {
 	public Vote invertVote() {
 		Vote newVote = new VoteList(numCandidates);
 		
-		for (int i = 1; i <= numCandidates; i++){
-			newVote.addPref(i);
+		for (int votePref = 1; votePref <= numCandidates; votePref++){
+			newVote.addPref(votePref);
 		}
 		
 		return newVote;

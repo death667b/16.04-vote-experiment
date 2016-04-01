@@ -41,12 +41,13 @@ public class SimpleElection extends Election {
 		
 		returnString += showResultHeader();
 		returnString += "Counting primary votes;\n";
+		
 		vc.countPrimaryVotes(cds);
-	
 		winner = clearWinner(findWinningVotesRequired());
 		
 		returnString += reportCountResult();
 		returnString += reportWinner(winner);
+		
 		return returnString;
 	}
 
@@ -56,23 +57,24 @@ public class SimpleElection extends Election {
 	 */
 	@Override
 	public boolean isFormal(Vote v) {
-		int voteValue, loopCounter, objCounter = 0;
+		int voteValue, loopCounter, objCounter;
 		Object voteObject;
 		
-		Iterator<Integer> iter = v.iterator();
+		objCounter = 0;
+		Iterator<Integer> iterator = v.iterator();
 		
 		
-		while(iter.hasNext()){
-			voteObject = iter.next();
+		while(iterator.hasNext()){
+			voteObject = iterator.next();
 			voteValue = (int) voteObject;
 			objCounter++;
 			loopCounter = 0;			
 			
 			// Test to see if there is a duplicate vote
 			// Skipping the current vote being tested
-			for (Object obj : v){
+			for (Object object : v){
 				loopCounter++;
-				if (obj.equals(voteObject) && objCounter != loopCounter){
+				if (object.equals(voteObject) && objCounter != loopCounter){
 					return false;
 				}
 			}
@@ -105,22 +107,22 @@ public class SimpleElection extends Election {
 	 */
 	@Override
 	protected Candidate clearWinner(int wVotes) {
-		Candidate candWin = null;
+		Candidate candidateWinner = null;
 
-		java.util.Collection<Candidate> coll = this.cds.values();
+		java.util.Collection<Candidate> candidateCollection = this.cds.values();
 
 		do{
-			for (Candidate cand : coll) {
-				if (cand.getVoteCount() >= wVotes){
-					candWin = cand;
-					return candWin;
+			for (Candidate candidate : candidateCollection) {
+				if (candidate.getVoteCount() >= wVotes){
+					candidateWinner = candidate;
+					return candidateWinner;
 				}
 			}
 			
 			wVotes--;
-		} while (candWin == null && wVotes > 0);
+		} while (candidateWinner == null && wVotes > 0);
 
-		return candWin;
+		return candidateWinner;
 	}
 
 	/**
@@ -151,10 +153,15 @@ public class SimpleElection extends Election {
 	 * @return Minimum votes required for clear win.
 	 */
 	private int findWinningVotesRequired(){
-		int returnVoteRequired = 0;
+		int returnVoteRequired, formalCount, divideByTwo;
 		
-		returnVoteRequired = vc.getFormalCount() / 2;
+		returnVoteRequired = 0;
+		divideByTwo = 2;
+		formalCount = vc.getFormalCount();
+			
+		returnVoteRequired = formalCount / divideByTwo;
 		returnVoteRequired++;
+		
 		return returnVoteRequired;
 	}
 }

@@ -4,13 +4,9 @@
 package asgn1Tests;
 
 import static org.junit.Assert.*;
-
-import org.junit.Before;
 import org.junit.Test;
-
 import asgn1Election.Candidate;
 import asgn1Election.ElectionException;
-import asgn1Election.ElectionManager;
 
 /**
  * @author n5372828 Ian Daniel
@@ -52,30 +48,6 @@ public class CandidateTests {
 		@SuppressWarnings("unused")
 		Candidate candi = new Candidate(null, "The Greens", "GRN", 0);
 	}
-	
-	/*@Test
-	public void testCandidateNameLengthBorderCasePassWith20() throws ElectionException {
-		@SuppressWarnings("unused")
-		Candidate candi = new Candidate("12345678901234567890", "The Greens", "GRN", 0);
-	}*/
-	
-	/*@Test(expected = ElectionException.class)
-	public void testCandidateNameLengthBorderCaseFailWith21() throws ElectionException {
-		@SuppressWarnings("unused")
-		Candidate candi = new Candidate("123456789012345678901", "The Greens", "GRN", 0);
-	}*/
-	
-	/*@Test
-	public void testCandidateNameLengthBorderCasePassWith20AndSpaces() throws ElectionException {
-		@SuppressWarnings("unused")
-		Candidate candi = new Candidate("   12345678901234567890   ", "The Greens", "GRN", 0);
-	}*/
-
-	/*@Test(expected = ElectionException.class)
-	public void testCandidateNameLengthBorderCaseFailWith21AndSpaces() throws ElectionException {
-		@SuppressWarnings("unused")
-		Candidate candi = new Candidate("   123456789012345678901   ", "The Greens", "GRN", 0);
-	}*/
 	/*
 	 *    *END* Test Section for Candidate Constructor focusing on Name *END*
 	 */
@@ -101,30 +73,6 @@ public class CandidateTests {
 		@SuppressWarnings("unused")
 		Candidate candi = new Candidate("MARSHALL, John", null, "GRN", 0);
 	}
-	
-	/*@Test
-	public void testCandidatePartyNameLengthBorderCasePassWith30() throws ElectionException {
-		@SuppressWarnings("unused")
-		Candidate candi = new Candidate("MARSHALL, John", "123456789012345678901234567890", "GRN", 0);
-	}*/
-	
-	/*@Test(expected = ElectionException.class)
-	public void testCandidatePartyNameLengthBorderCaseFailWith31() throws ElectionException {
-		@SuppressWarnings("unused")
-		Candidate candi = new Candidate("MARSHALL, John", "1234567890123456789012345678901", "GRN", 0);
-	}*/
-	
-	/*@Test
-	public void testCandidatePartyNameLengthBorderCasePassWith30AndSpaces() throws ElectionException {
-		@SuppressWarnings("unused")
-		Candidate candi = new Candidate("MARSHALL, John", "   123456789012345678901234567890   ", "GRN", 0);
-	}*/
-
-	/*@Test(expected = ElectionException.class)
-	public void testCandidatePartyNameLengthBorderCaseFailWith31AndSpaces() throws ElectionException {
-		@SuppressWarnings("unused")
-		Candidate candi = new Candidate("MARSHALL, John", "   1234567890123456789012345678901   ", "GRN", 0);
-	}*/
 	/*
 	 *    *END* Test Section for Candidate Constructor focusing on Party Name *END*
 	 */
@@ -167,13 +115,6 @@ public class CandidateTests {
 	/*
 	 * NOTE:  Other border case (voteCount = 0) is done by the other tests
 	 */
-	
-	
-	/*@Test
-	public void testCandidateVoteCountFailBorderCasePassPositiveNonZero() throws ElectionException {
-		@SuppressWarnings("unused")
-		Candidate candi = new Candidate("MARSHALL, John", "The Greens", "GRN", 1);
-	}*/
 	
 	@Test(expected = ElectionException.class)
 	public void testCandidateVoteCountFailExtremeCaseFailLargeNegitive() throws ElectionException {
@@ -224,6 +165,7 @@ public class CandidateTests {
 		longName = "a, b";
 		longPartyName = "c";
 		longAbbr = "d";
+		
 		// SixTeenSpaces is found by the length of longName less than ElectionManager.NameField
 		sixTeenSpaces = "                ";
 		// twentyNineSpaces is found by the length of longName less than ElectionManager.FullPartyField
@@ -252,6 +194,7 @@ public class CandidateTests {
 		
 		candiTwo = candiOne.copy();
 		
+		//Testing data has been correctly copied
 		assertTrue(candiOne.getName() == candiTwo.getName());
 	}
 	
@@ -262,6 +205,7 @@ public class CandidateTests {
 		
 		candiTwo = candiOne.copy();
 		
+		//Testing data has been correctly copied
 		assertTrue(candiOne.getParty() == candiTwo.getParty());
 	}
 	
@@ -272,6 +216,7 @@ public class CandidateTests {
 		
 		candiTwo = candiOne.copy();
 		
+		//Testing data has been correctly copied
 		assertTrue(candiOne.getVoteCount() == candiTwo.getVoteCount());
 	}
 	
@@ -282,6 +227,7 @@ public class CandidateTests {
 		
 		candiTwo = candiOne.copy();
 
+		//Testing data has been correctly copied
 		assertTrue(candiOne.getVoteCountString().equals(candiTwo.getVoteCountString()));
 	}
 	
@@ -292,6 +238,7 @@ public class CandidateTests {
 		
 		candiTwo = candiOne.copy();
 		
+		//Testing data has been correctly copied
 		assertTrue(candiOne.candidateListing().equals(candiTwo.candidateListing()));
 	}
 	
@@ -302,6 +249,7 @@ public class CandidateTests {
 		
 		candiTwo = candiOne.copy();
 		
+		//Testing data has been correctly copied
 		assertTrue(candiOne.toString().equals(candiTwo.toString()));
 	}
 	
@@ -311,6 +259,8 @@ public class CandidateTests {
 		Candidate candiTwo;
 		
 		candiTwo = candiOne.copy();
+		
+		//Testing that the two objects are truly different
 		assertNotSame(candiOne, candiTwo);		
 	}
 	/*
