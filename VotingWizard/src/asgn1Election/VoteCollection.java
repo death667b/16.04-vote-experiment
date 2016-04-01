@@ -201,7 +201,7 @@ public class VoteCollection implements Collection {
 		
 		
 		int[] removedArr = new int[numCandidates];
-		removedArr = eliminatedList(cds, numCandidates);
+		removedArr = eliminatedList(cdsCloned, numCandidates);
 		
 		/*
 		 * use cds to build 'who has been removed' list
@@ -219,24 +219,28 @@ public class VoteCollection implements Collection {
 		
 		
 		positionCounter = 0;
-		if(deadVote(cdsReordered, v)){  // So only working for eliminated votes 
-			for (int vl : v){
-				positionCounter++;
-				if ((pref == positionCounter) && (previousPrefList.contains(vl))){ //THIS LINE BROKEN  1 x2 3 5 x4 
-					
+		
+		for (int vl : v){
+			positionCounter++;
+			if ((pref == positionCounter) && (previousPrefList.contains(vl))){ //THIS LINE BROKEN  1 x2 3 5 x4 
+				/*
+				 * To prevent false positives. compare vl to removeArr to see if there is lower active numbers
+				 */
+				if(deadVote(removedArr, v, vl)){  // So only working for eliminated votes 
 					findCandi = getNextAvailableCandidate(vl, cdsReordered);
 				}
 			}
-			
-			if (findCandi != null){
-				for (Map.Entry<CandidateIndex, Candidate> findRealIndex : cds.entrySet()){
-					origCandi = findRealIndex.getValue();
-					if (origCandi.equals(findCandi)){
-						newCandi = findRealIndex.getKey();
-					}
+		}
+		
+		if (findCandi != null){
+			for (Map.Entry<CandidateIndex, Candidate> findRealIndex : cds.entrySet()){
+				origCandi = findRealIndex.getValue();
+				if (origCandi.equals(findCandi)){
+					newCandi = findRealIndex.getKey();
 				}
 			}
 		}
+		
 		return newCandi;
 	}
 
@@ -271,30 +275,21 @@ public class VoteCollection implements Collection {
 		return clone;
 	}
 	
-	private boolean deadVote(TreeMap<CandidateIndex, Candidate> cdsReordered, Vote v){
+	private boolean deadVote(int[] removedArr, Vote v, int compareVl){
 		//TODO change name to countThisVote
-		int[] intArr = new int[numCandidates];
-		String[] stringArr = new String[numCandidates];
-		Candidate candi = null;
+		//To prevent false positives. compare vl to removeArr to see if there is lower active numbers
 		int counter = 0;
+		boolean returnBool = true;
 		
-		for (int vote : v){
-			intArr[counter] = vote;
-			counter++;
-		}
-	
-		counter = 0;
-		for (Map.Entry<CandidateIndex, Candidate> findDeadVote : cdsReordered.entrySet()){
-			candi = findDeadVote.getValue();
-			if (candi != null){
-				stringArr[counter] = candi.toString();
-			} else {
-				stringArr[counter] = null;
+		for (int vl : v){
+			if (vl < compareVl && removedArr[counter] == 1){  // 1 x2 3 5 x4
+				returnBool = false;
+				return returnBool;
 			}
 			counter++;
 		}
-		
-		return true;
+
+		return returnBool;
 	}
 	
 	
