@@ -200,7 +200,12 @@ public class VoteCollection implements Collection {
 		cdsReordered = orderCandidatesAndVotes(v, orderedVote, cdsCloned);
 		
 		
+		int[] removedArr = new int[numCandidates];
+		removedArr = eliminatedList(cds, numCandidates);
+		
 		/*
+		 * use cds to build 'who has been removed' list
+		 * 
 		 * 
 		 * maybe change the vote to negitive once it has been counted
 		 * add this to the broken line as an extra filter to avoid double counting
@@ -233,6 +238,27 @@ public class VoteCollection implements Collection {
 			}
 		}
 		return newCandi;
+	}
+
+	private int[] eliminatedList(TreeMap<CandidateIndex, Candidate> cds, int numCandidates) {
+		// TODO Add notes if keeping
+		int[] removedArr = new int[numCandidates];
+		
+		for (Map.Entry<CandidateIndex, Candidate> findInactive : cds.entrySet()){
+			CandidateIndex currentIndex = null;
+			int currentCandidateList;
+			
+			currentIndex = findInactive.getKey();
+			currentCandidateList = Integer.parseInt(currentIndex.toString());
+			
+			for (int counter = 0; counter <= numCandidates; counter++){
+				if ((counter+1) == currentCandidateList){
+					removedArr[counter] = 1;
+				}
+			}
+		}
+
+		return removedArr;
 	}
 
 	private TreeMap<CandidateIndex, Candidate> cloneCandidateList (TreeMap<CandidateIndex, Candidate> cds){
