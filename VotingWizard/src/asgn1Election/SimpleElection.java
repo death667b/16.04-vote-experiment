@@ -43,7 +43,7 @@ public class SimpleElection extends Election {
 		returnString += "Counting primary votes;\n";
 		
 		vc.countPrimaryVotes(cds);
-		winner = clearWinner(findWinningVotesRequired());
+		winner = clearWinner(numVotes);
 		
 		returnString += reportCountResult();
 		returnString += reportWinner(winner);
@@ -145,23 +145,5 @@ public class SimpleElection extends Election {
 				- voteStr.length();
 		str += cast + Strings.createPadding(' ', length) + voteStr + "\n\n";
 		return str;
-	}
-	
-	/**
-	 * Find the number of winning votes required for a clear win.  
-	 * Number of Votes divided by two plus one
-	 * @return Minimum votes required for clear win.
-	 */
-	private int findWinningVotesRequired(){
-		int returnVoteRequired, formalCount, divideByTwo;
-		
-		returnVoteRequired = 0;
-		divideByTwo = 2;
-		formalCount = vc.getFormalCount();
-			
-		returnVoteRequired = formalCount / divideByTwo;
-		returnVoteRequired++;
-		
-		return returnVoteRequired;
 	}
 }

@@ -238,7 +238,6 @@ public class PrefElection extends Election {
 		formalCount = vc.getFormalCount();
 			
 		returnVoteRequired = formalCount / divideByTwo;
-		returnVoteRequired++;
 		
 		return returnVoteRequired;
 	}
