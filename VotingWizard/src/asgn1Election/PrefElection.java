@@ -129,27 +129,24 @@ public class PrefElection extends Election {
 	 */
 	@Override
 	protected Candidate clearWinner(int winVotes)  {
-		int candidateOneVotes, candidateTwoVotes, oneCandidate, twoCandidates, nillVotes;
+		int candidateOneVotes, candidateTwoVotes, oneCandidate, twoCandidates, numberNeededForClearWin, twoRemainingCandidates;
 		java.util.Collection<Candidate> candidateCollection = this.cds.values();
 		ArrayList<Candidate> candidateList = new ArrayList<Candidate>();
 		Candidate candidateWinner = null;
 		
-		nillVotes = 0;
-		oneCandidate = 1;
-		twoCandidates = 2;
+		twoRemainingCandidates = 2;
+		numberNeededForClearWin = 1;
+		oneCandidate = 0;
+		twoCandidates = 1;
 
-		if (candidateCollection.size() <= twoCandidates){
-			do{
-				for (Candidate candidate : candidateCollection) {
-					if (candidate.getVoteCount() >= winVotes){
-						candidateList.add(candidate);
-					}
+		if (candidateCollection.size() <= twoRemainingCandidates){
+			for (Candidate candidate : candidateCollection) {
+				if (candidate.getVoteCount() >= winVotes){
+					candidateList.add(candidate);
 				}
-				
-				winVotes--;
-			} while (candidateList == null && winVotes > nillVotes);
+			}
 	
-			if (candidateList.size() == oneCandidate){
+			if (candidateList.size() == numberNeededForClearWin){
 				candidateWinner = candidateList.get(oneCandidate);
 			} else {
 				candidateOneVotes = candidateList.get(oneCandidate).getVoteCount();
