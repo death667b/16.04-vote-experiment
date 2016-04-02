@@ -342,7 +342,7 @@ public class VoteCollection implements Collection {
 	 */
 	private CandidateIndex getPrimaryKey(Vote v) {
 		int voteValue, voteCounter, primaryVote;
-		CandidateIndex newCandiIndex = null;
+		CandidateIndex newCandidateIndex = null;
 		
 		primaryVote = 1;
 		voteCounter = 1;
@@ -351,13 +351,13 @@ public class VoteCollection implements Collection {
 		while(iterator.hasNext()){
 			voteValue = (int) iterator.next();
 			if (voteValue == primaryVote){
-				newCandiIndex = new CandidateIndex(voteCounter);
+				newCandidateIndex = v.getPreference(voteCounter);
 			}
 			
 			voteCounter++;
 		}
 		
-		return newCandiIndex;
+		return newCandidateIndex;
     }
 	
 	/**
@@ -385,7 +385,7 @@ public class VoteCollection implements Collection {
 	private TreeMap<CandidateIndex, Candidate> reorderCandidateList
 			(Vote vote, Vote orderedVote, TreeMap<CandidateIndex, Candidate> cds){
 		
-		CandidateIndex newCanIndex = null, oldCanIndex = null;
+		CandidateIndex newCandidateIndex = null, oldCandidateIndex = null;
 		Candidate newCandidate = null;
 		TreeMap<CandidateIndex, Candidate> newCandidateList = new TreeMap<CandidateIndex, Candidate>();
 		int counter;
@@ -397,10 +397,10 @@ public class VoteCollection implements Collection {
 				counter++;
 				
 				if (newVote == oldVote){
-					oldCanIndex = new CandidateIndex(counter);
-					newCanIndex = new CandidateIndex(newVote);
-					newCandidate = cds.get(oldCanIndex);
-					newCandidateList.put(newCanIndex, newCandidate);
+					oldCandidateIndex = vote.getPreference(counter);
+					newCandidateIndex = vote.getPreference(newVote);
+					newCandidate = cds.get(oldCandidateIndex);
+					newCandidateList.put(newCandidateIndex, newCandidate);
 				}		
 			}
 		}
