@@ -1,0 +1,328 @@
+Results for election: BigVoteElec
+Enrolment: 32453
+
+Candidate1          Candidate1 Party              (CP1)
+Candidate2          Candidate2 Party              (CP2)
+Candidate3          Candidate3 Party              (CP3)
+Candidate4          Candidate4 Party              (CP4)
+Candidate5          Candidate5 Party              (CP5)
+Candidate6          Candidate6 Party              (CP6)
+Candidate7          Candidate7 Party              (CP7)
+Candidate8          Candidate8 Party              (CP8)
+Candidate9          Candidate9 Party              (CP9)
+Candidate10         Candidate10 Party             (CP10)
+Candidate11         Candidate11 Party             (CP11)
+Candidate12         Candidate12 Party             (CP12)
+Candidate13         Candidate13 Party             (CP13)
+Candidate14         Candidate14 Party             (CP14)
+Candidate15         Candidate15 Party             (CP15)
+
+
+Counting primary votes;
+
+Simple election: BigVoteElec
+
+Candidate1 (CP1)            45
+Candidate2 (CP2)            28
+Candidate3 (CP3)            42
+Candidate4 (CP4)            62
+Candidate5 (CP5)            48
+Candidate6 (CP6)            32
+Candidate7 (CP7)            40
+Candidate8 (CP8)            26
+Candidate9 (CP9)           110
+Candidate10 (CP10)          48
+Candidate11 (CP11)          35
+Candidate12 (CP12)          47
+Candidate13 (CP13)          30
+Candidate14 (CP14)          48
+Candidate15 (CP15)          50
+
+Informal                    12
+
+Votes Cast                 703
+
+
+Candidate Candidate9 (Candidate9 Party) is the winner with 110 votes...
+
+Results for election: BigVoteElec
+Enrolment: 32453
+
+Candidate1          Candidate1 Party              (CP1)
+Candidate2          Candidate2 Party              (CP2)
+Candidate3          Candidate3 Party              (CP3)
+Candidate4          Candidate4 Party              (CP4)
+Candidate5          Candidate5 Party              (CP5)
+Candidate6          Candidate6 Party              (CP6)
+Candidate7          Candidate7 Party              (CP7)
+Candidate8          Candidate8 Party              (CP8)
+Candidate9          Candidate9 Party              (CP9)
+Candidate10         Candidate10 Party             (CP10)
+Candidate11         Candidate11 Party             (CP11)
+Candidate12         Candidate12 Party             (CP12)
+Candidate13         Candidate13 Party             (CP13)
+Candidate14         Candidate14 Party             (CP14)
+Candidate15         Candidate15 Party             (CP15)
+
+
+Counting primary votes; 15 alternatives available
+
+Preferential election: BigVoteElec
+
+Candidate1 (CP1)            45
+Candidate2 (CP2)            28
+Candidate3 (CP3)            42
+Candidate4 (CP4)            62
+Candidate5 (CP5)            48
+Candidate6 (CP6)            32
+Candidate7 (CP7)            40
+Candidate8 (CP8)            26
+Candidate9 (CP9)           108
+Candidate10 (CP10)          48
+Candidate11 (CP11)          35
+Candidate12 (CP12)          47
+Candidate13 (CP13)          30
+Candidate14 (CP14)          48
+Candidate15 (CP15)          50
+
+Informal                    14
+
+Votes Cast                 703
+
+
+Preferences required: distributing Candidate8: 26 votes
+
+Preferential election: BigVoteElec
+
+Candidate1 (CP1)            47
+Candidate2 (CP2)            30
+Candidate3 (CP3)            44
+Candidate4 (CP4)            62
+Candidate5 (CP5)            48
+Candidate6 (CP6)            32
+Candidate7 (CP7)            44
+Candidate9 (CP9)           108
+Candidate10 (CP10)          48
+Candidate11 (CP11)          37
+Candidate12 (CP12)          53
+Candidate13 (CP13)          34
+Candidate14 (CP14)          52
+Candidate15 (CP15)          50
+
+Informal                    14
+
+Votes Cast                 703
+
+
+Preferences required: distributing Candidate2: 30 votes
+
+Preferential election: BigVoteElec
+
+Candidate1 (CP1)            51
+Candidate3 (CP3)            50
+Candidate4 (CP4)            64
+Candidate5 (CP5)            48
+Candidate6 (CP6)            36
+Candidate7 (CP7)            46
+Candidate9 (CP9)           108
+Candidate10 (CP10)          50
+Candidate11 (CP11)          41
+Candidate12 (CP12)          55
+Candidate13 (CP13)          36
+Candidate14 (CP14)          52
+Candidate15 (CP15)          52
+
+Informal                    14
+
+Votes Cast                 703
+
+
+Preferences required: distributing Candidate6: 36 votes
+
+Preferential election: BigVoteElec
+
+Candidate1 (CP1)            51
+Candidate3 (CP3)            54
+Candidate4 (CP4)            70
+Candidate5 (CP5)            52
+Candidate7 (CP7)            48
+Candidate9 (CP9)           108
+Candidate10 (CP10)          54
+Candidate11 (CP11)          45
+Candidate12 (CP12)          55
+Candidate13 (CP13)          38
+Candidate14 (CP14)          58
+Candidate15 (CP15)          56
+
+Informal                    14
+
+Votes Cast                 703
+
+
+Preferences required: distributing Candidate13: 38 votes
+
+Preferential election: BigVoteElec
+
+Candidate1 (CP1)            63
+Candidate3 (CP3)            58
+Candidate4 (CP4)            72
+Candidate5 (CP5)            54
+Candidate7 (CP7)            48
+Candidate9 (CP9)           112
+Candidate10 (CP10)          54
+Candidate11 (CP11)          47
+Candidate12 (CP12)          59
+Candidate14 (CP14)          66
+Candidate15 (CP15)          56
+
+Informal                    14
+
+Votes Cast                 703
+
+
+Preferences required: distributing Candidate11: 47 votes
+
+Preferential election: BigVoteElec
+
+Candidate1 (CP1)            65
+Candidate3 (CP3)            66
+Candidate4 (CP4)            78
+Candidate5 (CP5)            58
+Candidate7 (CP7)            50
+Candidate9 (CP9)           118
+Candidate10 (CP10)          58
+Candidate12 (CP12)          65
+Candidate14 (CP14)          72
+Candidate15 (CP15)          59
+
+Informal                    14
+
+Votes Cast                 703
+
+
+Preferences required: distributing Candidate7: 50 votes
+
+Preferential election: BigVoteElec
+
+Candidate1 (CP1)            73
+Candidate3 (CP3)            72
+Candidate4 (CP4)            82
+Candidate5 (CP5)            62
+Candidate9 (CP9)           126
+Candidate10 (CP10)          58
+Candidate12 (CP12)          75
+Candidate14 (CP14)          74
+Candidate15 (CP15)          67
+
+Informal                    14
+
+Votes Cast                 703
+
+
+Preferences required: distributing Candidate10: 58 votes
+
+Preferential election: BigVoteElec
+
+Candidate1 (CP1)            75
+Candidate3 (CP3)            82
+Candidate4 (CP4)            86
+Candidate5 (CP5)            66
+Candidate9 (CP9)           138
+Candidate12 (CP12)          87
+Candidate14 (CP14)          80
+Candidate15 (CP15)          75
+
+Informal                    14
+
+Votes Cast                 703
+
+
+Preferences required: distributing Candidate5: 66 votes
+
+Preferential election: BigVoteElec
+
+Candidate1 (CP1)            99
+Candidate3 (CP3)            88
+Candidate4 (CP4)            94
+Candidate9 (CP9)           146
+Candidate12 (CP12)          95
+Candidate14 (CP14)          88
+Candidate15 (CP15)          79
+
+Informal                    14
+
+Votes Cast                 703
+
+
+Preferences required: distributing Candidate15: 79 votes
+
+Preferential election: BigVoteElec
+
+Candidate1 (CP1)           113
+Candidate3 (CP3)           103
+Candidate4 (CP4)           106
+Candidate9 (CP9)           158
+Candidate12 (CP12)         111
+Candidate14 (CP14)          98
+
+Informal                    14
+
+Votes Cast                 703
+
+
+Preferences required: distributing Candidate14: 98 votes
+
+Preferential election: BigVoteElec
+
+Candidate1 (CP1)           135
+Candidate3 (CP3)           123
+Candidate4 (CP4)           122
+Candidate9 (CP9)           174
+Candidate12 (CP12)         135
+
+Informal                    14
+
+Votes Cast                 703
+
+
+Preferences required: distributing Candidate4: 122 votes
+
+Preferential election: BigVoteElec
+
+Candidate1 (CP1)           159
+Candidate3 (CP3)           149
+Candidate9 (CP9)           202
+Candidate12 (CP12)         179
+
+Informal                    14
+
+Votes Cast                 703
+
+
+Preferences required: distributing Candidate3: 149 votes
+
+Preferential election: BigVoteElec
+
+Candidate1 (CP1)           203
+Candidate9 (CP9)           253
+Candidate12 (CP12)         233
+
+Informal                    14
+
+Votes Cast                 703
+
+
+Preferences required: distributing Candidate1: 203 votes
+
+Preferential election: BigVoteElec
+
+Candidate9 (CP9)           347
+Candidate12 (CP12)         342
+
+Informal                    14
+
+Votes Cast                 703
+
+
+Candidate Candidate9 (Candidate9 Party) is the winner with 347 votes...
+

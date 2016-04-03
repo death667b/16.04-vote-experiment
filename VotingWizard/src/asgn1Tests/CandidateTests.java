@@ -16,8 +16,8 @@ import asgn1Election.ElectionException;
  */
 public class CandidateTests {
 
-	Candidate candi;
-	Candidate candiCopy;
+	private Candidate candi;
+	private Candidate candiCopy;
 	
 	@Before
 	public void setup() throws ElectionException {

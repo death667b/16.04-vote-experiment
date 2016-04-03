@@ -20,9 +20,9 @@ import asgn1Election.VoteList;
  */
 public class VoteListTests {
 
-	VoteList testVoteList;
-	Vote copyList;
-	Vote vote;
+	private VoteList testVoteList;
+	private Vote copyList;
+	private Vote vote;
 	
 	@Before
 	public void setup(){

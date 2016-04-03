@@ -18,7 +18,7 @@ import asgn1Election.CandidateIndex;
  */
 public class CandidateIndexTests {
 
-	CandidateIndex canIndex;
+	private CandidateIndex canIndex;
 	
 	@Before
 	public void setUp(){

@@ -57,27 +57,18 @@ public class SimpleElection extends Election {
 	 */
 	@Override
 	public boolean isFormal(Vote v) {
-		int voteValue,foundPrimaries, innerLoopCounter, outerLoopCounter;
+		int voteValue,foundPrimaries;
 		Object voteObject;
 		
-		outerLoopCounter = 0;
 		foundPrimaries = 0;
 		Iterator<Integer> iterator = v.iterator();
 		
 		while(iterator.hasNext()){
 			voteObject = iterator.next();
 			voteValue = (int) voteObject;
-			outerLoopCounter++;
-			innerLoopCounter = 0;
 			
 			if (voteValue == 1){
 				foundPrimaries++;
-				for (Object object : v){
-					innerLoopCounter++;
-					if (object.equals(voteObject) && outerLoopCounter != innerLoopCounter){
-						return false;
-					}
-				}
 			}
 			
 			if (voteValue > this.numCandidates){
