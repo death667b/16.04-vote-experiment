@@ -77,25 +77,25 @@ public class PrefElection extends Election {
 	 */
 	@Override
 	public boolean isFormal(Vote v) {
-		int voteValue, loopCounter, objCounter;
+		int voteValue, innerLoopCounter, outerLoopCounter;
 		Iterator<Integer> iter;
 		Object voteObject;
 		
-		objCounter = 0;
+		outerLoopCounter = 0;
 		iter = v.iterator();
 		
 		
 		while(iter.hasNext()){
 			voteObject = iter.next();
 			voteValue = (int) voteObject;
-			objCounter++;
-			loopCounter = 0;			
+			outerLoopCounter++;
+			innerLoopCounter = 0;			
 			
 			// Test to see if there is a duplicate vote
 			// Skipping the current vote being tested
 			for (Object obj : v){
-				loopCounter++;
-				if (obj.equals(voteObject) && objCounter != loopCounter){
+				innerLoopCounter++;
+				if (obj.equals(voteObject) && outerLoopCounter != innerLoopCounter){
 					return false;
 				}
 			}

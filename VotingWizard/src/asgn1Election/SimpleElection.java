@@ -57,29 +57,37 @@ public class SimpleElection extends Election {
 	 */
 	@Override
 	public boolean isFormal(Vote v) {
-		int voteValue, loopCounter, objCounter;
+		int voteValue,foundPrimaries, innerLoopCounter, outerLoopCounter;
 		Object voteObject;
 		
-		objCounter = 0;
+		outerLoopCounter = 0;
+		foundPrimaries = 0;
 		Iterator<Integer> iterator = v.iterator();
 		
 		while(iterator.hasNext()){
 			voteObject = iterator.next();
 			voteValue = (int) voteObject;
-			objCounter++;
-			loopCounter = 0;			
+			outerLoopCounter++;
+			innerLoopCounter = 0;
 			
-			// Test to see if there is a duplicate vote
-			for (Object object : v){
-				loopCounter++;
-				if (object.equals(voteObject) && objCounter != loopCounter){
-					return false;
+			if (voteValue == 1){
+				foundPrimaries++;
+				for (Object object : v){
+					innerLoopCounter++;
+					if (object.equals(voteObject) && outerLoopCounter != innerLoopCounter){
+						return false;
+					}
 				}
 			}
 			
 			if (voteValue > this.numCandidates){
 				return false;
 			}
+		}
+		
+		//Test to see if there is 0 or more than 1 primary vote
+		if (foundPrimaries != 1){
+			return false;
 		}
 		return true;
 	}
