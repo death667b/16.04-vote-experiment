@@ -65,7 +65,6 @@ public class PrefElection extends Election {
 			winner = clearWinner(winningVotesRequired);
 		} while(winner == null && infiniteLoopProtection <= numCandidates);
 		
-	
 		returnString += reportCountStatus();
 		returnString += reportWinner(winner);
 		return returnString;
@@ -79,10 +78,11 @@ public class PrefElection extends Election {
 	@Override
 	public boolean isFormal(Vote v) {
 		int voteValue, loopCounter, objCounter;
+		Iterator<Integer> iter;
 		Object voteObject;
 		
 		objCounter = 0;
-		Iterator<Integer> iter = v.iterator();
+		iter = v.iterator();
 		
 		
 		while(iter.hasNext()){
@@ -217,8 +217,7 @@ public class PrefElection extends Election {
 			if (voteCount == -1 || voteCount > candidateValue.getVoteCount()){
 				voteCount = candidateValue.getVoteCount();
 				indexToReturn = candidateKey.copy();
-			}
-			
+			}			
 		}
 
 		return indexToReturn;

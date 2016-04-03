@@ -5,8 +5,12 @@ package asgn1Tests;
 
 import static org.junit.Assert.*;
 
+import java.util.Iterator;
+
+import org.junit.Before;
 import org.junit.Test;
 
+import asgn1Election.CandidateIndex;
 import asgn1Election.Vote;
 import asgn1Election.VoteList;
 
@@ -16,83 +20,201 @@ import asgn1Election.VoteList;
  */
 public class VoteListTests {
 
+	VoteList testVoteList;
+	Vote copyList;
+	Vote vote;
+	
+	@Before
+	public void setup(){
+		//Setup main test object
+		testVoteList = new VoteList(3);
+		
+		//Setup vote for other testing
+		vote = new VoteList(5);
+		vote.addPref(3);
+		vote.addPref(1);
+		vote.addPref(5);
+		vote.addPref(2);
+		vote.addPref(4);
+	}
+	
+	
+	/*
+	 *    Test Section for VoteList Constructor - Expected Working
+	 */
 	/**
 	 * Test method for {@link asgn1Election.VoteList#VoteList(int)}.
 	 */
 	@Test
-	public void testVoteList() {
-		@SuppressWarnings("unused")
-		VoteList testVoteList = new VoteList(3);
+	public void testVoteListNotNull() {
+		assertNotNull(testVoteList);
+	}
+	
+	@Test
+	public void testVoteListPassInstanceOf() {
+		assertTrue(testVoteList instanceof VoteList);
 	}
 
+	
+	/*
+	 *    Test Section for VoteList.addPref()
+	 */
 	/**
 	 * Test method for {@link asgn1Election.VoteList#addPref(int)}.
 	 */
 	@Test
-	public void testAddPref() {
-		VoteList testVoteList = new VoteList(3);
-		
+	public void testAddPrefReturnsTrueOnSuccessful() {				
 		assertTrue(testVoteList.addPref(1));
-		assertTrue(testVoteList.addPref(2));
-		assertTrue(testVoteList.addPref(3));
+	}
+	
+	@Test
+	public void testAddPrefReturnsFalseOnExceedingInit() {				
+		testVoteList.addPref(1);
+		testVoteList.addPref(2);
+		testVoteList.addPref(3);
+		
 		assertFalse(testVoteList.addPref(4));
-		assertEquals("1 2 3 ", testVoteList.toString());
 	}
 
+	
+	/*
+	 *    Test Section for VoteList.copyVote()
+	 */
 	/**
 	 * Test method for {@link asgn1Election.VoteList#copyVote()}.
 	 */
 	@Test
-	public void testCopyVote() {
-		VoteList testVoteList = new VoteList(3);
-		Vote copy;
+	public void testCopyVoteNoDataNotNull() {
+		copyList = testVoteList.copyVote();
 		
-		assertTrue(testVoteList.addPref(1));
-		assertTrue(testVoteList.addPref(3));
+		assertNotNull(copyList);
+	}
+	
+	@Test
+	public void testCopyVoteNoDataIsInstanceOf() {
+		copyList = testVoteList.copyVote();
 		
-		copy = testVoteList.copyVote();
+		assertTrue(copyList instanceof VoteList);
+	}
+	
+	@Test
+	public void testCopyVoteNoDataNotSame() {
+		copyList = testVoteList.copyVote();
 		
-		assertTrue(testVoteList.addPref(4));
+		assertNotSame(copyList, testVoteList);
+	}
+	
+	@Test
+	public void testCopyVoteWithData() {		
+		testVoteList.addPref(1);
+		testVoteList.addPref(3);
+		testVoteList.addPref(2);
 		
-		assertEquals("", copy.toString());
+		copyList = testVoteList.copyVote();
+		
+		assertEquals("1 3 2 ", copyList.toString());
 	}
 
+	
+	/*
+	 *    Test Section for VoteList.getPreference()
+	 */
 	/**
 	 * Test method for {@link asgn1Election.VoteList#getPreference(int)}.
 	 */
 	@Test
 	public void testGetPreference() {
-		VoteList testVoteList = new VoteList(3);
+		CandidateIndex testIndex = null;
 		
-		assertTrue(testVoteList.addPref(1));
-		assertTrue(testVoteList.addPref(2));
-		assertTrue(testVoteList.addPref(3));
+		testIndex = new CandidateIndex(1);
 		
-		//assertEquals(2, testVoteList.getPreference(2));
+		assertEquals(testIndex.toString() ,vote.getPreference(3).toString());
+		
 	}
 
+	
+	/*
+	 *    Test Section for VoteList.InvertVote()
+	 */
 	/**
 	 * Test method for {@link asgn1Election.VoteList#invertVote()}.
 	 */
 	@Test
 	public void testInvertVote() {
-		//fail("Not yet implemented");
+		Vote vl;
+		
+		vl = vote.invertVote();
+		
+		assertEquals("1 2 3 4 5 ", vl.toString());
 	}
 
+	/*
+	 *    Test Section for VoteList.Iterator()
+	 */
 	/**
 	 * Test method for {@link asgn1Election.VoteList#iterator()}.
 	 */
 	@Test
-	public void testIterator() {
-		//fail("Not yet implemented");
-	}
+	public void testIteratorNormal() {
+		Iterator<Integer> iterator;
+		Integer holder;
+		String stringTest = "";
+		
+		iterator = vote.iterator();
 
+		while(iterator.hasNext()){
+			holder = iterator.next();
+			
+			stringTest += holder.toString() + " ";
+		}
+		
+		assertEquals(stringTest, vote.toString());
+	}
+	
+	
+	/*
+	 *    Test Section for VoteList.toString()
+	 */
 	/**
 	 * Test method for {@link asgn1Election.VoteList#toString()}.
 	 */
 	@Test
-	public void testToString() {
-		//fail("Not yet implemented");
+	public void testToStringAddZeroPreferences() {				
+		assertEquals("", testVoteList.toString());
 	}
 
+	@Test
+	public void testToStringAddOnePreference() {		
+		testVoteList.addPref(1);
+		
+		assertEquals("1 ", testVoteList.toString());
+	}
+	
+	@Test
+	public void testToStringAddThreePreference() {		
+		testVoteList.addPref(1);
+		testVoteList.addPref(2);
+		testVoteList.addPref(3);
+		
+		assertEquals("1 2 3 ", testVoteList.toString());
+	}
+	
+	@Test
+	public void testToStringAddTooManyPreferences() {		
+		testVoteList.addPref(1);
+		testVoteList.addPref(2);
+		testVoteList.addPref(3);
+		testVoteList.addPref(4);
+		
+		assertEquals("1 2 3 ", testVoteList.toString());
+	}
+
+	@Test
+	public void testToStringAddThreePreferenceReordered() {		
+		testVoteList.addPref(2);
+		testVoteList.addPref(1);
+		testVoteList.addPref(3);
+		
+		assertEquals("2 1 3 ", testVoteList.toString());
+	}
 }

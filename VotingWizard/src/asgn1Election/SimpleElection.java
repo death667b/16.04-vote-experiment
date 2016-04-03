@@ -63,7 +63,6 @@ public class SimpleElection extends Election {
 		objCounter = 0;
 		Iterator<Integer> iterator = v.iterator();
 		
-		
 		while(iterator.hasNext()){
 			voteObject = iterator.next();
 			voteValue = (int) voteObject;
@@ -71,7 +70,6 @@ public class SimpleElection extends Election {
 			loopCounter = 0;			
 			
 			// Test to see if there is a duplicate vote
-			// Skipping the current vote being tested
 			for (Object object : v){
 				loopCounter++;
 				if (object.equals(voteObject) && objCounter != loopCounter){
@@ -79,7 +77,6 @@ public class SimpleElection extends Election {
 				}
 			}
 			
-			//Test to see if the voted number is higher than the available candidates
 			if (voteValue > this.numCandidates){
 				return false;
 			}

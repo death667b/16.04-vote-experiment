@@ -36,6 +36,7 @@ public class VoteList implements Vote {
 	public VoteList(int numCandidates) {
 		this.numCandidates = numCandidates;
 		vote = new ArrayList<Integer>();
+
 	}
 
 	/*
@@ -74,10 +75,17 @@ public class VoteList implements Vote {
 	 * 
 	 * @see asgn1Election.Vote#getPreference(int)
 	 */
-	
 	@Override
-	public CandidateIndex getPreference(int cand) {
-		return new CandidateIndex(cand);
+	public CandidateIndex getPreference(int cand) {		
+		CandidateIndex returnIndex = null;
+		int indexFound, indexAlignment;
+		
+		indexAlignment = 1;
+		indexFound = vote.indexOf(cand);
+		
+		returnIndex = new CandidateIndex(indexFound + indexAlignment);
+		
+		return returnIndex;
 	}
 
 	/*
@@ -85,19 +93,15 @@ public class VoteList implements Vote {
 	 * 
 	 * @see asgn1Election.Vote#invertVote()
 	 */
-	
-	/**
-	 * Method to invert the vote to yield the preference order of candidates.
-	 * 
-	 * @return <code>Vote newVote</code> such that for all entries <code>i</code> of 
-	 * <code>this</code>, <code>newVote[this[i]] = i</code>
-	 */
 	@Override
 	public Vote invertVote() {
 		Vote newVote = new VoteList(numCandidates);
+		int firstPreference;
 		
-		for (int votePref = 1; votePref <= numCandidates; votePref++){
-			newVote.addPref(votePref);
+		firstPreference = 1;
+		
+		for (int votePreference = firstPreference; votePreference <= numCandidates; votePreference++){
+			newVote.addPref(votePreference);
 		}
 		
 		return newVote;

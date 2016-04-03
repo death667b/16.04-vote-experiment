@@ -68,23 +68,23 @@ public class VoteCollection implements Collection {
 	@Override
 	public void countPrefVotes(TreeMap<CandidateIndex, Candidate> cds,
 			CandidateIndex elim) {
-		
-		int elimPostionNumber = Integer.parseInt(elim.toString());
-		
 		CandidateIndex addVoteToIndex = null;
-		Candidate addVotetoCandidate = null;
+		Candidate addVoteToCandidate = null;
+		int elimPostionNumber;
+		
+		elimPostionNumber = Integer.parseInt(elim.toString());
 
 		for (Vote vote : voteList){		
 			addVoteToIndex = getPrefthKey(vote,cds,elimPostionNumber);
 			
 			if (addVoteToIndex != null){
-				addVotetoCandidate = cds.get(addVoteToIndex);
-				addVotetoCandidate.incrementVoteCount();
+				addVoteToCandidate = cds.get(addVoteToIndex);
+				addVoteToCandidate.incrementVoteCount();
 				
-				cds.put(addVoteToIndex, addVotetoCandidate);
+				cds.put(addVoteToIndex, addVoteToCandidate);
 			}
-
 		}
+		
 		cds.remove(elim);
 	}
 
@@ -95,15 +95,15 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public void countPrimaryVotes(TreeMap<CandidateIndex, Candidate> cds) {
-		CandidateIndex canIndex;
-		Candidate candi;
+		CandidateIndex candidateIndex;
+		Candidate candidate;
 		
 		for (Vote vl : voteList){
-			canIndex = getPrimaryKey(vl);
-			candi = cds.get(canIndex);
-			candi.incrementVoteCount();
+			candidateIndex = getPrimaryKey(vl);
+			candidate = cds.get(candidateIndex);
+			candidate.incrementVoteCount();
 			
-			cds.put(canIndex, candi);
+			cds.put(candidateIndex, candidate);
 		}
 	}
 
@@ -214,16 +214,14 @@ public class VoteCollection implements Collection {
 	/**
 	 * Filter votes looking for the next preference to count based of the eliminated candidate
 	 * @param v Unordered list of votes
+	 * @param cds TreeMap set of all active candidates
 	 * @param pref The current preference of the eliminated candidate
-	 * @param candidateActiveList Array of active and eliminated candidates; 1 for active, 0 for eliminated
-	 * @param cdsDeepCopy Candidate TreeMap
-	 * @param previousPrefList ArrayList of 
-	 * @return
+	 * @return CandidateIndex Next preference to apply a vote to
 	 */
 	private Candidate filterVotes(Vote v, int pref,	TreeMap<CandidateIndex, Candidate> cds) {
 		TreeMap<CandidateIndex, Candidate> cdsReordered = null, cdsDeepCopy = null;
 		int positionCounter, previousPrefNumber, firstPreference;
-		CandidateIndex removeCandiIndex = null;
+		CandidateIndex removeCandiIndex = null,test1, test2;
 		ArrayList<Integer> previousPrefList;
 		Candidate findCandi = null;
 		int[] candidateActiveList;
@@ -234,6 +232,7 @@ public class VoteCollection implements Collection {
 		positionCounter = 0;
 		firstPreference = 1;
 		
+		test1= v.getPreference(pref);  //TODO remove this line
 		previousPrefNumber = getPrefNumber(cds);
 		
 		removeCandiIndex = new CandidateIndex(pref);
@@ -255,6 +254,7 @@ public class VoteCollection implements Collection {
 			if ((pref == positionCounter) && (previousPrefList.contains(votePref))){ 
 				if(checkNotFalsePositive(candidateActiveList, v, votePref)){ 
 					cdsReordered = reorderCandidateList(v, orderedVote, cdsDeepCopy);
+					test2= v.getPreference(pref);  //TODO remove this line
 					findCandi = getNextAvailableCandidate(votePref, cdsReordered);
 				}
 			}
@@ -325,6 +325,7 @@ public class VoteCollection implements Collection {
 				returnBool = false;
 				return returnBool; 
 			}
+			
 			counter++;
 		}
 
@@ -343,15 +344,16 @@ public class VoteCollection implements Collection {
 	private CandidateIndex getPrimaryKey(Vote v) {
 		int voteValue, voteCounter, primaryVote;
 		CandidateIndex newCandidateIndex = null;
+		Iterator<Integer> iterator;
 		
 		primaryVote = 1;
 		voteCounter = 1;
-		Iterator<Integer> iterator = v.iterator();
+		iterator = v.iterator();
 		
 		while(iterator.hasNext()){
 			voteValue = (int) iterator.next();
 			if (voteValue == primaryVote){
-				newCandidateIndex = v.getPreference(voteCounter);
+				newCandidateIndex = new CandidateIndex(voteCounter);
 			}
 			
 			voteCounter++;
@@ -397,8 +399,8 @@ public class VoteCollection implements Collection {
 				counter++;
 				
 				if (newVote == oldVote){
-					oldCandidateIndex = vote.getPreference(counter);
-					newCandidateIndex = vote.getPreference(newVote);
+					oldCandidateIndex = new CandidateIndex(counter);
+					newCandidateIndex = new CandidateIndex(newVote);
 					newCandidate = cds.get(oldCandidateIndex);
 					newCandidateList.put(newCandidateIndex, newCandidate);
 				}		
