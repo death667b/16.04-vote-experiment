@@ -13,7 +13,9 @@ import org.junit.runners.Suite;
 	CandidateIndexTests.class, 
 	CandidateTests.class,
 	VoteCollectionTests.class,
-	VoteListTests.class})
+	VoteListTests.class,
+	SimpleElectionTests.class,
+	PrefElectionTests.class})
 
 public class asgn1Tests {
 
