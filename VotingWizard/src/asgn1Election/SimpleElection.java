@@ -57,10 +57,11 @@ public class SimpleElection extends Election {
 	 */
 	@Override
 	public boolean isFormal(Vote v) {
-		int voteValue,foundPrimaries;
+		int voteValue,foundPrimaries, zeroPreference;
 		Object voteObject;
 		
 		foundPrimaries = 0;
+		zeroPreference = 0;
 		Iterator<Integer> iterator = v.iterator();
 		
 		while(iterator.hasNext()){
@@ -71,7 +72,7 @@ public class SimpleElection extends Election {
 				foundPrimaries++;
 			}
 			
-			if (voteValue > this.numCandidates){
+			if (voteValue <= zeroPreference || voteValue > this.numCandidates){
 				return false;
 			}
 		}

@@ -28,7 +28,7 @@ import asgn1Election.VoteList;
 public class SimpleElectionTests {
 
 	private Election simpleElect;
-	
+	private Vote testVote;
 	private VoteCollection vc;
 	private TreeMap<CandidateIndex, Candidate> cds;
 	
@@ -44,8 +44,7 @@ public class SimpleElectionTests {
 		
 		buildCandidateList();
 		buildVoteCollection();
-		
-		simpleElect.findWinner();
+		setNumberOfCandidates(numberOfTestCandidates);
 	}
 
 	
@@ -90,17 +89,158 @@ public class SimpleElectionTests {
 		
 		returnedString = simpleElect.findWinner();
 		
-		assertEquals("d", returnedString);
+		assertEquals(returnAssertedFindWinnerText(), returnedString);
 	}
 
+	
+	/*
+	 *    Test Section for SimpleElection.IsFormal()
+	 */
 	/**
 	 * Test method for {@link asgn1Election.SimpleElection#isFormal(asgn1Election.Vote)}.
 	 */
 	@Test
-	public void testIsFormal() {
-		fail("Not yet implemented");
+	public void testIsFormalNormal() {
+		testVote = new VoteList(numberOfTestCandidates);
+		
+		for (int i = 1; i <= numberOfTestCandidates; i++){
+			testVote.addPref(i);
+		}
+		
+		assertTrue(simpleElect.isFormal(testVote));
+	}
+	
+	@Test
+	public void testIsFormalAllOnesFail() {
+		//Fails because more than one '1'
+		testVote = new VoteList(numberOfTestCandidates);
+		
+		for (int i = 1; i <= numberOfTestCandidates; i++){
+			testVote.addPref(1);
+		}
+		
+		assertFalse(simpleElect.isFormal(testVote));
 	}
 
+	@Test
+	public void testIsFormalAllFifteensFail() {
+		//Fails because no '1'
+		testVote = new VoteList(numberOfTestCandidates);
+		
+		for (int i = 1; i <= numberOfTestCandidates; i++){
+			testVote.addPref(15);
+		}
+		
+		assertFalse(simpleElect.isFormal(testVote));
+	}
+	
+	@Test
+	public void testIsFormalVotesReversePass() {
+		testVote = new VoteList(numberOfTestCandidates);
+		
+		for (int i = numberOfTestCandidates; i >= 1; i--){
+			testVote.addPref(i);
+		}
+		
+		assertTrue(simpleElect.isFormal(testVote));
+	}
+	
+	@Test
+	public void testIsFormalDuplicateNumberFourPass() {
+		//Passes because there is only one '1'
+		testVote = new VoteList(numberOfTestCandidates);
+		
+		for (int i = 1; i <= 4; i++){
+			testVote.addPref(i);
+		}
+		testVote.addPref(4);
+		
+		for (int i = 6; i <= 10; i++){
+			testVote.addPref(i);
+		}
+		testVote.addPref(4);
+		
+		for (int i = 12; i <= 15; i++){
+			testVote.addPref(i);
+		}
+		
+		assertTrue(simpleElect.isFormal(testVote));
+	}
+	
+	@Test
+	public void testIsFormalDuplicateOnBounderyFail() {
+		//Fails because there is no '1'
+		testVote = new VoteList(numberOfTestCandidates);
+		
+		testVote.addPref(15);
+		for (int i = 2; i <= 14; i++){
+			testVote.addPref(i);
+		}
+		testVote.addPref(15);
+
+		assertFalse(simpleElect.isFormal(testVote));
+	}
+	
+	@Test
+	public void testIsFormalDuplicatePrimaries() {
+		//Fails because there is two '1'
+		testVote = new VoteList(numberOfTestCandidates);
+		
+		for (int i = 2; i <= 5; i++){
+			testVote.addPref(i);
+		}
+		testVote.addPref(1);
+		
+		for (int i = 6; i <= 10; i++){
+			testVote.addPref(i);
+		}
+		testVote.addPref(1);
+		
+		for (int i = 11; i <= 14; i++){
+			testVote.addPref(i);
+		}
+
+		assertFalse(simpleElect.isFormal(testVote));
+	}
+	
+	@Test
+	public void testIsFormalBoundaryZeroFail() {
+		//Fail because of Zero
+		testVote = new VoteList(numberOfTestCandidates);
+		
+		testVote.addPref(0);
+		testVote.addPref(1);
+
+		assertFalse(simpleElect.isFormal(testVote));
+	}
+	
+	@Test
+	public void testIsFormalBoundarySixteenFail() {
+		//Fail because exceeds numberOfTestCandidates(15)
+		testVote = new VoteList(numberOfTestCandidates);
+		
+		testVote.addPref(16);
+		testVote.addPref(1);
+
+		assertFalse(simpleElect.isFormal(testVote));
+	}
+	
+	@Test
+	public void testIsFormalBoundaryThreeFail() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		//Fail because exceeds max 2
+		int numCandiForThisTest = 2;
+		
+		setNumberOfCandidates(numCandiForThisTest);
+		testVote = new VoteList(numCandiForThisTest);
+		
+		testVote.addPref(3);
+		testVote.addPref(1);
+
+		assertFalse(simpleElect.isFormal(testVote));
+	}
+	
+	
+	
 	/**
 	 * Test method for {@link asgn1Election.SimpleElection#clearWinner(int)}.
 	 */
@@ -124,6 +264,15 @@ public class SimpleElectionTests {
 	/*
 	 *    Private Helper methods
 	 */
+	private void setNumberOfCandidates(int numCandi) throws NoSuchFieldException, SecurityException, 
+			IllegalArgumentException, IllegalAccessException{
+		//Push into the instance of simpleElect
+		Field field = Election.class.getDeclaredField("numCandidates");
+		field.setAccessible(true);
+		field.set(simpleElect, numCandi);
+		field.setAccessible(false);
+	}
+	
 	private void buildCandidateList() throws 
 	        ElectionException, NoSuchFieldException, SecurityException, 
 	        IllegalArgumentException, IllegalAccessException{
@@ -151,6 +300,7 @@ public class SimpleElectionTests {
 			this.cds.put(new CandidateIndex(i+1), candidateArray[i]);
 		}
 		
+		//Push into the instance of simpleElect
 		Field field = Election.class.getDeclaredField("cds");
 		field.setAccessible(true);
 		field.set(simpleElect, cds);
@@ -863,6 +1013,7 @@ public class SimpleElectionTests {
 		addVoteToList(buildVote("2,7,4,14,1,6,12,8,10,3,15,5,13,9,11"));
 		addVoteToList(buildVote("7,15,8,6,2,5,3,10,1,14,13,12,9,4,11"));
 		
+		//Push into the instance of simpleElect
 		Field field = Election.class.getDeclaredField("vc");
 		field.setAccessible(true);
 		field.set(simpleElect, vc);
@@ -921,5 +1072,49 @@ public class SimpleElectionTests {
 			}
 		}
 		return true;
+	}
+	
+	private String returnAssertedFindWinnerText(){
+		String returnString;
+		
+		returnString = "Results for election: test\n";
+		returnString += "Enrolment: 0\n\n";
+		returnString += "Candidate1          Candidate1 Party              (CP1)\n";
+		returnString += "Candidate2          Candidate2 Party              (CP2)\n";
+		returnString += "Candidate3          Candidate3 Party              (CP3)\n";
+		returnString += "Candidate4          Candidate4 Party              (CP4)\n";
+		returnString += "Candidate5          Candidate5 Party              (CP5)\n";
+		returnString += "Candidate6          Candidate6 Party              (CP6)\n";
+		returnString += "Candidate7          Candidate7 Party              (CP7)\n";
+		returnString += "Candidate8          Candidate8 Party              (CP8)\n";
+		returnString += "Candidate9          Candidate9 Party              (CP9)\n";
+		returnString += "Candidate10         Candidate10 Party             (CP10)\n";
+		returnString += "Candidate11         Candidate11 Party             (CP11)\n";
+		returnString += "Candidate12         Candidate12 Party             (CP12)\n";
+		returnString += "Candidate13         Candidate13 Party             (CP13)\n";
+		returnString += "Candidate14         Candidate14 Party             (CP14)\n";
+		returnString += "Candidate15         Candidate15 Party             (CP15)\n\n\n";
+		returnString += "Counting primary votes;\n\n";
+		returnString += "Simple election: test\n\n";
+		returnString += "Candidate1 (CP1)            90\n";
+		returnString += "Candidate2 (CP2)            56\n";
+		returnString += "Candidate3 (CP3)            84\n";
+		returnString += "Candidate4 (CP4)           124\n";
+		returnString += "Candidate5 (CP5)            96\n";
+		returnString += "Candidate6 (CP6)            64\n";
+		returnString += "Candidate7 (CP7)            80\n";
+		returnString += "Candidate8 (CP8)            52\n";
+		returnString += "Candidate9 (CP9)           216\n";
+		returnString += "Candidate10 (CP10)          96\n";
+		returnString += "Candidate11 (CP11)          70\n";
+		returnString += "Candidate12 (CP12)          94\n";
+		returnString += "Candidate13 (CP13)          60\n";
+		returnString += "Candidate14 (CP14)          96\n";
+		returnString += "Candidate15 (CP15)         100\n\n";
+		returnString += "Informal                    14\n\n";
+		returnString += "Votes Cast                   0\n\n\n";
+		returnString += "Candidate Candidate1 (Candidate1 Party) is the winner with 90 votes...\n";
+		
+		return returnString;
 	}
 }
