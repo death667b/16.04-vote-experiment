@@ -5,6 +5,7 @@ package asgn1Tests;
 
 import static org.junit.Assert.*;
 
+import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.TreeMap;
 
@@ -43,6 +44,8 @@ public class SimpleElectionTests {
 		
 		buildCandidateList();
 		buildVoteCollection();
+		
+		simpleElect.findWinner();
 	}
 
 	
@@ -85,9 +88,9 @@ public class SimpleElectionTests {
 	public void testFindWinner() {
 		String returnedString;
 		
-		//returnedString = simpleElect.findWinner();
+		returnedString = simpleElect.findWinner();
 		
-		//assertEquals("d", returnedString);
+		assertEquals("d", returnedString);
 	}
 
 	/**
@@ -121,7 +124,10 @@ public class SimpleElectionTests {
 	/*
 	 *    Private Helper methods
 	 */
-	private void buildCandidateList() throws ElectionException{
+	private void buildCandidateList() throws 
+	        ElectionException, NoSuchFieldException, SecurityException, 
+	        IllegalArgumentException, IllegalAccessException{
+
 		this.cds = new TreeMap<CandidateIndex, Candidate>();
 		Candidate[] candidateArray = new Candidate[numberOfTestCandidates];
 			
@@ -144,9 +150,15 @@ public class SimpleElectionTests {
 		for (int i = 0; i < candidateArray.length; i++){
 			this.cds.put(new CandidateIndex(i+1), candidateArray[i]);
 		}
+		
+		Field field = Election.class.getDeclaredField("cds");
+		field.setAccessible(true);
+		field.set(simpleElect, cds);
+		field.setAccessible(false);
 	}
 	
-	private void buildVoteCollection(){
+	private void buildVoteCollection() throws NoSuchFieldException, 
+			SecurityException, IllegalArgumentException, IllegalAccessException{
 		addVoteToList(buildVote("15,10,1,13,9,8,4,6,7,11,1,12,3,14,2"));
 		addVoteToList(buildVote("7,15,8,6,2,5,3,10,14,14,13,12,9,4,11"));
 		addVoteToList(buildVote("10,6,4,1,14,9,11,13,3,15,7,2,12,5,8"));
@@ -850,6 +862,11 @@ public class SimpleElectionTests {
 		addVoteToList(buildVote("9,15,4,13,8,12,10,1,14,11,2,3,6,5,7"));
 		addVoteToList(buildVote("2,7,4,14,1,6,12,8,10,3,15,5,13,9,11"));
 		addVoteToList(buildVote("7,15,8,6,2,5,3,10,1,14,13,12,9,4,11"));
+		
+		Field field = Election.class.getDeclaredField("vc");
+		field.setAccessible(true);
+		field.set(simpleElect, vc);
+		field.setAccessible(false);
 	}
 	
 	private void addVoteToList(Vote vote){
