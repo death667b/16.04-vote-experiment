@@ -78,12 +78,13 @@ public class VoteList implements Vote {
 	@Override
 	public CandidateIndex getPreference(int cand) {		
 		CandidateIndex returnIndex = null;
-		int indexFound, indexAlignment;
+		int indexFound, indexAlignment, candidateNumber;
 		
 		indexAlignment = 1;
 		indexFound = vote.indexOf(cand);
+		candidateNumber = indexFound + indexAlignment;
 		
-		returnIndex = new CandidateIndex(indexFound + indexAlignment);
+		returnIndex = new CandidateIndex(candidateNumber);
 		
 		return returnIndex;
 	}
@@ -95,16 +96,19 @@ public class VoteList implements Vote {
 	 */
 	@Override
 	public Vote invertVote() {
-		Vote newVote = new VoteList(numCandidates);
-		int firstPreference;
+		Vote invertedVote = new VoteList(numCandidates);
+		int arrayAlignment, preferenceToAdd;
 		
-		firstPreference = 1;
+		arrayAlignment = 1;
 		
-		for (int votePreference = firstPreference; votePreference <= numCandidates; votePreference++){
-			newVote.addPref(votePreference);
+		// Index becomes the value and value becomes the index
+		// 3 1 2 -> 2 3 1
+		for (int counter = 1; counter <= numCandidates; counter++){
+			preferenceToAdd = vote.indexOf(counter) + arrayAlignment;
+			invertedVote.addPref(preferenceToAdd);
 		}
 		
-		return newVote;
+		return invertedVote;
 	}
 
 	/* 

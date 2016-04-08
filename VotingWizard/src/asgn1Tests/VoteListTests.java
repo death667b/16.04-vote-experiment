@@ -145,7 +145,7 @@ public class VoteListTests {
 		
 		vl = vote.invertVote();
 		
-		assertEquals("1 2 3 4 5 ", vl.toString());
+		assertEquals("2 4 1 5 3 ", vl.toString());
 	}
 
 	/*
