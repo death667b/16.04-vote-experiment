@@ -69,6 +69,57 @@ public class VoteCollection implements Collection {
 	public void countPrefVotes(TreeMap<CandidateIndex, Candidate> cds,
 			CandidateIndex elim) {
 		
+		//TODO
+		TreeMap<CandidateIndex, Candidate> cdsDeepCopy = null;
+		Vote invertedVote = null;
+		int[] candidateActiveList;
+		int candidateToEliminate, numberOfCandidatesRemoved;
+		CandidateIndex foundIndex;
+		Candidate addVotetoCandidate = null;
+		int[] activeCandidates = new int[cds.size()];
+		
+		candidateToEliminate = Integer.parseInt(elim.toString());
+		
+		/*cdsDeepCopy = new TreeMap<CandidateIndex, Candidate>();
+		cdsDeepCopy = deepCopyCandidateList(cds);
+		cdsDeepCopy.remove(elim);*/
+		
+		cds.remove(elim);
+		numberOfCandidatesRemoved = numCandidates - cds.size();
+		
+		/*candidateActiveList = new int[numCandidates];
+		candidateActiveList = activeCandidateList_Ver2(cdsDeepCopy);*/
+		// orig: 1 3 5 4 2     inv: 1 5 2 4 3 
+		// orig: 4 5 2 3 1     inv: 5 3 4 1 2 
+
+		for (Vote vote : voteList){ 
+			invertedVote = vote.invertVote();
+			
+			//Build list of candidates still active
+			activeCandidates = listActiveCandidates(cds);
+			
+			for (int counter = 1; counter <= numberOfCandidatesRemoved; counter++){
+				if (counter == getVoteIndex(invertedVote, candidateToEliminate)){ //Add list of candi still active
+					foundIndex = getPrefthKey_Ver2(vote,cds, counter+1); //TODO Fix magic
+					
+					if (foundIndex != null){
+						addVotetoCandidate = cds.get(foundIndex);
+						addVotetoCandidate.incrementVoteCount();
+						
+						//cds.put(foundIndex, addVotetoCandidate);
+					}
+				}
+			}
+		}
+		
+		
+		
+		
+		
+		
+		/**********************************************************/
+		
+		/*
 		int elimPostionNumber = Integer.parseInt(elim.toString());
 		
 		CandidateIndex addVoteToIndex = null;
@@ -85,9 +136,30 @@ public class VoteCollection implements Collection {
 			}
 
 		}
-		cds.remove(elim);
+		*/
+		/**********************************************************/
+		//cds.remove(elim);
 	}
 
+	private int[] listActiveCandidates(TreeMap<CandidateIndex, Candidate> cds) { // TODO Add comments if keeping
+		
+		return null;
+	}
+
+	private int getVoteIndex(Vote vote, int candidateToEliminate){ //TODO Add comments if keeping 
+		int returnCounter = 0, counter = 1;
+		
+		for (int v : vote){
+			if (v == candidateToEliminate){
+				returnCounter = counter;
+			}
+			
+			counter++;
+		}
+		
+		return returnCounter;
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -188,6 +260,24 @@ public class VoteCollection implements Collection {
 		
 		return candiIndex;
 	}
+	
+	private CandidateIndex getPrefthKey_Ver2(Vote v,TreeMap<CandidateIndex, Candidate> cds, int pref) {
+
+		CandidateIndex findCandidate = null;
+		Candidate testCandidateForNull = null;
+		int protectionCounter = numCandidates;
+		
+		do {
+			findCandidate = v.getPreference(pref);
+			testCandidateForNull = cds.get(findCandidate);
+			if (testCandidateForNull == null){
+				pref++;
+			}
+			protectionCounter--;
+		} while (testCandidateForNull == null && protectionCounter > 0);
+		
+		return findCandidate;
+	}
 
 	/**
 	 * Using the found Candidate from preferences, search the original TreeMap for the CandidateIndex
@@ -218,7 +308,7 @@ public class VoteCollection implements Collection {
 	 * @param pref The current preference of the eliminated candidate
 	 * @return CandidateIndex Next preference to apply a vote to
 	 */
-	private Candidate processVote(Vote v, int pref,	TreeMap<CandidateIndex, Candidate> cds) {
+	private Candidate processVote(Vote v, int pref,	TreeMap<CandidateIndex, Candidate> cds) { //TODO Oi! Here
 		TreeMap<CandidateIndex, Candidate> cdsReordered = null, cdsDeepCopy = null;
 		int positionCounter, previousPrefNumber, firstPreference;
 		CandidateIndex removeCandiIndex = null;
@@ -288,6 +378,25 @@ public class VoteCollection implements Collection {
 			
 			for (int counter = 0; counter <= numCandidates; counter++){
 				if ((counter + addOneForAlignment) == currentCandidateList){
+					candidateActiveList[counter] = oneForActiveCandidate;
+				}
+			}
+		}
+
+		return candidateActiveList;
+	}
+	
+	private int[] activeCandidateList_Ver2(TreeMap<CandidateIndex, Candidate> cds) { //TODO Delete this duplicate if not being used
+		int[] candidateActiveList = new int[numCandidates];
+		CandidateIndex currentIndex = null;
+		int currentCandidateList, addOneForAlignment = 1, oneForActiveCandidate = 1;
+		
+		for (Map.Entry<CandidateIndex, Candidate> findActive : cds.entrySet()){
+			currentIndex = findActive.getKey();
+			currentCandidateList = Integer.parseInt(currentIndex.toString());
+			
+			for (int counter = numCandidates; counter > 0; counter--){
+				if ((counter) == currentCandidateList){
 					candidateActiveList[counter] = oneForActiveCandidate;
 				}
 			}
