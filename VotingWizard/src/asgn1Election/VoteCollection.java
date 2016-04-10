@@ -69,81 +69,35 @@ public class VoteCollection implements Collection {
 	public void countPrefVotes(TreeMap<CandidateIndex, Candidate> cds,
 			CandidateIndex elim) {
 		
-		//TODO
-		TreeMap<CandidateIndex, Candidate> cdsDeepCopy = null;
 		Vote invertedVote = null;
 		int[] candidateActiveList;
 		int candidateToEliminate, numberOfCandidatesRemoved;
 		CandidateIndex foundIndex;
 		Candidate addVotetoCandidate = null;
-		int[] activeCandidates = new int[cds.size()];
 		
 		candidateToEliminate = Integer.parseInt(elim.toString());
 		
-		/*cdsDeepCopy = new TreeMap<CandidateIndex, Candidate>();
-		cdsDeepCopy = deepCopyCandidateList(cds);
-		cdsDeepCopy.remove(elim);*/
-		
 		cds.remove(elim);
 		numberOfCandidatesRemoved = numCandidates - cds.size();
-		
-		/*candidateActiveList = new int[numCandidates];
-		candidateActiveList = activeCandidateList_Ver2(cdsDeepCopy);*/
-		// orig: 1 3 5 4 2     inv: 1 5 2 4 3 
-		// orig: 4 5 2 3 1     inv: 5 3 4 1 2 
 
+		candidateActiveList = new int[numCandidates];
+		candidateActiveList = activeCandidateList(cds);
+		
 		for (Vote vote : voteList){ 
 			invertedVote = vote.invertVote();
 			
-			//Build list of candidates still active
-			activeCandidates = listActiveCandidates(cds);
-			
 			for (int counter = 1; counter <= numberOfCandidatesRemoved; counter++){
-				if (counter == getVoteIndex(invertedVote, candidateToEliminate)){ //Add list of candi still active
-					foundIndex = getPrefthKey_Ver2(vote,cds, counter+1); //TODO Fix magic
+				if ((counter == getVoteIndex(invertedVote, candidateToEliminate)) && 
+						checkNotFalsePositive(candidateActiveList, vote, counter)){
+					foundIndex = getPrefthKey(vote, cds, counter+1); //TODO Fix magic
 					
 					if (foundIndex != null){
 						addVotetoCandidate = cds.get(foundIndex);
 						addVotetoCandidate.incrementVoteCount();
-						
-						//cds.put(foundIndex, addVotetoCandidate);
 					}
 				}
 			}
 		}
-		
-		
-		
-		
-		
-		
-		/**********************************************************/
-		
-		/*
-		int elimPostionNumber = Integer.parseInt(elim.toString());
-		
-		CandidateIndex addVoteToIndex = null;
-		Candidate addVotetoCandidate = null;
-
-		for (Vote vote : voteList){		
-			addVoteToIndex = getPrefthKey(vote,cds,elimPostionNumber);
-			
-			if (addVoteToIndex != null){
-				addVotetoCandidate = cds.get(addVoteToIndex);
-				addVotetoCandidate.incrementVoteCount();
-				
-				cds.put(addVoteToIndex, addVotetoCandidate);
-			}
-
-		}
-		*/
-		/**********************************************************/
-		//cds.remove(elim);
-	}
-
-	private int[] listActiveCandidates(TreeMap<CandidateIndex, Candidate> cds) { // TODO Add comments if keeping
-		
-		return null;
 	}
 
 	private int getVoteIndex(Vote vote, int candidateToEliminate){ //TODO Add comments if keeping 
@@ -251,17 +205,6 @@ public class VoteCollection implements Collection {
 	 * 
 	 */
 	private CandidateIndex getPrefthKey(Vote v,TreeMap<CandidateIndex, Candidate> cds, int pref) {
-		Candidate nextCandidate = null;
-		CandidateIndex candiIndex;
-		
-		nextCandidate = processVote(v, pref, cds);
-		
-		candiIndex = getProcessedCandidateIndex(cds, nextCandidate);
-		
-		return candiIndex;
-	}
-	
-	private CandidateIndex getPrefthKey_Ver2(Vote v,TreeMap<CandidateIndex, Candidate> cds, int pref) {
 
 		CandidateIndex findCandidate = null;
 		Candidate testCandidateForNull = null;
@@ -278,89 +221,7 @@ public class VoteCollection implements Collection {
 		
 		return findCandidate;
 	}
-
-	/**
-	 * Using the found Candidate from preferences, search the original TreeMap for the CandidateIndex
-	 * @param cds Candidate TreeMap 
-	 * @param find Candidate Candidate to search index from
-	 * @return Index of the candidate that needs up vote for
-	 */
-	private CandidateIndex getProcessedCandidateIndex(TreeMap<CandidateIndex, Candidate> cds, Candidate foundCandidate) {
-		CandidateIndex candidateIndex = null;
-		Candidate originalCandidate = null;
-		
-		if (foundCandidate != null){
-			for (Map.Entry<CandidateIndex, Candidate> treeMap : cds.entrySet()){
-				originalCandidate = treeMap.getValue();
-				if (originalCandidate.equals(foundCandidate)){
-					candidateIndex = treeMap.getKey();
-				}
-			}
-		}
-		
-		return candidateIndex;
-	}
-
-	/**
-	 * Process vote looking for the next preference to count based from the eliminated candidate
-	 * @param v Unordered list of votes
-	 * @param cds TreeMap set of all active candidates
-	 * @param pref The current preference of the eliminated candidate
-	 * @return CandidateIndex Next preference to apply a vote to
-	 */
-	private Candidate processVote(Vote v, int pref,	TreeMap<CandidateIndex, Candidate> cds) { //TODO Oi! Here
-		TreeMap<CandidateIndex, Candidate> cdsReordered = null, cdsDeepCopy = null;
-		int positionCounter, previousPrefNumber, firstPreference;
-		CandidateIndex removeCandiIndex = null;
-		ArrayList<Integer> previousPrefList;
-		Candidate nextCandidate = null;
-		int[] candidateActiveList;
-		
-		//Setup
-		positionCounter = 0;
-		firstPreference = 1;
-		
-		previousPrefNumber = getPrefNumber(cds);
-		
-		removeCandiIndex = new CandidateIndex(pref);
-		previousPrefList = new ArrayList<Integer>();
-		
-		for (; previousPrefNumber >= firstPreference; previousPrefNumber--){
-			previousPrefList.add(previousPrefNumber);
-		}
-
-		cdsDeepCopy = deepCopyCandidateList(cds);
-		cdsDeepCopy.remove(removeCandiIndex);
-
-		candidateActiveList = new int[numCandidates];
-		candidateActiveList = activeCandidateList(cdsDeepCopy);
-		
-		// Find the Candidate if applicable
-		for (int votePref : v){
-			positionCounter++;
-			if ((pref == positionCounter) && (previousPrefList.contains(votePref))){ 
-				if(checkNotFalsePositive(candidateActiveList, v, votePref)){ 
-					cdsReordered = reorderCandidateList(v, cdsDeepCopy);
-					nextCandidate = getNextAvailableCandidate(votePref, cdsReordered);
-				}
-			}
-		}
-		
-		return nextCandidate;
-	}
 	
-	private Vote getDonkeyVote() { //TODO Add comments
-		Vote donkeyVote = new VoteList(numCandidates);
-		int firstPreference;
-		
-		firstPreference = 1;
-		
-		for (int votePreference = firstPreference; votePreference <= numCandidates; votePreference++){
-			donkeyVote.addPref(votePreference);
-		}
-		
-		return donkeyVote;
-	}
 
 	/**
 	 * Creates array containing a 1 if the candidate is still active or 0 if the candidate has been eliminated.
@@ -385,40 +246,7 @@ public class VoteCollection implements Collection {
 
 		return candidateActiveList;
 	}
-	
-	private int[] activeCandidateList_Ver2(TreeMap<CandidateIndex, Candidate> cds) { //TODO Delete this duplicate if not being used
-		int[] candidateActiveList = new int[numCandidates];
-		CandidateIndex currentIndex = null;
-		int currentCandidateList, addOneForAlignment = 1, oneForActiveCandidate = 1;
-		
-		for (Map.Entry<CandidateIndex, Candidate> findActive : cds.entrySet()){
-			currentIndex = findActive.getKey();
-			currentCandidateList = Integer.parseInt(currentIndex.toString());
-			
-			for (int counter = numCandidates; counter > 0; counter--){
-				if ((counter) == currentCandidateList){
-					candidateActiveList[counter] = oneForActiveCandidate;
-				}
-			}
-		}
 
-		return candidateActiveList;
-	}
-
-	/**
-	 * Create a deep copy of a candidate TreeMap
-	 * @param cds Original candidate TreeMap
-	 * @return Deep copied candidate TreeMap
-	 */
-	private TreeMap<CandidateIndex, Candidate> deepCopyCandidateList (TreeMap<CandidateIndex, Candidate> cds){
-		TreeMap<CandidateIndex, Candidate> deepCopy = new TreeMap<CandidateIndex, Candidate>();
-		
-		for (Map.Entry<CandidateIndex, Candidate> cloneIter : cds.entrySet()){
-			deepCopy.put(cloneIter.getKey(), cloneIter.getValue());
-		}
-		
-		return deepCopy;
-	}
 	
 	/**
 	 * Checks that a vote is actually a vote that needs to be counted.
@@ -477,85 +305,4 @@ public class VoteCollection implements Collection {
 		
 		return newCandidateIndex;
     }
-	
-	/**
-	 * Find the next preference number based on the original number of candidates and
-	 * the current active list of candidates after preferences have been counted.
-	 * @return int numCandidates - CandidateCollection.size() + 1
-	 */
-	private int getPrefNumber(TreeMap<CandidateIndex, Candidate> cds){
-		int currentCandidateSize, returnCount, addOneForNextPref;
-		
-		addOneForNextPref = 1;
-		
-		currentCandidateSize = cds.size();
-		returnCount = numCandidates - currentCandidateSize + addOneForNextPref;
-		
-		return returnCount;
-	}
-	
-	/**
-	 * Reorder the list of candidates to align with a new ordered list of votes 
-	 * this is sorted by preference order
-	 * @param vote Original collection of vote
-	 * @param orderedVote Reordered collection of votes eg. 1,2,...,n = numCandidates
-	 * @param cds Original list of candidates
-	 * @return Reordered list of candidates sorted by preference
-	 */
-	private TreeMap<CandidateIndex, Candidate> reorderCandidateList
-			(Vote vote, TreeMap<CandidateIndex, Candidate> cds){
-		
-		CandidateIndex newCandidateIndex = null, oldCandidateIndex = null;
-		Candidate newCandidate = null;
-		TreeMap<CandidateIndex, Candidate> newCandidateList = new TreeMap<CandidateIndex, Candidate>();
-		Vote orderedVote = null, donkeyVote = null;
-		int counter;
-		
-		//Setup to find the Candidate
-		orderedVote = getDonkeyVote();  //TODO Change to donkeyVote
-		//orderedVote = vote.invertVote();
-		
-		
-		for (int newVote : orderedVote){
-			counter = 0;
-			
-			for (int oldVote : vote){
-				counter++;
-				
-				if (newVote == oldVote){
-					oldCandidateIndex = new CandidateIndex(counter);
-					newCandidateIndex = new CandidateIndex(newVote);
-					newCandidate = cds.get(oldCandidateIndex);
-					newCandidateList.put(newCandidateIndex, newCandidate);
-				}		
-			}
-		}
-	
-		return newCandidateList;
-	}
-	
-	/**
-	 * Get the next preference available from an ordered candidate list.
-	 * Based on the current preference select the next not null candidate.
-	 * @param currentPref Preferred next candidateIndex number
-	 * @return Next available Candidate object or Null
-	 */
-	private Candidate getNextAvailableCandidate(int currentPref, TreeMap<CandidateIndex, Candidate> cdsReordered){
-		int nextPrefNumber, addOneForNextPreference = 1;
-		CandidateIndex findIndex = null;
-		Candidate candiHolder = null;
-		
-		nextPrefNumber = currentPref + addOneForNextPreference;
-		
-		for (;nextPrefNumber <= numCandidates; nextPrefNumber++){
-			findIndex = new CandidateIndex(nextPrefNumber);
-			candiHolder = cdsReordered.get(findIndex);
-			if (candiHolder != null){
-				//Return on first not null candidateIndex
-				return candiHolder;
-			}
-		}	
-		
-		return null;
-	}
 }
