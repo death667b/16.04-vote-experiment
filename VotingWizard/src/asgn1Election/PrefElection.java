@@ -34,6 +34,7 @@ public class PrefElection extends Election {
 		type = Election.PrefVoting;
 	}
 
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -42,12 +43,13 @@ public class PrefElection extends Election {
 	@Override
 	public String findWinner() {
 		int infiniteLoopProtection, winningVotesRequired;
-		CandidateIndex candidateIndex = null;
-		String returnString = "";
+		CandidateIndex candidateToEliminate = null;
+		String returnString;
 		
 		infiniteLoopProtection = 0;
 		winningVotesRequired = findWinningVotesRequired();
 		
+		returnString = "";
 		returnString += showResultHeader();
 		returnString += "Counting primary votes; ";
 		returnString += getNumCandidates() + " alternatives available\n";
@@ -56,10 +58,11 @@ public class PrefElection extends Election {
 		
 		do{
 			returnString += reportCountStatus();			
-			candidateIndex = selectLowestCandidate();
-			returnString += prefDistMessage(cds.get(candidateIndex)) + "\n";
+			candidateToEliminate = selectLowestCandidate();
+			returnString += prefDistMessage(cds.get(candidateToEliminate)) + "\n";
 			
-			vc.countPrefVotes(cds, candidateIndex);
+			cds.remove(candidateToEliminate);
+			vc.countPrefVotes(cds, candidateToEliminate);
 			
 			infiniteLoopProtection++;
 			winner = clearWinner(winningVotesRequired);
@@ -67,9 +70,11 @@ public class PrefElection extends Election {
 		
 		returnString += reportCountStatus();
 		returnString += reportWinner(winner);
+		
 		return returnString;
 	}
 
+	
 	/* 
 	 * (non-Javadoc)
 	 * 
@@ -77,37 +82,34 @@ public class PrefElection extends Election {
 	 */
 	@Override
 	public boolean isFormal(Vote v) {
-		int voteValue, innerLoopCounter, outerLoopCounter;
-		Iterator<Integer> iter;
-		Object voteObject;
+		int innerLoopCounter, outerLoopCounter, zeroPreference;
 		
 		outerLoopCounter = 0;
-		iter = v.iterator();
+		zeroPreference = 0;
 		
-		
-		while(iter.hasNext()){
-			voteObject = iter.next();
-			voteValue = (int) voteObject;
+		for (int outerPreference : v){
 			outerLoopCounter++;
-			innerLoopCounter = 0;			
+			innerLoopCounter = 0;
 			
 			// Test to see if there is a duplicate vote
 			// Skipping the current vote being tested
-			for (Object obj : v){
+			for (int innerPreference : v){
 				innerLoopCounter++;
-				if (obj.equals(voteObject) && outerLoopCounter != innerLoopCounter){
+				if (outerPreference == innerPreference && outerLoopCounter != innerLoopCounter){
 					return false;
 				}
 			}
 			
-			//Test to see if the voted number is higher than the available candidates
-			if (voteValue > this.numCandidates){
+			//Test to see if preference exceeds max and min range
+			if (outerPreference <= zeroPreference || outerPreference > numCandidates){
 				return false;
 			}
 		}
+		
 		return true;
 	}
 
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -129,33 +131,40 @@ public class PrefElection extends Election {
 	 */
 	@Override
 	protected Candidate clearWinner(int winVotes)  {
-		int candidateOneVotes, candidateTwoVotes, oneCandidate, twoCandidates, numberNeededForClearWin, twoRemainingCandidates;
-		java.util.Collection<Candidate> candidateCollection = this.cds.values();
-		ArrayList<Candidate> candidateList = new ArrayList<Candidate>();
+		int candidateOneVotes, candidateTwoVotes, firstCandidate, secondCandidate, numberNeededForClearWin, twoOrLessCandidates;
+		java.util.Collection<Candidate> candidateCollection;
+		ArrayList<Candidate> candidateList;
 		Candidate candidateWinner = null;
 		
-		twoRemainingCandidates = 2;
+		candidateList = new ArrayList<Candidate>();
+		candidateCollection = this.cds.values();
+		twoOrLessCandidates = 2;
 		numberNeededForClearWin = 1;
-		oneCandidate = 0;
-		twoCandidates = 1;
+		firstCandidate = 0;
+		secondCandidate = 1;
 
-		if (candidateCollection.size() <= twoRemainingCandidates){
+		if (candidateCollection.size() <= twoOrLessCandidates){
 			for (Candidate candidate : candidateCollection) {
+				// Build candidate list for those over or equal to the winVotes value
 				if (candidate.getVoteCount() >= winVotes){
 					candidateList.add(candidate);
 				}
 			}
 	
 			if (candidateList.size() == numberNeededForClearWin){
-				candidateWinner = candidateList.get(oneCandidate);
+				candidateWinner = candidateList.get(firstCandidate);
 			} else {
-				candidateOneVotes = candidateList.get(oneCandidate).getVoteCount();
-				candidateTwoVotes = candidateList.get(twoCandidates).getVoteCount();
+				candidateOneVotes = candidateList.get(firstCandidate).getVoteCount();
+				candidateTwoVotes = candidateList.get(secondCandidate).getVoteCount();
 				
-				if (candidateOneVotes >= candidateTwoVotes){
-					candidateWinner = candidateList.get(oneCandidate);
+				// If tie, eliminate one more candidate (most likely)
+				if (candidateOneVotes == candidateTwoVotes){
+					candidateWinner = null;
+				// In case one candidate has high votes than the other and over the winVote threshold
+				} else if (candidateOneVotes > candidateTwoVotes){
+					candidateWinner = candidateList.get(firstCandidate);
 				} else {
-					candidateWinner = candidateList.get(twoCandidates);
+					candidateWinner = candidateList.get(secondCandidate);
 				}
 			}
 			
@@ -167,6 +176,7 @@ public class PrefElection extends Election {
 		return candidateWinner;
 	}
 
+	
 	/**
 	 * Helper method to create a preference distribution message for display 
 	 * 
@@ -179,6 +189,7 @@ public class PrefElection extends Election {
 		return str;
 	}
 
+	
 	/**
 	 * Helper method to create a string reporting the count progress
 	 * 
@@ -201,28 +212,32 @@ public class PrefElection extends Election {
 		return str;
 	}
 
+	
 	/**
 	 * Helper method to select candidate with fewest votes
 	 * 
 	 * @return <code>CandidateIndex</code> of candidate with fewest votes
 	 */
 	private CandidateIndex selectLowestCandidate() {
-		int voteCount = -1;
+		
 		CandidateIndex indexToReturn = null;
+		int voteCount;
+		
+		voteCount = -1;
 
 		for (Map.Entry<CandidateIndex, Candidate> candidateMap : cds.entrySet()) {
 			Candidate candidateValue = candidateMap.getValue();
 			CandidateIndex candidateKey = candidateMap.getKey();
 			
-			if (voteCount == -1 || voteCount > candidateValue.getVoteCount()){
+			if (voteCount > candidateValue.getVoteCount()){
 				voteCount = candidateValue.getVoteCount();
 				indexToReturn = candidateKey.copy();
 			}			
 		}
 
 		return indexToReturn;
-
 	}
+	
 	
 	/**
 	 * Find the number of winning votes required for a clear win.  
@@ -230,6 +245,7 @@ public class PrefElection extends Election {
 	 * @return Minimum votes required for clear win.
 	 */
 	private int findWinningVotesRequired(){
+		
 		int returnVoteRequired, formalCount, divideByTwo;
 		
 		returnVoteRequired = 0;

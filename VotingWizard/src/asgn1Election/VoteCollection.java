@@ -7,7 +7,6 @@
 package asgn1Election;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -60,6 +59,7 @@ public class VoteCollection implements Collection {
 		voteList = new ArrayList<Vote>();
 	}
 	
+	
 	/* 
 	 * (non-Javadoc)
 	 * 
@@ -68,28 +68,19 @@ public class VoteCollection implements Collection {
 	@Override
 	public void countPrefVotes(TreeMap<CandidateIndex, Candidate> cds,
 			CandidateIndex elim) {
-		
-		Vote invertedVote = null;
-		int[] candidateActiveList;
-		int candidateToEliminate, numberOfCandidatesRemoved;
+
+		int numberOfCandidatesRemoved, nextPrefrenceNumber, moveToNextPreference;
 		CandidateIndex foundIndex;
 		Candidate addVotetoCandidate = null;
 		
-		candidateToEliminate = Integer.parseInt(elim.toString());
-		
-		cds.remove(elim);
+		moveToNextPreference = 1;
 		numberOfCandidatesRemoved = numCandidates - cds.size();
-
-		candidateActiveList = new int[numCandidates];
-		candidateActiveList = activeCandidateList(cds);
 		
 		for (Vote vote : voteList){ 
-			invertedVote = vote.invertVote();
-			
-			for (int counter = 1; counter <= numberOfCandidatesRemoved; counter++){
-				if ((counter == getVoteIndex(invertedVote, candidateToEliminate)) && 
-						checkNotFalsePositive(candidateActiveList, vote, counter)){
-					foundIndex = getPrefthKey(vote, cds, counter+1); //TODO Fix magic
+			for (int eliminateIndex = 1; eliminateIndex <= numberOfCandidatesRemoved; eliminateIndex++){
+				if (voteContainsElimination(cds, elim, vote, eliminateIndex)){
+					nextPrefrenceNumber = eliminateIndex + moveToNextPreference;
+					foundIndex = getPrefthKey(vote, cds, nextPrefrenceNumber);
 					
 					if (foundIndex != null){
 						addVotetoCandidate = cds.get(foundIndex);
@@ -100,10 +91,53 @@ public class VoteCollection implements Collection {
 		}
 	}
 
-	private int getVoteIndex(Vote vote, int candidateToEliminate){ //TODO Add comments if keeping 
-		int returnCounter = 0, counter = 1;
+	
+	/**
+	 * Test current vote for an eliminated preference.
+	 * @param cds - TreeMap containing the candidates still active in this election.
+	 * @param elim - CandidateIndex being eliminated
+	 * @param vote - Vote being processed
+	 * @param eliminateIndex - Index of the eliminated preference
+	 * @return True if vote valid for preference count, False if no preference re-allocation is required
+	 */
+	private boolean voteContainsElimination(TreeMap<CandidateIndex, Candidate> cds, 
+			CandidateIndex elim, Vote vote, int eliminateIndex){
 		
-		for (int v : vote){
+		int[] candidateActiveList;
+		int candidateToEliminate;
+		boolean returnBool = false;
+		
+		candidateActiveList = new int[numCandidates];
+		candidateActiveList = activeCandidateList(cds);
+		candidateToEliminate = Integer.parseInt(elim.toString());
+		
+		if ((eliminateIndex == getVoteIndex(vote, candidateToEliminate)) && 
+				checkForFalsePositive(candidateActiveList, vote, eliminateIndex)){
+			// Only return true if the index and the candidate to eliminate are true AND
+			// To prevent false positives, check if the vote has already been counted
+			returnBool = true;
+		}
+		
+		return returnBool;
+	}
+	
+	
+	/**
+	 * Inverts the vote and then gets the index of the preference to eliminate
+	 * @param vote - Vote list to invert and index
+	 * @param candidateToEliminate - Current candidate preference that is being eliminated
+	 * @return Returns 0 based index of the candidate to eliminate, returns -1 if no index found
+	 */
+	private int getVoteIndex(Vote vote, int candidateToEliminate){
+		
+		int returnCounter, counter;
+		Vote invertedVote = null;
+		
+		returnCounter = -1; 
+		counter = 1;
+		invertedVote = vote.invertVote();
+		
+		for (int v : invertedVote){
 			if (v == candidateToEliminate){
 				returnCounter = counter;
 			}
@@ -114,6 +148,7 @@ public class VoteCollection implements Collection {
 		return returnCounter;
 	}
 	
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -121,6 +156,7 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public void countPrimaryVotes(TreeMap<CandidateIndex, Candidate> cds) {
+		
 		CandidateIndex candidateIndex;
 		Candidate candidate;
 		
@@ -128,11 +164,10 @@ public class VoteCollection implements Collection {
 			candidateIndex = getPrimaryKey(vl);
 			candidate = cds.get(candidateIndex);
 			candidate.incrementVoteCount();
-			
-			cds.put(candidateIndex, candidate);
 		}
 	}
 
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -140,9 +175,13 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public void emptyTheCollection() {
+		
 		voteList.clear();
+		formalCount = 0;
+		informalCount = 0;
 	}
 
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -150,9 +189,11 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public int getFormalCount() {
+		
 		return formalCount;
 	}
 
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -160,6 +201,7 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public int getInformalCount() {
+		
 		 return informalCount; 
 	}
 
@@ -171,10 +213,12 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public void includeFormalVote(Vote v) {
+		
 		voteList.add(v);
 		formalCount++;
 	}
 
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -182,8 +226,10 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public void updateInformalCount() {
+		
 		this.informalCount++;
 	}
+	
 	
 	/**
 	 * 
@@ -208,16 +254,22 @@ public class VoteCollection implements Collection {
 
 		CandidateIndex findCandidate = null;
 		Candidate testCandidateForNull = null;
-		int protectionCounter = numCandidates;
+		int protectionCounter, failAtZero;
+		
+		protectionCounter = numCandidates;
+		failAtZero = 0;
 		
 		do {
 			findCandidate = v.getPreference(pref);
 			testCandidateForNull = cds.get(findCandidate);
+			
 			if (testCandidateForNull == null){
 				pref++;
 			}
+			
 			protectionCounter--;
-		} while (testCandidateForNull == null && protectionCounter > 0);
+		//Add a protectionCounter to prevent an infinite loop
+		} while (testCandidateForNull == null && protectionCounter > failAtZero);
 		
 		return findCandidate;
 	}
@@ -229,9 +281,14 @@ public class VoteCollection implements Collection {
 	 * @return Int Array containing 1 for active or 0 for eliminated
 	 */
 	private int[] activeCandidateList(TreeMap<CandidateIndex, Candidate> cds) {
-		int[] candidateActiveList = new int[numCandidates];
+		
+		int currentCandidateList, addOneForAlignment, oneForActiveCandidate;
 		CandidateIndex currentIndex = null;
-		int currentCandidateList, addOneForAlignment = 1, oneForActiveCandidate = 1;
+		int[] candidateActiveList;
+		
+		candidateActiveList = new int[numCandidates];
+		oneForActiveCandidate = 1;
+		addOneForAlignment = 1;
 		
 		for (Map.Entry<CandidateIndex, Candidate> findActive : cds.entrySet()){
 			currentIndex = findActive.getKey();
@@ -260,13 +317,17 @@ public class VoteCollection implements Collection {
 	 * @param compareVotePref The single preference vote to compare.
 	 * @return True if safe to count false if 'false positive'
 	 */
-	private boolean checkNotFalsePositive(int[] activeCandidates, Vote vote, int compareVotePref){
-		int counter = 0, candidateIsActive = 1;
-		boolean returnBool = true;
+	private boolean checkForFalsePositive(int[] activeCandidates, Vote vote, int compareVotePref){
+		
+		int counter, candidateIsActive;
+		boolean returnBool;
+		
+		candidateIsActive = 1;
+		counter = 0;
+		returnBool = true;
 		
 		for (int votePref : vote){
 			if (votePref < compareVotePref && activeCandidates[counter] == candidateIsActive){
-				//Immediate return on failure
 				returnBool = false;
 				return returnBool; 
 			}
@@ -286,17 +347,16 @@ public class VoteCollection implements Collection {
 	 * @return <code>CandidateIndex</code> of the first preference candidate
 	 */
 	private CandidateIndex getPrimaryKey(Vote v) {
-		int voteValue, voteCounter, primaryVote;
+		
+		int voteCounter, primaryVote;
 		CandidateIndex newCandidateIndex = null;
-		Iterator<Integer> iterator;
 		
 		primaryVote = 1;
 		voteCounter = 1;
-		iterator = v.iterator();
 		
-		while(iterator.hasNext()){
-			voteValue = (int) iterator.next();
-			if (voteValue == primaryVote){
+		// Return the candidateIndex with the voteCounter with the preference equals one
+		for (int preference : v){
+			if (preference == primaryVote){
 				newCandidateIndex = new CandidateIndex(voteCounter);
 			}
 			

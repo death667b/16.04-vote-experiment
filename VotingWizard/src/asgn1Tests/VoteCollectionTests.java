@@ -94,88 +94,47 @@ public class VoteCollectionTests {
 	 * Test method for {@link asgn1Election.VoteCollection#countPrefVotes(java.util.TreeMap, asgn1Election.CandidateIndex)}.
 	 */	
 	@Test
-	public void testCountPrefVotesFirstPassSize() {
-		CandidateIndex elimCandi = new CandidateIndex(8);
-		vc.countPrimaryVotes(cds);
-		vc.countPrefVotes(cds, elimCandi);
-		
-		assertEquals(14, cds.size());
-	}
-	
-	@Test
 	public void testCountPrefVotesFirstPassCorrectCount() {
 		CandidateIndex elimCandi = new CandidateIndex(8);
 		vc.countPrimaryVotes(cds);
+		cds.remove(elimCandi);
 		vc.countPrefVotes(cds, elimCandi);
 		
 		Candidate changedCandi = cds.get(new CandidateIndex(1));
 		assertEquals(47, changedCandi.getVoteCount());
 	}
-	
-	@Test
-	public void testCountPrefVotesSecondPassSize() {
-		CandidateIndex elimCandi = new CandidateIndex(8);
-		vc.countPrimaryVotes(cds);
-		vc.countPrefVotes(cds, elimCandi);
-		elimCandi = new CandidateIndex(2);
-		vc.countPrefVotes(cds, elimCandi);
 		
-		assertEquals(13, cds.size());
-	}
-	
 	@Test
 	public void testCountPrefVotesSecondPassCorrectCount() {
 		CandidateIndex elimCandi = new CandidateIndex(8);
 		vc.countPrimaryVotes(cds);
+		cds.remove(elimCandi);
 		vc.countPrefVotes(cds, elimCandi);
 		elimCandi = new CandidateIndex(2);
+		cds.remove(elimCandi);
 		vc.countPrefVotes(cds, elimCandi);
 		
 		Candidate changedCandi = cds.get(new CandidateIndex(10));
 		assertEquals(50, changedCandi.getVoteCount());
-	}
-
-	@Test
-	public void testCountPrefVotesThirdPassSize() {
-		CandidateIndex elimCandi = new CandidateIndex(8);
-		vc.countPrimaryVotes(cds);
-		vc.countPrefVotes(cds, elimCandi);
-		elimCandi = new CandidateIndex(2);
-		vc.countPrefVotes(cds, elimCandi);
-		elimCandi = new CandidateIndex(6);
-		vc.countPrefVotes(cds, elimCandi);
-		
-		assertEquals(12, cds.size());
 	}
 	
 	@Test
 	public void testCountPrefVotesThirdPassCorrectCount() {
 		CandidateIndex elimCandi = new CandidateIndex(8);
 		vc.countPrimaryVotes(cds);
+		cds.remove(elimCandi);
 		vc.countPrefVotes(cds, elimCandi);
 		elimCandi = new CandidateIndex(2);
+		cds.remove(elimCandi);
 		vc.countPrefVotes(cds, elimCandi);
 		elimCandi = new CandidateIndex(6);
+		cds.remove(elimCandi);
 		vc.countPrefVotes(cds, elimCandi);
 		
 		Candidate changedCandi = cds.get(new CandidateIndex(4));
 		assertEquals(70, changedCandi.getVoteCount());
 	}
-	
-	@Test
-	public void testCountPrefVotesRun13Times() {
-		CandidateIndex elimCandi;
 		
-		vc.countPrimaryVotes(cds);
-
-		for (int i = 1; i <= 13; i++){
-			elimCandi = new CandidateIndex(i);
-			vc.countPrefVotes(cds, elimCandi);
-		}
-		
-		assertEquals(2, cds.size());
-	}
-	
 	@Test
 	public void testCountPrefVotesNoDuplicates() {
 		CandidateIndex elimCandi;
@@ -184,6 +143,7 @@ public class VoteCollectionTests {
 
 		for (int i = 1; i <= 14; i++){
 			elimCandi = new CandidateIndex(i);
+			cds.remove(elimCandi);
 			vc.countPrefVotes(cds, elimCandi);
 		}
 		

@@ -34,11 +34,12 @@ public class VoteList implements Vote {
 	 * this seat. 
 	 */
 	public VoteList(int numCandidates) {
+		
 		this.numCandidates = numCandidates;
 		vote = new ArrayList<Integer>();
-
 	}
 
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -46,6 +47,7 @@ public class VoteList implements Vote {
 	 */
 	@Override
 	public boolean addPref(int index) {
+		
 		if (vote.size() < numCandidates){
 			vote.add(index);
 			return true;
@@ -54,6 +56,7 @@ public class VoteList implements Vote {
 		}
 	}
 
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -61,7 +64,10 @@ public class VoteList implements Vote {
 	 */
 	@Override
 	public Vote copyVote() {
-		Vote returnVote = new VoteList(numCandidates);
+		
+		Vote returnVote;
+		
+		returnVote = new VoteList(numCandidates);
 		
 		for (Integer index : this.vote) {
 			returnVote.addPref(index);
@@ -70,15 +76,17 @@ public class VoteList implements Vote {
 		return returnVote;
 	}
 
+	
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see asgn1Election.Vote#getPreference(int)
 	 */
 	@Override
-	public CandidateIndex getPreference(int cand) {		
-		CandidateIndex returnIndex = null;
+	public CandidateIndex getPreference(int cand) {	
+		
 		int indexFound, indexAlignment, candidateNumber;
+		CandidateIndex returnIndex = null;
 		
 		indexAlignment = 1;
 		indexFound = vote.indexOf(cand);
@@ -89,6 +97,7 @@ public class VoteList implements Vote {
 		return returnIndex;
 	}
 
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -96,9 +105,11 @@ public class VoteList implements Vote {
 	 */
 	@Override
 	public Vote invertVote() {
-		Vote invertedVote = new VoteList(numCandidates);
-		int arrayAlignment, preferenceToAdd;
 		
+		int arrayAlignment, preferenceToAdd;
+		Vote invertedVote;
+		
+		invertedVote = new VoteList(numCandidates);
 		arrayAlignment = 1;
 		
 		// Index becomes the value and value becomes the index
@@ -111,6 +122,7 @@ public class VoteList implements Vote {
 		return invertedVote;
 	}
 
+	
 	/* 
 	 * (non-Javadoc)
 	 * 
@@ -118,9 +130,11 @@ public class VoteList implements Vote {
 	 */
 	@Override
 	public Iterator<Integer> iterator() {
+		
 		return vote.iterator();
 	}
 
+	
 	/*
 	 * (non-Javadoc)
 	 * 

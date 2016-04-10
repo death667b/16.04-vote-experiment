@@ -6,8 +6,6 @@
  */
 package asgn1Election;
 
-import java.util.Iterator;
-
 import asgn1Util.Strings;
 
 /**
@@ -26,10 +24,12 @@ public class SimpleElection extends Election {
 	 * @param name <code>String</code> containing the Election name
 	 */
 	public SimpleElection(String name) {
+		
 		super(name);
 		type = Election.SimpleVoting;
 	}
 
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -37,8 +37,10 @@ public class SimpleElection extends Election {
 	 */
 	@Override
 	public String findWinner() {
-		String returnString = "";
 		
+		String returnString;
+		
+		returnString = "";
 		returnString += showResultHeader();
 		returnString += "Counting primary votes;\n";
 		
@@ -51,28 +53,26 @@ public class SimpleElection extends Election {
 		return returnString;
 	}
 
+	
 	/* 
 	 * (non-Javadoc)
 	 * @see asgn1Election.Election#isFormal(asgn1Election.Vote)
 	 */
 	@Override
 	public boolean isFormal(Vote v) {
-		int voteValue,foundPrimaries, zeroPreference;
-		Object voteObject;
 		
+		int foundPrimaries, zeroPreference;
+
 		foundPrimaries = 0;
 		zeroPreference = 0;
-		Iterator<Integer> iterator = v.iterator();
 		
-		while(iterator.hasNext()){
-			voteObject = iterator.next();
-			voteValue = (int) voteObject;
-			
-			if (voteValue == 1){
+		for (int preference : v){
+			if (preference == 1){
 				foundPrimaries++;
 			}
 			
-			if (voteValue <= zeroPreference || voteValue > this.numCandidates){
+			//Test to see if preference exceeds max and min range
+			if (preference <= zeroPreference || preference > numCandidates){
 				return false;
 			}
 		}
@@ -84,6 +84,7 @@ public class SimpleElection extends Election {
 		return true;
 	}
 
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -95,6 +96,7 @@ public class SimpleElection extends Election {
 		return str;
 	}
 	
+	
 	// Protected and Private/helper methods below///
 
 	/*
@@ -104,10 +106,15 @@ public class SimpleElection extends Election {
 	 */
 	@Override
 	protected Candidate clearWinner(int wVotes) {
+		
+		java.util.Collection<Candidate> candidateCollection;
 		Candidate candidateWinner = null;
+		int breakAtZero;
+		
+		candidateCollection = cds.values();
+		breakAtZero = 0;
 
-		java.util.Collection<Candidate> candidateCollection = this.cds.values();
-
+		// This will catch the candidate with the highest vote fist 
 		do{
 			for (Candidate candidate : candidateCollection) {
 				if (candidate.getVoteCount() >= wVotes){
@@ -117,11 +124,12 @@ public class SimpleElection extends Election {
 			}
 			
 			wVotes--;
-		} while (candidateWinner == null && wVotes > 0);
+		} while (candidateWinner == null && wVotes > breakAtZero);
 
 		return candidateWinner;
 	}
 
+	
 	/**
 	 * Helper method to create a string reporting the count result
 	 * 

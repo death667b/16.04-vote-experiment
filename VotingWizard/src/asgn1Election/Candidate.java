@@ -47,30 +47,25 @@ public class Candidate {
 	 * @throws ElectionException if <code>isNullOrEmpty(candName,candParty,candAbbrev) OR voteCount < 0 </code>
 	 */
 	public Candidate(String candName, String candParty, String candAbbrev, int voteCount) throws ElectionException {
-		int minimumStringLength = 1; 
 		
-		// Test candName for Not Null or Empty
-		if (candName != null && candName.trim().length() >= minimumStringLength){
+		if (notNullOrEmpty(candName)){
 			this.name = candName.trim();
 		} else {
 			throw new ElectionException("Name field can not be blank");
 		}
 
-		// Test candParty for Not Null or Empty
-		if (candParty != null && candParty.trim().length() >= minimumStringLength){
+		if (notNullOrEmpty(candParty)){
 			this.party = candParty.trim();
 		} else {
 			throw new ElectionException("Party Name field can not be blank");
 		}
 		
-		// Test candAbbrev for Not Null or Empty
-		if (candAbbrev != null && candAbbrev.trim().length() >= minimumStringLength){
+		if (notNullOrEmpty(candAbbrev)){
 			this.abbrev = candAbbrev.trim();
 		} else {
 			throw new ElectionException("Acronym field can not be blank");
 		}
 		
-		// Test voteCount for Not Null or Empty
 		if (voteCount >= 0){
 		    this.voteCount = voteCount;
 		} else {
@@ -78,6 +73,7 @@ public class Candidate {
 		}
 	}
 
+	
 	/**
 	 * Display method to show candidate name, full party and party acronym.
 	 * Note this representation does not include <code>voteCount</code>.  
@@ -98,6 +94,7 @@ public class Candidate {
 		return str;
 	}
 
+	
 	/**
 	 * Simple method to create a deep copy of the candidate
 	 * 
@@ -109,6 +106,7 @@ public class Candidate {
 		
 	}
 
+	
 	/**
 	 * Simple Getter to return the name field
 	 * 
@@ -118,6 +116,7 @@ public class Candidate {
 		return name;
 	}
 
+	
 	/**
 	 * Simple Getter to return the full party name field
 	 * 
@@ -127,6 +126,7 @@ public class Candidate {
 		return party;
 	}
 
+	
 	/**
 	 * Simple Getter to return the vote count for the candidate
 	 * 
@@ -136,6 +136,7 @@ public class Candidate {
 		return voteCount;
 	}
 
+	
 	/**
 	 * String version of the vote count Getter
 	 * 
@@ -147,6 +148,7 @@ public class Candidate {
 		return returnString.trim();
 	}
 
+	
 	/**
 	 * Simple method to increment the vote count for the candidate
 	 */
@@ -154,6 +156,7 @@ public class Candidate {
 		voteCount++;
 	}
 
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -167,5 +170,26 @@ public class Candidate {
 				- voteStr.length();
 		str += Strings.createPadding(' ', length) + voteStr + "\n";
 		return str;
+	}
+	
+	
+	/**
+	 * Test if the string given is not null or has at least one non-space character
+	 * @param string - String to test
+	 * @return True if not null and has at least one non-space character.  False if null or only contains spaces.
+	 */
+	private boolean notNullOrEmpty(String string){
+		
+		int minimumStringLength;
+		boolean returnBool;
+		
+		minimumStringLength = 1; 
+		returnBool = false;
+		
+		if (string != null && string.trim().length() >= minimumStringLength){
+			returnBool = true;
+		}
+		
+		return returnBool;
 	}
 }
