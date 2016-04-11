@@ -69,8 +69,8 @@ public class VoteList implements Vote {
 		
 		returnVote = new VoteList(numCandidates);
 		
-		for (Integer index : this.vote) {
-			returnVote.addPref(index);
+		for (int preference : this.vote) {
+			returnVote.addPref(preference);
 		}
 		
 		return returnVote;

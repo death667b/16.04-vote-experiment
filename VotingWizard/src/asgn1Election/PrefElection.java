@@ -57,7 +57,7 @@ public class PrefElection extends Election {
 		
 		do{
 			returnString += reportCountStatus();			
-			candidateToEliminate = selectLowestCandidate();
+			candidateToEliminate = selectFirstLowestCandidate();
 			returnString += prefDistMessage(cds.get(candidateToEliminate)) + "\n";
 			
 			cds.remove(candidateToEliminate);
@@ -217,19 +217,22 @@ public class PrefElection extends Election {
 	 * 
 	 * @return <code>CandidateIndex</code> of candidate with fewest votes
 	 */
-	private CandidateIndex selectLowestCandidate() {
+	private CandidateIndex selectFirstLowestCandidate() {
 		
 		CandidateIndex indexToReturn = null;
-		int voteCount;
+		int voteCount, sameVoteValueLastTrue;
 		
-		voteCount = -1;
+		voteCount = numCandidates;
+		sameVoteValueLastTrue = -1;
 
 		for (Map.Entry<CandidateIndex, Candidate> candidateMap : cds.entrySet()) {
 			Candidate candidateValue = candidateMap.getValue();
 			CandidateIndex candidateKey = candidateMap.getKey();
 			
-			if (voteCount > candidateValue.getVoteCount()){
+			// Find the lowest vote && Make sure it is the first of the lowest if multiple
+			if (voteCount > candidateValue.getVoteCount() && candidateValue.getVoteCount() != sameVoteValueLastTrue){
 				voteCount = candidateValue.getVoteCount();
+				sameVoteValueLastTrue = voteCount;
 				indexToReturn = candidateKey.copy();
 			}			
 		}
