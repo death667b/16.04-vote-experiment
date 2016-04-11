@@ -8,7 +8,6 @@ package asgn1Election;
 
 import java.util.ArrayList;
 // import java.util.BitSet;  Commented out to remove warning
-import java.util.Iterator;
 import java.util.Map;
 
 import asgn1Util.Strings;

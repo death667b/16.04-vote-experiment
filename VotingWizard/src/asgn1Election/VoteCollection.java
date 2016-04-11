@@ -90,64 +90,7 @@ public class VoteCollection implements Collection {
 			}
 		}
 	}
-
-	
-	/**
-	 * Test current vote for an eliminated preference.
-	 * @param cds - TreeMap containing the candidates still active in this election.
-	 * @param elim - CandidateIndex being eliminated
-	 * @param vote - Vote being processed
-	 * @param eliminateIndex - Index of the eliminated preference
-	 * @return True if vote valid for preference count, False if no preference re-allocation is required
-	 */
-	private boolean voteContainsElimination(TreeMap<CandidateIndex, Candidate> cds, 
-			CandidateIndex elim, Vote vote, int eliminateIndex){
 		
-		int[] candidateActiveList;
-		int candidateToEliminate;
-		boolean returnBool = false;
-		
-		candidateActiveList = new int[numCandidates];
-		candidateActiveList = activeCandidateList(cds);
-		candidateToEliminate = Integer.parseInt(elim.toString());
-		
-		if ((eliminateIndex == getVoteIndex(vote, candidateToEliminate)) && 
-				checkForFalsePositive(candidateActiveList, vote, eliminateIndex)){
-			// Only return true if the index and the candidate to eliminate are true AND
-			// To prevent false positives, check if the vote has already been counted
-			returnBool = true;
-		}
-		
-		return returnBool;
-	}
-	
-	
-	/**
-	 * Inverts the vote and then gets the index of the preference to eliminate
-	 * @param vote - Vote list to invert and index
-	 * @param candidateToEliminate - Current candidate preference that is being eliminated
-	 * @return Returns 0 based index of the candidate to eliminate, returns -1 if no index found
-	 */
-	private int getVoteIndex(Vote vote, int candidateToEliminate){
-		
-		int returnCounter, counter;
-		Vote invertedVote = null;
-		
-		returnCounter = -1; 
-		counter = 1;
-		invertedVote = vote.invertVote();
-		
-		for (int v : invertedVote){
-			if (v == candidateToEliminate){
-				returnCounter = counter;
-			}
-			
-			counter++;
-		}
-		
-		return returnCounter;
-	}
-	
 	
 	/*
 	 * (non-Javadoc)
@@ -365,4 +308,61 @@ public class VoteCollection implements Collection {
 		
 		return newCandidateIndex;
     }
+	
+	
+	/**
+	 * Inverts the vote and then gets the index of the preference to eliminate
+	 * @param vote - Vote list to invert and index
+	 * @param candidateToEliminate - Current candidate preference that is being eliminated
+	 * @return Returns 0 based index of the candidate to eliminate, returns -1 if no index found
+	 */
+	private int getVoteIndex(Vote vote, int candidateToEliminate){
+		
+		int returnCounter, counter;
+		Vote invertedVote = null;
+		
+		returnCounter = -1; 
+		counter = 1;
+		invertedVote = vote.invertVote();
+		
+		for (int v : invertedVote){
+			if (v == candidateToEliminate){
+				returnCounter = counter;
+			}
+			
+			counter++;
+		}
+		
+		return returnCounter;
+	}
+	
+	
+	/**
+	 * Test current vote for an eliminated preference.
+	 * @param cds - TreeMap containing the candidates still active in this election.
+	 * @param elim - CandidateIndex being eliminated
+	 * @param vote - Vote being processed
+	 * @param eliminateIndex - Index of the eliminated preference
+	 * @return True if vote valid for preference count, False if no preference re-allocation is required
+	 */
+	private boolean voteContainsElimination(TreeMap<CandidateIndex, Candidate> cds, 
+			CandidateIndex elim, Vote vote, int eliminateIndex){
+		
+		int[] candidateActiveList;
+		int candidateToEliminate;
+		boolean returnBool = false;
+		
+		candidateActiveList = new int[numCandidates];
+		candidateActiveList = activeCandidateList(cds);
+		candidateToEliminate = Integer.parseInt(elim.toString());
+		
+		if ((eliminateIndex == getVoteIndex(vote, candidateToEliminate)) && 
+				checkForFalsePositive(candidateActiveList, vote, eliminateIndex)){
+			// Only return true if the index and the candidate to eliminate are true AND
+			// To prevent false positives, check if the vote has already been counted
+			returnBool = true;
+		}
+		
+		return returnBool;
+	}
 }

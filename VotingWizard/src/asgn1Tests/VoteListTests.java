@@ -155,6 +155,15 @@ public class VoteListTests {
 	 * Test method for {@link asgn1Election.VoteList#iterator()}.
 	 */
 	@Test
+	public void testIteratorObjectNotNull() {
+		Iterator<Integer> iterator;
+		
+		iterator = vote.iterator();
+		
+		assertNotNull(iterator);
+	}
+	
+	@Test
 	public void testIteratorNormal() {
 		Iterator<Integer> iterator;
 		Integer holder;
