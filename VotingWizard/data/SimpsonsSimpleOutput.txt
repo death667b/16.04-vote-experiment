@@ -1,0 +1,83 @@
+Results for election: SmallSimpsons
+Enrolment: 150
+
+Bart Simpson        No School Party               (NSP)
+Lisa Simpson        Smarty Pants Party            (SPP)
+Homer Simpson       Doughnuts For all Pary        (DFP)
+
+
+Counting primary votes; 3 alternatives available
+
+Simple election: SmallSimpsons
+
+Bart Simpson (NSP)          50
+Lisa Simpson (SPP)          46
+Homer Simpson (DFP)         47
+
+Informal                     7
+
+Votes Cast                 150
+
+
+
+Candidate Bart Simpson (No School Party) is the winner with 50 votes...
+
+Results for election: MediumSimpsons
+Enrolment: 300
+
+Bart Simpson        No School Party               (NSP)
+Lisa Simpson        Smarty Pants Party            (SPP)
+Homer Simpson       Doughnuts For all Pary        (DFP)
+Marge Simpson       Blue Hair Party               (BHP)
+Maggie Simpson      Pacifier Lovers Party         (PLP)
+
+
+Counting primary votes; 5 alternatives available
+
+Simple election: MediumSimpsons
+
+Bart Simpson (NSP)          72
+Lisa Simpson (SPP)          43
+Homer Simpson (DFP)         70
+Marge Simpson (BHP)         47
+Maggie Simpson (PLP)        57
+
+Informal                    11
+
+Votes Cast                 300
+
+
+
+Candidate Bart Simpson (No School Party) is the winner with 72 votes...
+
+Results for election: LargeSimpsons
+Enrolment: 800
+
+Bart Simpson        No School Party               (NSP)
+Lisa Simpson        Smarty Pants Party            (SPP)
+Homer Simpson       Doughnuts For all Pary        (DFP)
+Marge Simpson       Blue Hair Party               (BHP)
+Maggie Simpson      Pacifier Lovers Party         (PLP)
+Montgomery Burns    Money Bags Party              (MBP)
+Comic Book Guy      Comics For All Party          (CFP)
+
+
+Counting primary votes; 7 alternatives available
+
+Simple election: LargeSimpsons
+
+Bart Simpson (NSP)         107
+Lisa Simpson (SPP)         110
+Homer Simpson (DFP)         97
+Marge Simpson (BHP)        121
+Maggie Simpson (PLP)       113
+Montgomery Burns (MBP)     112
+Comic Book Guy (CFP)       103
+
+Informal                    37
+
+Votes Cast                 800
+
+
+
+Candidate Marge Simpson (Blue Hair Party) is the winner with 121 votes...

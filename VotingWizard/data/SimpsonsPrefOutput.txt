@@ -1,0 +1,201 @@
+Results for election: SmallSimpsons
+Enrolment: 150
+
+Bart Simpson        No School Party               (NSP)
+Lisa Simpson        Smarty Pants Party            (SPP)
+Homer Simpson       Doughnuts For all Pary        (DFP)
+
+
+Counting primary votes; 3 alternatives available
+
+Preferential election: SmallSimpsons
+
+Bart Simpson (NSP)          50
+Lisa Simpson (SPP)          46
+Homer Simpson (DFP)         46
+
+Informal                     8
+
+Votes Cast                 150
+
+
+Preferences required: distributing Lisa Simpson: 46 votes
+
+Preferential election: SmallSimpsons
+
+Bart Simpson (NSP)          76
+Homer Simpson (DFP)         66
+
+Informal                     8
+
+Votes Cast                 150
+
+
+Candidate Bart Simpson (No School Party) is the winner with 76 votes...
+
+Results for election: MediumSimpsons
+Enrolment: 300
+
+Bart Simpson        No School Party               (NSP)
+Lisa Simpson        Smarty Pants Party            (SPP)
+Homer Simpson       Doughnuts For all Pary        (DFP)
+Marge Simpson       Blue Hair Party               (BHP)
+Maggie Simpson      Pacifier Lovers Party         (PLP)
+
+
+Counting primary votes; 5 alternatives available
+
+Preferential election: MediumSimpsons
+
+Bart Simpson (NSP)          68
+Lisa Simpson (SPP)          42
+Homer Simpson (DFP)         67
+Marge Simpson (BHP)         44
+Maggie Simpson (PLP)        54
+
+Informal                    25
+
+Votes Cast                 300
+
+
+Preferences required: distributing Lisa Simpson: 42 votes
+
+Preferential election: MediumSimpsons
+
+Bart Simpson (NSP)          79
+Homer Simpson (DFP)         74
+Marge Simpson (BHP)         61
+Maggie Simpson (PLP)        61
+
+Informal                    25
+
+Votes Cast                 300
+
+
+Preferences required: distributing Marge Simpson: 61 votes
+
+Preferential election: MediumSimpsons
+
+Bart Simpson (NSP)         106
+Homer Simpson (DFP)         86
+Maggie Simpson (PLP)        83
+
+Informal                    25
+
+Votes Cast                 300
+
+
+Preferences required: distributing Maggie Simpson: 83 votes
+
+Preferential election: MediumSimpsons
+
+Bart Simpson (NSP)         146
+Homer Simpson (DFP)        129
+
+Informal                    25
+
+Votes Cast                 300
+
+
+Candidate Bart Simpson (No School Party) is the winner with 146 votes...
+
+Results for election: LargeSimpsons
+Enrolment: 800
+
+Bart Simpson        No School Party               (NSP)
+Lisa Simpson        Smarty Pants Party            (SPP)
+Homer Simpson       Doughnuts For all Pary        (DFP)
+Marge Simpson       Blue Hair Party               (BHP)
+Maggie Simpson      Pacifier Lovers Party         (PLP)
+Montgomery Burns    Money Bags Party              (MBP)
+Comic Book Guy      Comics For All Party          (CFP)
+
+
+Counting primary votes; 7 alternatives available
+
+Preferential election: LargeSimpsons
+
+Bart Simpson (NSP)         106
+Lisa Simpson (SPP)         108
+Homer Simpson (DFP)         97
+Marge Simpson (BHP)        116
+Maggie Simpson (PLP)       112
+Montgomery Burns (MBP)     109
+Comic Book Guy (CFP)       102
+
+Informal                    50
+
+Votes Cast                 800
+
+
+Preferences required: distributing Homer Simpson: 97 votes
+
+Preferential election: LargeSimpsons
+
+Bart Simpson (NSP)         119
+Lisa Simpson (SPP)         125
+Marge Simpson (BHP)        130
+Maggie Simpson (PLP)       131
+Montgomery Burns (MBP)     127
+Comic Book Guy (CFP)       118
+
+Informal                    50
+
+Votes Cast                 800
+
+
+Preferences required: distributing Comic Book Guy: 118 votes
+
+Preferential election: LargeSimpsons
+
+Bart Simpson (NSP)         142
+Lisa Simpson (SPP)         153
+Marge Simpson (BHP)        157
+Maggie Simpson (PLP)       150
+Montgomery Burns (MBP)     148
+
+Informal                    50
+
+Votes Cast                 800
+
+
+Preferences required: distributing Bart Simpson: 142 votes
+
+Preferential election: LargeSimpsons
+
+Lisa Simpson (SPP)         193
+Marge Simpson (BHP)        195
+Maggie Simpson (PLP)       183
+Montgomery Burns (MBP)     179
+
+Informal                    50
+
+Votes Cast                 800
+
+
+Preferences required: distributing Montgomery Burns: 179 votes
+
+Preferential election: LargeSimpsons
+
+Lisa Simpson (SPP)         258
+Marge Simpson (BHP)        257
+Maggie Simpson (PLP)       235
+
+Informal                    50
+
+Votes Cast                 800
+
+
+Preferences required: distributing Maggie Simpson: 235 votes
+
+Preferential election: LargeSimpsons
+
+Lisa Simpson (SPP)         363
+Marge Simpson (BHP)        387
+
+Informal                    50
+
+Votes Cast                 800
+
+
+Candidate Marge Simpson (Blue Hair Party) is the winner with 387 votes...
