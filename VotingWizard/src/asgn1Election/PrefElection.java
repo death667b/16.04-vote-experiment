@@ -222,7 +222,7 @@ public class PrefElection extends Election {
 		CandidateIndex indexToReturn = null;
 		int voteCount, sameVoteValueLastTrue;
 		
-		voteCount = numCandidates;
+		voteCount = numVotes;
 		sameVoteValueLastTrue = -1;
 
 		for (Map.Entry<CandidateIndex, Candidate> candidateMap : cds.entrySet()) {
