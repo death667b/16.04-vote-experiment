@@ -246,38 +246,97 @@ public class PrefElectionTests {
 		assertFalse(prefElectLarge.isFormal(testVote));
 	}
 
-	
-	/**
-	 * Test method for {@link asgn1Election.PrefElection#toString()}.
-	 */
-	/*@Test
-	public void testToString() {
-		fail("Not yet implemented");
-	}*/
 
+	/*
+	 *    Test Section for Election.IsValidType()
+	 */
 	/**
 	 * Test method for {@link asgn1Election.Election#isValidType(int)}.
 	 */
-	/*@Test
-	public void testIsValidType() {
-		fail("Not yet implemented");
-	}*/
+	@Test
+	public void testIsValidTypeNegitiveOneFail() {
+		assertFalse(Election.isValidType(-1));
+	}
+	
+	@Test
+	public void testIsValidTypeZeroPass() {
+		assertTrue(Election.isValidType(0));
+	}
+	
+	@Test
+	public void testIsValidTypeOnePass() {
+		assertTrue(Election.isValidType(1));
+	}
+	
+	@Test
+	public void testIsValidTypeTwoFail() {
+		assertFalse(Election.isValidType(2));
+	}
 
-	/**
-	 * Test method for {@link asgn1Election.Election#Election(java.lang.String)}.
+	
+	/*
+	 *    Test Section for Election.GetCandidates()
 	 */
-	/*@Test
-	public void testElection() {
-		fail("Not yet implemented");
-	}*/
-
 	/**
 	 * Test method for {@link asgn1Election.Election#getCandidates()}.
 	 */
-	/*@Test
-	public void testGetCandidates() {
-		fail("Not yet implemented");
-	}*/
+	@Test
+	public void testGetCandidatesNormal() {
+		String answerString;
+		
+		answerString = "Candidate1 (CP1)             0\n";
+		answerString += ", Candidate2 (CP2)             0\n";
+		answerString += ", Candidate3 (CP3)             0\n";
+		answerString += ", Candidate4 (CP4)             0\n";
+		answerString += ", Candidate5 (CP5)             0\n";
+		answerString += ", Candidate6 (CP6)             0\n";
+		answerString += ", Candidate7 (CP7)             0\n";
+		answerString += ", Candidate8 (CP8)             0\n";
+		answerString += ", Candidate9 (CP9)             0\n";
+		answerString += ", Candidate10 (CP10)           0\n";
+		answerString += ", Candidate11 (CP11)           0\n";
+		answerString += ", Candidate12 (CP12)           0\n";
+		answerString += ", Candidate13 (CP13)           0\n";
+		answerString += ", Candidate14 (CP14)           0\n";
+		answerString += ", Candidate15 (CP15)           0\n";
+		
+		assertEquals(answerString, prefElectLarge.getCandidates());
+	
+		/*Candidate1 (CP1)             0
+		, Candidate2 (CP2)             0
+		, Candidate3 (CP3)             0
+		, Candidate4 (CP4)             0
+		, Candidate5 (CP5)             0
+		, Candidate6 (CP6)             0
+		, Candidate7 (CP7)             0
+		, Candidate8 (CP8)             0
+		, Candidate9 (CP9)             0
+		, Candidate10 (CP10)           0
+		, Candidate11 (CP11)           0
+		, Candidate12 (CP12)           0
+		, Candidate13 (CP13)           0
+		, Candidate14 (CP14)           0
+		, Candidate15 (CP15)           0
+		> 
+		Candidate1 (CP1)             0
+		, Candidate2 (CP2)             0
+		, Candidate3 (CP3)             0
+		, Candidate4 (CP4)             0
+		, Candidate5 (CP5)             0
+		, Candidate6 (CP6)             0
+		, Candidate7 (CP7)             0
+		, Candidate8 (CP8)             0
+		, Candidate9 (CP9)             0
+		, Candidate10 (CP10)           0
+		, Candidate11 (CP11)           0
+		, Candidate12 (CP12)           0
+		, Candidate13 (CP13)           0
+		, Candidate14 (CP14)           0
+		, Candidate15 (CP15)           0
+		>*/
+
+
+	}
 
 	/**
 	 * Test method for {@link asgn1Election.Election#getName()}.
@@ -359,6 +418,25 @@ public class PrefElectionTests {
 		fail("Not yet implemented");
 	}*/
 	
+	
+	/*
+	 *    Test Section for Automatic Passes
+	 */
+	/**
+	 * Test method for {@link asgn1Election.PrefElection#toString()}.
+	 */
+	@Test
+	public void testToStringBlindPass() {
+		assertTrue(true);
+	}
+	
+	/**
+	 * Test method for {@link asgn1Election.Election#Election(java.lang.String)}.
+	 */
+	@Test
+	public void testElectionBlindPass() {
+		assertTrue(true);
+	}
 	
 	
 	/*
