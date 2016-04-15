@@ -42,7 +42,8 @@ public class SimpleElection extends Election {
 		
 		returnString = "";
 		returnString += showResultHeader();
-		returnString += "Counting primary votes;\n";
+		returnString += "Counting primary votes; ";
+		returnString += getNumCandidates() + " alternatives available\n";
 		
 		vc.countPrimaryVotes(cds);
 		winner = clearWinner(numVotes);

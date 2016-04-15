@@ -228,10 +228,14 @@ public class VoteCollectionTests {
 	 * Test method for {@link asgn1Election.VoteCollection#getFormalCount()}.
 	 */
 	@Test
-	public void testGetFormalCount() {
+	public void testGetFormalCountLarge() {
 		assertEquals(689, vcLarge.getFormalCount());
 	}
 
+	@Test
+	public void testGetFormalCountSmall() {
+		assertEquals(10, vcSmall.getFormalCount());
+	}
 	
 	/*
 	 *    Test Section for VoteCollection.getFormalCount()
