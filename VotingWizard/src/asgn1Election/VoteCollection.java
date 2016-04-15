@@ -7,6 +7,7 @@
 package asgn1Election;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.TreeMap;
 
 /**
@@ -54,7 +55,10 @@ public class VoteCollection implements Collection {
 		} else {
 			throw new ElectionException("Number of candidates is out of range.");
 		}
+		
+		voteList = new ArrayList<Vote>();
 	}
+	
 	
 	/* 
 	 * (non-Javadoc)
@@ -64,19 +68,30 @@ public class VoteCollection implements Collection {
 	@Override
 	public void countPrefVotes(TreeMap<CandidateIndex, Candidate> cds,
 			CandidateIndex elim) {
-		
-		/*for ( CandidateIndex key : cds.keySet() ) {
-		    System.out.println( key );
-		}*/
-		
-		
-		
-		
-		
-		
-		
-	}
 
+		int numberOfCandidatesRemoved, nextPrefrenceNumber, moveToNextPreference;
+		CandidateIndex foundIndex;
+		Candidate addVotetoCandidate = null;
+		
+		moveToNextPreference = 1;
+		numberOfCandidatesRemoved = numCandidates - cds.size();
+		
+		for (Vote vote : voteList){ 
+			for (int eliminateIndex = 1; eliminateIndex <= numberOfCandidatesRemoved; eliminateIndex++){
+				if (voteContainsElimination(cds, elim, vote, eliminateIndex)){
+					nextPrefrenceNumber = eliminateIndex + moveToNextPreference;
+					foundIndex = getPrefthKey(vote, cds, nextPrefrenceNumber);
+					
+					if (foundIndex != null){
+						addVotetoCandidate = cds.get(foundIndex);
+						addVotetoCandidate.incrementVoteCount();
+					}
+				}
+			}
+		}
+	}
+		
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -85,8 +100,17 @@ public class VoteCollection implements Collection {
 	@Override
 	public void countPrimaryVotes(TreeMap<CandidateIndex, Candidate> cds) {
 		
+		CandidateIndex candidateIndex;
+		Candidate candidate;
+		
+		for (Vote vl : voteList){
+			candidateIndex = getPrimaryKey(vl);
+			candidate = cds.get(candidateIndex);
+			candidate.incrementVoteCount();
+		}
 	}
 
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -95,8 +119,12 @@ public class VoteCollection implements Collection {
 	@Override
 	public void emptyTheCollection() {
 		
+		voteList.clear();
+		formalCount = 0;
+		informalCount = 0;
 	}
 
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -104,9 +132,11 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public int getFormalCount() {
-		return voteList.size();
+		
+		return formalCount;
 	}
 
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -114,6 +144,7 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public int getInformalCount() {
+		
 		 return informalCount; 
 	}
 
@@ -125,9 +156,12 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public void includeFormalVote(Vote v) {
+		
 		voteList.add(v);
+		formalCount++;
 	}
 
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -135,8 +169,10 @@ public class VoteCollection implements Collection {
 	 */
 	@Override
 	public void updateInformalCount() {
+		
 		this.informalCount++;
 	}
+	
 	
 	/**
 	 * 
@@ -158,9 +194,93 @@ public class VoteCollection implements Collection {
 	 * 
 	 */
 	private CandidateIndex getPrefthKey(Vote v,TreeMap<CandidateIndex, Candidate> cds, int pref) {
-		return null; //TODO
+
+		CandidateIndex findCandidate = null;
+		Candidate testCandidateForNull = null;
+		int protectionCounter, failAtZero;
+		
+		protectionCounter = numCandidates;
+		failAtZero = 0;
+		
+		do {
+			findCandidate = v.getPreference(pref);
+			testCandidateForNull = cds.get(findCandidate);
+			
+			if (testCandidateForNull == null){
+				pref++;
+			}
+			
+			protectionCounter--;
+		//Add a protectionCounter to prevent an infinite loop
+		} while (testCandidateForNull == null && protectionCounter > failAtZero);
+		
+		return findCandidate;
+	}
+	
+
+	/**
+	 * Creates array containing a 1 if the candidate is still active or 0 if the candidate has been eliminated.
+	 * @param cds Candidate list TreeMap
+	 * @return Int Array containing 1 for active or 0 for eliminated
+	 */
+	private int[] activeCandidateList(TreeMap<CandidateIndex, Candidate> cds) {
+		
+		int currentCandidateList, addOneForAlignment, oneForActiveCandidate;
+		CandidateIndex currentIndex = null;
+		int[] candidateActiveList;
+		
+		candidateActiveList = new int[numCandidates];
+		oneForActiveCandidate = 1;
+		addOneForAlignment = 1;
+		
+		for (Map.Entry<CandidateIndex, Candidate> findActive : cds.entrySet()){
+			currentIndex = findActive.getKey();
+			currentCandidateList = Integer.parseInt(currentIndex.toString());
+			
+			for (int counter = 0; counter <= numCandidates; counter++){
+				if ((counter + addOneForAlignment) == currentCandidateList){
+					candidateActiveList[counter] = oneForActiveCandidate;
+				}
+			}
+		}
+
+		return candidateActiveList;
 	}
 
+	
+	/**
+	 * Checks that a vote is actually a vote that needs to be counted.
+	 * Method is a fail safe to ensure votes are not counted multiple times.
+	 * 
+	 * If the preference is less than the current vote being eliminated and
+	 * the particular preference has an active candidate - return false.
+	 * 
+	 * @param activeCandidates int array.  1 for active 0 for eliminated
+	 * @param vote List of unordered votes
+	 * @param compareVotePref The single preference vote to compare.
+	 * @return True if safe to count false if 'false positive'
+	 */
+	private boolean checkForFalsePositive(int[] activeCandidates, Vote vote, int compareVotePref){
+		
+		int counter, candidateIsActive;
+		boolean returnBool;
+		
+		candidateIsActive = 1;
+		counter = 0;
+		returnBool = true;
+		
+		for (int votePref : vote){
+			if (votePref < compareVotePref && activeCandidates[counter] == candidateIsActive){
+				returnBool = false;
+				return returnBool; 
+			}
+			counter++;
+		}
+
+		return returnBool;
+	}
+	
+	
 	/**
 	 * <p>Important helper method to find the first choice candidate in the current 
 	 * vote. This is always undertaken prior to distribution of preferences and so it 
@@ -170,6 +290,79 @@ public class VoteCollection implements Collection {
 	 * @return <code>CandidateIndex</code> of the first preference candidate
 	 */
 	private CandidateIndex getPrimaryKey(Vote v) {
-        return null; //TODO
+		
+		int voteCounter, primaryVote;
+		CandidateIndex newCandidateIndex = null;
+		
+		primaryVote = 1;
+		voteCounter = 1;
+		
+		// Return the candidateIndex with the voteCounter with the preference equals one
+		for (int preference : v){
+			if (preference == primaryVote){
+				newCandidateIndex = new CandidateIndex(voteCounter);
+			}
+			
+			voteCounter++;
+		}
+		
+		return newCandidateIndex;
     }
+	
+	
+	/**
+	 * Inverts the vote and then gets the index of the preference to eliminate
+	 * @param vote - Vote list to invert and index
+	 * @param candidateToEliminate - Current candidate preference that is being eliminated
+	 * @return Returns 0 based index of the candidate to eliminate, returns -1 if no index found
+	 */
+	private int getVoteIndex(Vote vote, int candidateToEliminate){
+		
+		int returnCounter, counter;
+		Vote invertedVote = null;
+		
+		returnCounter = -1; 
+		counter = 1;
+		invertedVote = vote.invertVote();
+		
+		for (int v : invertedVote){
+			if (v == candidateToEliminate){
+				returnCounter = counter;
+			}
+			
+			counter++;
+		}
+		
+		return returnCounter;
+	}
+	
+	
+	/**
+	 * Test current vote for an eliminated preference.
+	 * @param cds - TreeMap containing the candidates still active in this election.
+	 * @param elim - CandidateIndex being eliminated
+	 * @param vote - Vote being processed
+	 * @param eliminateIndex - Index of the eliminated preference
+	 * @return True if vote valid for preference count, False if no preference re-allocation is required
+	 */
+	private boolean voteContainsElimination(TreeMap<CandidateIndex, Candidate> cds, 
+			CandidateIndex elim, Vote vote, int eliminateIndex){
+		
+		int[] candidateActiveList;
+		int candidateToEliminate;
+		boolean returnBool = false;
+		
+		candidateActiveList = new int[numCandidates];
+		candidateActiveList = activeCandidateList(cds);
+		candidateToEliminate = Integer.parseInt(elim.toString());
+		
+		if ((eliminateIndex == getVoteIndex(vote, candidateToEliminate)) && 
+				checkForFalsePositive(candidateActiveList, vote, eliminateIndex)){
+			// Only return true if the index and the candidate to eliminate are true AND
+			// To prevent false positives, check if the vote has already been counted
+			returnBool = true;
+		}
+		
+		return returnBool;
+	}
 }
