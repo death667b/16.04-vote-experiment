@@ -281,61 +281,32 @@ public class PrefElectionTests {
 	 * Test method for {@link asgn1Election.Election#getCandidates()}.
 	 */
 	@Test
-	public void testGetCandidatesNormal() {
-		String answerString;
+	public void testGetCandidatesNormalPass() {
+		// Expected pass after converting the collection to String
+		java.util.Collection<Candidate> getCollection = prefElectLarge.getCandidates();
+		String answerString, testString = "";
+		
+		for (Candidate cand : getCollection) {
+			testString += cand.toString();
+		}
 		
 		answerString = "Candidate1 (CP1)             0\n";
-		answerString += ", Candidate2 (CP2)             0\n";
-		answerString += ", Candidate3 (CP3)             0\n";
-		answerString += ", Candidate4 (CP4)             0\n";
-		answerString += ", Candidate5 (CP5)             0\n";
-		answerString += ", Candidate6 (CP6)             0\n";
-		answerString += ", Candidate7 (CP7)             0\n";
-		answerString += ", Candidate8 (CP8)             0\n";
-		answerString += ", Candidate9 (CP9)             0\n";
-		answerString += ", Candidate10 (CP10)           0\n";
-		answerString += ", Candidate11 (CP11)           0\n";
-		answerString += ", Candidate12 (CP12)           0\n";
-		answerString += ", Candidate13 (CP13)           0\n";
-		answerString += ", Candidate14 (CP14)           0\n";
-		answerString += ", Candidate15 (CP15)           0\n";
-		
-		assertEquals(answerString, prefElectLarge.getCandidates());
-	
-		/*Candidate1 (CP1)             0
-		, Candidate2 (CP2)             0
-		, Candidate3 (CP3)             0
-		, Candidate4 (CP4)             0
-		, Candidate5 (CP5)             0
-		, Candidate6 (CP6)             0
-		, Candidate7 (CP7)             0
-		, Candidate8 (CP8)             0
-		, Candidate9 (CP9)             0
-		, Candidate10 (CP10)           0
-		, Candidate11 (CP11)           0
-		, Candidate12 (CP12)           0
-		, Candidate13 (CP13)           0
-		, Candidate14 (CP14)           0
-		, Candidate15 (CP15)           0
-		> 
-		Candidate1 (CP1)             0
-		, Candidate2 (CP2)             0
-		, Candidate3 (CP3)             0
-		, Candidate4 (CP4)             0
-		, Candidate5 (CP5)             0
-		, Candidate6 (CP6)             0
-		, Candidate7 (CP7)             0
-		, Candidate8 (CP8)             0
-		, Candidate9 (CP9)             0
-		, Candidate10 (CP10)           0
-		, Candidate11 (CP11)           0
-		, Candidate12 (CP12)           0
-		, Candidate13 (CP13)           0
-		, Candidate14 (CP14)           0
-		, Candidate15 (CP15)           0
-		>*/
+		answerString += "Candidate2 (CP2)             0\n";
+		answerString += "Candidate3 (CP3)             0\n";
+		answerString += "Candidate4 (CP4)             0\n";
+		answerString += "Candidate5 (CP5)             0\n";
+		answerString += "Candidate6 (CP6)             0\n";
+		answerString += "Candidate7 (CP7)             0\n";
+		answerString += "Candidate8 (CP8)             0\n";
+		answerString += "Candidate9 (CP9)             0\n";
+		answerString += "Candidate10 (CP10)           0\n";
+		answerString += "Candidate11 (CP11)           0\n";
+		answerString += "Candidate12 (CP12)           0\n";
+		answerString += "Candidate13 (CP13)           0\n";
+		answerString += "Candidate14 (CP14)           0\n";
+		answerString += "Candidate15 (CP15)           0\n";
 
-
+		assertEquals(answerString, testString);
 	}
 
 	/**
