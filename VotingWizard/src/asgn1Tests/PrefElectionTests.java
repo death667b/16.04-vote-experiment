@@ -34,13 +34,15 @@ public class PrefElectionTests {
 
 	private Election prefElectLarge;
 	private Election prefElectSmall;
-	private Election testElection;
+	private Election testLoadDefs;
+	private Election testLoadVotes;
 	private Vote testVote;
 	private VoteCollection vcLarge;
 	private VoteCollection vcSmall;
 	private TreeMap<CandidateIndex, Candidate> cds;
 	
-	int numberOfTestCandidates = 15; 
+	int numberOfTestCandidates = 15;
+	int numberofLoadVotesTestCandidates = 5;
 	
 	/**
 	 * @throws java.lang.Exception
@@ -329,14 +331,14 @@ public class PrefElectionTests {
 	@Test
 	public void testGetTypeStringBlank() throws NoSuchFieldException, SecurityException, 
 			IllegalArgumentException, IllegalAccessException {
-		testElection = new PrefElection("blankElection");
+		testLoadDefs = new PrefElection("blankElection");
 		
 		Field field = Election.class.getDeclaredField("type");
 		field.setAccessible(true);
-		field.set(testElection, 2);
+		field.set(testLoadDefs, 2);
 		field.setAccessible(false);
 		
-		assertEquals("", testElection.getTypeString());
+		assertEquals("", testLoadDefs.getTypeString());
 	}
 	
 	
@@ -352,8 +354,8 @@ public class PrefElectionTests {
 	 */
 	@Test(expected = FileNotFoundException.class)
 	public void testLoadDefsTestMissingFile() throws FileNotFoundException, ElectionException, IOException, NumbersException {
-		testElection = new PrefElection("testMissingFile");
-		testElection.loadDefs();
+		testLoadDefs = new PrefElection("testMissingFile");
+		testLoadDefs.loadDefs();
 	}
 	
 	@Test(expected = IOException.class)
@@ -362,133 +364,133 @@ public class PrefElectionTests {
 		RandomAccessFile lockFile = new RandomAccessFile(".//data//Test\\TestLoadDefs_LockedFile.elc", "rw");
 		lockFile.getChannel().lock();
 		
-		testElection = new PrefElection("\\Test\\TestLoadDefs_LockedFile");
-		testElection.loadDefs();
+		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_LockedFile");
+		testLoadDefs.loadDefs();
 
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void testLoadDefsTestEmptyFile() throws FileNotFoundException, ElectionException, IOException, NumbersException {
-		testElection = new PrefElection("\\Test\\TestLoadDefs_EmptyFile");
-		testElection.loadDefs();
+		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_EmptyFile");
+		testLoadDefs.loadDefs();
 	}	
 	
 	@Test(expected = ElectionException.class)
 	public void testLoadDefsTestJunkDataMissingTitleLine() throws FileNotFoundException, ElectionException, IOException, NumbersException {
-		testElection = new PrefElection("\\Test\\TestLoadDefs_MissingTitle");
-		testElection.loadDefs();
+		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_MissingTitle");
+		testLoadDefs.loadDefs();
 	}	
 	
 	@Test(expected = ElectionException.class)
 	public void testLoadDefsTestJunkDataMissingSeatNameInvalidLine() throws FileNotFoundException, ElectionException, IOException, NumbersException {
-		testElection = new PrefElection("\\Test\\TestLoadDefs_SeatName_InvalidLine");
-		testElection.loadDefs();
+		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_SeatName_InvalidLine");
+		testLoadDefs.loadDefs();
 	}	
 	
 	@Test(expected = ElectionException.class)
 	public void testLoadDefsTestJunkDataMissingSeatNameNullLine() throws FileNotFoundException, ElectionException, IOException, NumbersException {
-		testElection = new PrefElection("\\Test\\TestLoadDefs_SeatName_NullLine");
-		testElection.loadDefs();
+		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_SeatName_NullLine");
+		testLoadDefs.loadDefs();
 	}	
 	
 	@Test(expected = ElectionException.class)
 	public void testLoadDefsTestJunkDataMissingSeatNameMissingValue() throws FileNotFoundException, ElectionException, IOException, NumbersException {
-		testElection = new PrefElection("\\Test\\TestLoadDefs_SeatName_MissingValue");
-		testElection.loadDefs();
+		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_SeatName_MissingValue");
+		testLoadDefs.loadDefs();
 	}	
 	
 	@Test(expected = ElectionException.class)
 	public void testLoadDefsTestJunkDataEnrolmentInvalidData() throws FileNotFoundException, ElectionException, IOException, NumbersException {
-		testElection = new PrefElection("\\Test\\TestLoadDefs_Enrolment_InvalidData");
-		testElection.loadDefs();
+		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_Enrolment_InvalidData");
+		testLoadDefs.loadDefs();
 	}	
 	
 	@Test(expected = ElectionException.class)
 	public void testLoadDefsTestJunkDataEnrolmentNullLine() throws FileNotFoundException, ElectionException, IOException, NumbersException {
-		testElection = new PrefElection("\\Test\\TestLoadDefs_Enrolment_NullLine");
-		testElection.loadDefs();
+		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_Enrolment_NullLine");
+		testLoadDefs.loadDefs();
 	}
 	
 	@Test(expected = NumbersException.class)
 	public void testLoadDefsTestJunkDataEnrolmentNotNumber() throws FileNotFoundException, ElectionException, IOException, NumbersException {
-		testElection = new PrefElection("\\Test\\TestLoadDefs_Enrolment_NotNumber");
-		testElection.loadDefs();
+		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_Enrolment_NotNumber");
+		testLoadDefs.loadDefs();
 	}
 	
 	@Test(expected = ElectionException.class)
 	public void testLoadDefsTestJunkDataNumberCandidatesInvalidData() throws FileNotFoundException, ElectionException, IOException, NumbersException {
-		testElection = new PrefElection("\\Test\\TestLoadDefs_NumberCandidates_InvalidData");
-		testElection.loadDefs();
+		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_NumberCandidates_InvalidData");
+		testLoadDefs.loadDefs();
 	}	
 	
 	@Test(expected = ElectionException.class)
 	public void testLoadDefsTestJunkDataNumberCandidatesNullLine() throws FileNotFoundException, ElectionException, IOException, NumbersException {
-		testElection = new PrefElection("\\Test\\TestLoadDefs_NumberCandidates_NullLine");
-		testElection.loadDefs();
+		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_NumberCandidates_NullLine");
+		testLoadDefs.loadDefs();
 	}
 	
 	@Test(expected = NumbersException.class)
 	public void testLoadDefsTestJunkDataNumberCandidatesNotNumber() throws FileNotFoundException, ElectionException, IOException, NumbersException {
-		testElection = new PrefElection("\\Test\\TestLoadDefs_NumberCandidates_NotNumber");
-		testElection.loadDefs();
+		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_NumberCandidates_NotNumber");
+		testLoadDefs.loadDefs();
 	}
 	
 	@Test(expected = ElectionException.class)
 	public void testLoadDefsTestJunkDataMissingCandidatesZeroAvailableNullLine() throws FileNotFoundException, ElectionException, IOException, NumbersException {
-		testElection = new PrefElection("\\Test\\TestLoadDefs_ZeroCandidates_NullLine");
-		testElection.loadDefs();
+		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_ZeroCandidates_NullLine");
+		testLoadDefs.loadDefs();
 	}	
 	
 	@Test(expected = ElectionException.class)
 	public void testLoadDefsTestJunkDataMissingCandidatesOneAvailableNullLine() throws FileNotFoundException, ElectionException, IOException, NumbersException {
 		//Two candidates set in numCandidate - only one in load file
-		testElection = new PrefElection("\\Test\\TestLoadDefs_OneCandidates_NullLine");
-		testElection.loadDefs();
+		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_OneCandidates_NullLine");
+		testLoadDefs.loadDefs();
 	}
 	
 	@Test
 	public void testLoadDefsTestJunkDataCandidatesTwoOfTwoAvailable() throws FileNotFoundException, ElectionException, IOException, NumbersException {
 		//Two candidates set in numCandidate - Data for Two candidates available
-		testElection = new PrefElection("\\Test\\TestLoadDefs_TwoCandidates_Working");
-		testElection.loadDefs();
+		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_TwoCandidates_Working");
+		testLoadDefs.loadDefs();
 	}
 	
 	@Test(expected = ElectionException.class)
 	public void testLoadDefsTestJunkDataCandidateDataMissingValues() throws FileNotFoundException, ElectionException, IOException, NumbersException {
 		//Two candidates set in numCandidate - Data for Two candidates available
-		testElection = new PrefElection("\\Test\\TestLoadDefs_Candidates_MissingValue");
-		testElection.loadDefs();
+		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_Candidates_MissingValue");
+		testLoadDefs.loadDefs();
 	}
 	
 	@Test(expected = ElectionException.class)
 	public void testLoadDefsTestJunkDataCandidateDataInvalidLine() throws FileNotFoundException, ElectionException, IOException, NumbersException {
 		//Two candidates set in numCandidate - Data for Two candidates available
-		testElection = new PrefElection("\\Test\\TestLoadDefs_Candidates_InvalidLine");
-		testElection.loadDefs();
+		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_Candidates_InvalidLine");
+		testLoadDefs.loadDefs();
 	}
 	
 	@Test
 	public void testLoadDefsTestFullFileGetName() throws FileNotFoundException, ElectionException, IOException, NumbersException {
-		testElection = new PrefElection("\\Test\\TestLoadDefs_FullFile_FiveCandidates");
-		testElection.loadDefs();
+		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_FullFile_FiveCandidates");
+		testLoadDefs.loadDefs();
 		
-		assertEquals("MorgulVale", testElection.getName());
+		assertEquals("MorgulVale", testLoadDefs.getName());
 	}
 	
 	@Test
 	public void testLoadDefsTestFullFileGetNumCandidates() throws FileNotFoundException, ElectionException, IOException, NumbersException {
-		testElection = new PrefElection("\\Test\\TestLoadDefs_FullFile_FiveCandidates");
-		testElection.loadDefs();
+		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_FullFile_FiveCandidates");
+		testLoadDefs.loadDefs();
 		
-		assertEquals(5, testElection.getNumCandidates());
+		assertEquals(5, testLoadDefs.getNumCandidates());
 	}
 	
 	@Test
 	public void testLoadDefsTestFullFileGetCandidates() throws FileNotFoundException, ElectionException, IOException, NumbersException {
-		testElection = new PrefElection("\\Test\\TestLoadDefs_FullFile_FiveCandidates");
-		testElection.loadDefs();
+		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_FullFile_FiveCandidates");
+		testLoadDefs.loadDefs();
 		
-		java.util.Collection<Candidate> getCollection = testElection.getCandidates();
+		java.util.Collection<Candidate> getCollection = testLoadDefs.getCandidates();
 		String answerString, testString = "";
 		
 		for (Candidate cand : getCollection) {
@@ -505,17 +507,78 @@ public class PrefElectionTests {
 	}
 	
 	
-	
-	
+	/*
+	 *    Test Section for Election.loadDefs()
+	 */	
 	/**
 	 * Test method for {@link asgn1Election.Election#loadVotes()}.
+	 * @throws NumbersException 
+	 * @throws IOException 
+	 * @throws ElectionException 
+	 * @throws FileNotFoundException 
+	 * @throws IllegalAccessException 
+	 * @throws IllegalArgumentException 
+	 * @throws SecurityException 
+	 * @throws NoSuchFieldException 
 	 */
-	/*@Test
-	public void testLoadVotes() {
-		fail("Not yet implemented");
-	}*/
-
-
+	@Test(expected = FileNotFoundException.class)
+	public void testLoadVotesTestMissingFile() throws FileNotFoundException, ElectionException, IOException, NumbersException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		testLoadVotes = new PrefElection("MissingFile");
+		setNumberOfCandidatesLoadVotes(numberofLoadVotesTestCandidates);
+		testLoadVotes.loadVotes();
+	}
+	
+	@Test(expected = IOException.class)
+	public void testLoadVotesTestLockedFile() throws FileNotFoundException, ElectionException, IOException, NumbersException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {		
+		@SuppressWarnings("resource")
+		RandomAccessFile lockFile = new RandomAccessFile(".//data//Test\\TestLoadVotes_LockedFile.vot", "rw");
+		lockFile.getChannel().lock();
+		
+		testLoadVotes = new PrefElection("\\Test\\TestLoadVotes_LockedFile");
+		setNumberOfCandidatesLoadVotes(numberofLoadVotesTestCandidates);
+		testLoadVotes.loadVotes();
+	}
+	
+	@Test
+	public void testLoadVotesTestFullFileWorking() throws FileNotFoundException, ElectionException, IOException, NumbersException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		testLoadVotes = new PrefElection("\\Test\\TestLoadVotes_FullFile_Working");
+		setNumberOfCandidatesLoadVotes(numberofLoadVotesTestCandidates);
+		testLoadVotes.loadVotes();
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	/*
 	 *    Test Section for Automatic Passes
@@ -578,6 +641,14 @@ public class PrefElectionTests {
 		fieldSmall.setAccessible(true);
 		fieldSmall.set(prefElectSmall, numVotes);
 		fieldSmall.setAccessible(false);
+	}
+	
+	private void setNumberOfCandidatesLoadVotes(int numCandi) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{
+		//Push into the instance of prefElectLarge
+		Field field = Election.class.getDeclaredField("numCandidates");
+		field.setAccessible(true);
+		field.set(testLoadVotes, numCandi);
+		field.setAccessible(false);
 	}
 	
 	private void setNumberOfCandidates(int numCandi) throws NoSuchFieldException, SecurityException, 
