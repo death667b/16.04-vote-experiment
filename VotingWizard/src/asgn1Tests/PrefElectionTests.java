@@ -321,14 +321,6 @@ public class PrefElectionTests {
 		assertEquals("Preferential Election", prefElectLarge.getTypeString());
 	}
 	
-
-	/**
-	 * Test method for {@link asgn1Election.Election#showResultHeader()}.
-	 */
-	@Test
-	public void testShowResultHeader() {
-		fail("Not yet implemented");
-	}
 	
 	/**
 	 * Test method for {@link asgn1Election.Election#loadDefs()}.
@@ -346,32 +338,7 @@ public class PrefElectionTests {
 		fail("Not yet implemented");
 	}*/
 
-	/**
-	 * Test method for {@link asgn1Election.Election#candidateListing()}.
-	 */
-	/*@Test
-	public void testCandidateListing() {
-		fail("Not yet implemented");
-	}*/
 
-	/**
-	 * Test method for {@link asgn1Election.Election#candidateVoteSummary()}.
-	 */
-	/*@Test
-	public void testCandidateVoteSummary() {
-		fail("Not yet implemented");
-	}*/
-
-	/**
-	 * Test method for {@link asgn1Election.Election#reportWinner(asgn1Election.Candidate)}.
-	 */
-	/*@Test
-	public void testReportWinner() {
-		fail("Not yet implemented");
-	}*/
-
-
-	
 	
 	/*
 	 *    Test Section for Automatic Passes
