@@ -309,38 +309,27 @@ public class PrefElectionTests {
 		assertEquals(answerString, testString);
 	}
 
-	/**
-	 * Test method for {@link asgn1Election.Election#getName()}.
-	 */
-	/*@Test
-	public void testGetName() {
-		fail("Not yet implemented");
-	}*/
 
-	/**
-	 * Test method for {@link asgn1Election.Election#getNumCandidates()}.
+	/*
+	 *    Test Section for Election.getTypeString()
 	 */
-	/*@Test
-	public void testGetNumCandidates() {
-		fail("Not yet implemented");
-	}*/
-
-	/**
-	 * Test method for {@link asgn1Election.Election#getType()}.
-	 */
-	/*@Test
-	public void testGetType() {
-		fail("Not yet implemented");
-	}*/
-
 	/**
 	 * Test method for {@link asgn1Election.Election#getTypeString()}.
 	 */
-	/*@Test
-	public void testGetTypeString() {
-		fail("Not yet implemented");
-	}*/
+	@Test
+	public void testGetTypeStringPref() {
+		assertEquals("Preferential Election", prefElectLarge.getTypeString());
+	}
+	
 
+	/**
+	 * Test method for {@link asgn1Election.Election#showResultHeader()}.
+	 */
+	@Test
+	public void testShowResultHeader() {
+		fail("Not yet implemented");
+	}
+	
 	/**
 	 * Test method for {@link asgn1Election.Election#loadDefs()}.
 	 */
@@ -381,13 +370,7 @@ public class PrefElectionTests {
 		fail("Not yet implemented");
 	}*/
 
-	/**
-	 * Test method for {@link asgn1Election.Election#showResultHeader()}.
-	 */
-	/*@Test
-	public void testShowResultHeader() {
-		fail("Not yet implemented");
-	}*/
+
 	
 	
 	/*
@@ -406,6 +389,30 @@ public class PrefElectionTests {
 	 */
 	@Test
 	public void testElectionBlindPass() {
+		assertTrue(true);
+	}
+	
+	/**
+	 * Test method for {@link asgn1Election.Election#getName()}.
+	 */
+	@Test
+	public void testGetNameBlindPass() {
+		assertTrue(true);
+	}
+
+	/**
+	 * Test method for {@link asgn1Election.Election#getNumCandidates()}.
+	 */
+	@Test
+	public void testGetNumCandidatesBlindPass() {
+		assertTrue(true);
+	}
+
+	/**
+	 * Test method for {@link asgn1Election.Election#getType()}.
+	 */
+	@Test
+	public void testGetTypeBlindPass() {
 		assertTrue(true);
 	}
 	

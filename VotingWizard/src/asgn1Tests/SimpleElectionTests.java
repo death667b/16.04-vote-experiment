@@ -247,6 +247,16 @@ public class SimpleElectionTests {
 
 	
 	/*
+	 *    Test Section for Election.getTypeString()
+	 */
+	/**
+	 * Test method for {@link asgn1Election.Election#getTypeString()}.
+	 */
+	@Test
+	public void testGetTypeStringSimple() {
+		assertEquals("Simple Election", simpleElectLarge.getTypeString());
+	}
+	/*
 	 *    Test Section for Automatic Passes
 	 */
 	/**
