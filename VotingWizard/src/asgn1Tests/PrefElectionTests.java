@@ -563,13 +563,39 @@ public class PrefElectionTests {
 	}
 	
 	@Test
-	public void testLoadVotesTestCountValidVotes() throws FileNotFoundException, ElectionException, IOException, NumbersException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+	public void testLoadVotesTestCountValidVotes() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, ElectionException, IOException, NumbersException {
 		testLoadVotes = new PrefElection("Test//TestLoadVotes_Working");
 		setValueSuperObject(testLoadVotes, "numCandidates", numberofLoadVotesTestCandidates);
 		testLoadVotes.loadVotes();
+		int sixValidVotes = 6;
 		
-		//Collection vc = (VoteCollection)testLoadVotes.GetType().GetField("vc").GetValue(testLoadVotes);
-		assertEquals(5, 8);
+		Collection vc = getVoteCollection();
+		
+		assertEquals(sixValidVotes, vc.getFormalCount());
+	}
+	
+	@Test
+	public void testLoadVotesTestCountInvalidVotes() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, ElectionException, IOException, NumbersException {
+		testLoadVotes = new PrefElection("Test//TestLoadVotes_Working");
+		setValueSuperObject(testLoadVotes, "numCandidates", numberofLoadVotesTestCandidates);
+		testLoadVotes.loadVotes();
+		int fourInvaildVotes = 4;
+		
+		Collection vc = getVoteCollection();
+		
+		assertEquals(fourInvaildVotes, vc.getInformalCount());
+	}
+	
+	@Test
+	public void testLoadVotesTestCountTotalVotes() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, FileNotFoundException, ElectionException, IOException, NumbersException {
+		testLoadVotes = new PrefElection("Test//TestLoadVotes_Working");
+		setValueSuperObject(testLoadVotes, "numCandidates", numberofLoadVotesTestCandidates);
+		testLoadVotes.loadVotes();
+		int totalVotes = 10;
+		
+		//TODO gotta get numVotes out of election
+		
+		assertEquals(totalVotes, 4);
 	}
 	
 	
@@ -626,6 +652,14 @@ public class PrefElectionTests {
 		field.setAccessible(true);
 		field.set(elecObject, value);
 		field.setAccessible(false);
+	}
+	
+	private Collection getVoteCollection() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{
+		Field field = Election.class.getDeclaredField("vc");
+		field.setAccessible(true);
+		Collection vc = (Collection) field.get(testLoadVotes);
+		
+		return vc;
 	}
 	
 	private void buildCandidateList() throws 
