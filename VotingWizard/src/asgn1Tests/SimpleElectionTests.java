@@ -35,6 +35,8 @@ public class SimpleElectionTests {
 	private TreeMap<CandidateIndex, Candidate> cds;
 	
 	int numberOfTestCandidates = 15;
+	int largeNumberVotes = 702;
+	int smallNumberVotes = 10;
 	
 	/**
 	 * @throws java.lang.Exception
@@ -49,9 +51,11 @@ public class SimpleElectionTests {
 		buildCandidateList();
 		buildLargeVoteCollection();
 		buildSmallVoteCollection();
-		setNumberOfCandidates(numberOfTestCandidates);
-		setNumberOfVotesLarge(702);
-		setNumberOfVotesSmall(10);
+		
+		setValueElectionSuperObject(simpleElectLarge,"numCandidates",numberOfTestCandidates);
+		setValueElectionSuperObject(simpleElectSmall,"numCandidates",numberOfTestCandidates);
+		setValueElectionSuperObject(simpleElectLarge, "numVotes", largeNumberVotes);
+		setValueElectionSuperObject(simpleElectSmall, "numVotes", smallNumberVotes);
 	}
 
 	
@@ -236,7 +240,7 @@ public class SimpleElectionTests {
 		//Fail because exceeds max 2
 		int numCandiForThisTest = 2;
 		
-		setNumberOfCandidates(numCandiForThisTest);
+		setValueElectionSuperObject(simpleElectLarge, "numCandidates", numCandiForThisTest);
 		testVote = new VoteList(numCandiForThisTest);
 		
 		testVote.addPref(3);
@@ -271,35 +275,12 @@ public class SimpleElectionTests {
 	/*
 	 *    Private Helper methods
 	 */
-	private void setNumberOfVotesLarge(int numVotes) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{		
-		//Push into the instance of simpleElectLarge
-		Field fieldLarge = Election.class.getDeclaredField("numVotes");
-		fieldLarge.setAccessible(true);
-		fieldLarge.set(simpleElectLarge, numVotes);
-		fieldLarge.setAccessible(false);
-	}
-	
-	private void setNumberOfVotesSmall(int numVotes) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{		
-		//Push into the instance of simpleElectSmall
-		Field fieldSmall = Election.class.getDeclaredField("numVotes");
-		fieldSmall.setAccessible(true);
-		fieldSmall.set(simpleElectSmall, numVotes);
-		fieldSmall.setAccessible(false);
-	}
-	
-	private void setNumberOfCandidates(int numCandi) throws NoSuchFieldException, SecurityException, 
-			IllegalArgumentException, IllegalAccessException{
-		//Push into the instance of simpleElectLarge
-		Field fieldLarge = Election.class.getDeclaredField("numCandidates");
-		fieldLarge.setAccessible(true);
-		fieldLarge.set(simpleElectLarge, numCandi);
-		fieldLarge.setAccessible(false);
+	private void setValueElectionSuperObject(Election elecObject, String declaredField, Object value) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{
 		
-		//Push into the instance of simpleElectSmall
-		Field fieldSmall = Election.class.getDeclaredField("numCandidates");
-		fieldSmall.setAccessible(true);
-		fieldSmall.set(simpleElectSmall, numCandi);
-		fieldSmall.setAccessible(false);
+		Field field = Election.class.getDeclaredField(declaredField);
+		field.setAccessible(true);
+		field.set(elecObject, value);
+		field.setAccessible(false);
 	}
 	
 	private void buildCandidateList() throws 
@@ -329,17 +310,8 @@ public class SimpleElectionTests {
 			this.cds.put(new CandidateIndex(i+1), candidateArray[i]);
 		}
 		
-		//Push into the instance of simpleElectLarge
-		Field fieldLarge = Election.class.getDeclaredField("cds");
-		fieldLarge.setAccessible(true);
-		fieldLarge.set(simpleElectLarge, cds);
-		fieldLarge.setAccessible(false);
-		
-		//Push into the instance of simpleElectSmall
-		Field fieldSmall = Election.class.getDeclaredField("cds");
-		fieldSmall.setAccessible(true);
-		fieldSmall.set(simpleElectSmall, cds);
-		fieldSmall.setAccessible(false);
+		setValueElectionSuperObject(simpleElectLarge, "cds", cds);
+		setValueElectionSuperObject(simpleElectSmall, "cds", cds);
 	}
 	
 	private void buildLargeVoteCollection() throws NoSuchFieldException, 
@@ -1048,11 +1020,7 @@ public class SimpleElectionTests {
 		addVoteToLargeList(buildVote("2,7,4,14,1,6,12,8,10,3,15,5,13,9,11"));
 		addVoteToLargeList(buildVote("7,15,8,6,2,5,3,10,1,14,13,12,9,4,11"));
 		
-		//Push into the instance of simpleElectLarge
-		Field field = Election.class.getDeclaredField("vc");
-		field.setAccessible(true);
-		field.set(simpleElectLarge, vcLarge);
-		field.setAccessible(false);
+		setValueElectionSuperObject(simpleElectLarge, "vc", vcLarge);
 	}
 	
 	private void addVoteToLargeList(Vote vote){
@@ -1075,11 +1043,7 @@ public class SimpleElectionTests {
 		addVoteToSmallList(buildVote("14,11,9,10,15,2,13,4,3,7,8,12,5,6,1"));
 		addVoteToSmallList(buildVote("9,3,5,13,14,2,6,4,10,15,11,1,8,12,7"));
 		
-		//Push into the instance of simpleElectSmall
-		Field field = Election.class.getDeclaredField("vc");
-		field.setAccessible(true);
-		field.set(simpleElectSmall, vcSmall);
-		field.setAccessible(false);
+		setValueElectionSuperObject(simpleElectSmall, "vc", vcSmall);
 	}
 	
 	private void addVoteToSmallList(Vote vote){
@@ -1105,34 +1069,30 @@ public class SimpleElectionTests {
 	}
 	
 	private boolean isFormal(Vote v) {
-		int voteValue, innerLoopCounter, outerLoopCounter;
-		Iterator<Integer> iter;
-		Object voteObject;
+		int innerLoopCounter, outerLoopCounter, zeroPreference;
 		
 		outerLoopCounter = 0;
-		iter = v.iterator();
+		zeroPreference = 0;
 		
-		
-		while(iter.hasNext()){
-			voteObject = iter.next();
-			voteValue = (int) voteObject;
+		for (int outerPreference : v){
 			outerLoopCounter++;
-			innerLoopCounter = 0;			
+			innerLoopCounter = 0;
 			
 			// Test to see if there is a duplicate vote
 			// Skipping the current vote being tested
-			for (Object obj : v){
+			for (int innerPreference : v){
 				innerLoopCounter++;
-				if (obj.equals(voteObject) && outerLoopCounter != innerLoopCounter){
+				if (outerPreference == innerPreference && outerLoopCounter != innerLoopCounter){
 					return false;
 				}
 			}
 			
-			//Test to see if the voted number is higher than the available candidates
-			if (voteValue > this.numberOfTestCandidates){
+			//Test to see if preference exceeds max and min range
+			if (outerPreference <= zeroPreference || outerPreference > this.numberOfTestCandidates){
 				return false;
 			}
 		}
+		
 		return true;
 	}
 	

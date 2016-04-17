@@ -17,6 +17,7 @@ import org.junit.Test;
 
 import asgn1Election.Candidate;
 import asgn1Election.CandidateIndex;
+import asgn1Election.Collection;
 import asgn1Election.Election;
 import asgn1Election.ElectionException;
 import asgn1Election.PrefElection;
@@ -43,6 +44,8 @@ public class PrefElectionTests {
 	
 	int numberOfTestCandidates = 15;
 	int numberofLoadVotesTestCandidates = 5;
+	int largeNumberVotes = 702;
+	int smallNumberVotes = 10;
 	
 	/**
 	 * @throws java.lang.Exception
@@ -57,9 +60,10 @@ public class PrefElectionTests {
 		buildCandidateList();
 		buildLargeVoteCollection();
 		buildSmallVoteCollection();
-		setNumberOfCandidates(numberOfTestCandidates);
-		setNumberOfVotesLarge(702);
-		setNumberOfVotesSmall(10);
+		setValueSuperObject(prefElectLarge,"numCandidates",numberOfTestCandidates);
+		setValueSuperObject(prefElectSmall,"numCandidates",numberOfTestCandidates);
+		setValueSuperObject(prefElectLarge, "numVotes", largeNumberVotes);
+		setValueSuperObject(prefElectSmall, "numVotes", smallNumberVotes);
 	}
 
 	
@@ -244,7 +248,7 @@ public class PrefElectionTests {
 		//Fail because exceeds max 2
 		int numCandiForThisTest = 2;
 		
-		setNumberOfCandidates(numCandiForThisTest);
+		setValueSuperObject(prefElectLarge,"numCandidates", numCandiForThisTest);
 		testVote = new VoteList(numCandiForThisTest);
 		
 		testVote.addPref(3);
@@ -332,11 +336,9 @@ public class PrefElectionTests {
 	public void testGetTypeStringBlank() throws NoSuchFieldException, SecurityException, 
 			IllegalArgumentException, IllegalAccessException {
 		testLoadDefs = new PrefElection("blankElection");
+		int invalidType = 2;
 		
-		Field field = Election.class.getDeclaredField("type");
-		field.setAccessible(true);
-		field.set(testLoadDefs, 2);
-		field.setAccessible(false);
+		setValueSuperObject(testLoadDefs, "type", invalidType);
 		
 		assertEquals("", testLoadDefs.getTypeString());
 	}
@@ -361,117 +363,117 @@ public class PrefElectionTests {
 	@Test(expected = IOException.class)
 	public void testLoadDefsTestLockedFile() throws FileNotFoundException, ElectionException, IOException, NumbersException {		
 		@SuppressWarnings("resource")
-		RandomAccessFile lockFile = new RandomAccessFile(".//data//Test\\TestLoadDefs_LockedFile.elc", "rw");
+		RandomAccessFile lockFile = new RandomAccessFile(".//data//Test//TestLoadDefs_LockedFile.elc", "rw");
 		lockFile.getChannel().lock();
 		
-		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_LockedFile");
+		testLoadDefs = new PrefElection("Test//TestLoadDefs_LockedFile");
 		testLoadDefs.loadDefs();
 
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void testLoadDefsTestEmptyFile() throws FileNotFoundException, ElectionException, IOException, NumbersException {
-		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_EmptyFile");
+		testLoadDefs = new PrefElection("Test//TestLoadDefs_EmptyFile");
 		testLoadDefs.loadDefs();
 	}	
 	
 	@Test(expected = ElectionException.class)
 	public void testLoadDefsTestJunkDataMissingTitleLine() throws FileNotFoundException, ElectionException, IOException, NumbersException {
-		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_MissingTitle");
+		testLoadDefs = new PrefElection("Test//TestLoadDefs_MissingTitle");
 		testLoadDefs.loadDefs();
 	}	
 	
 	@Test(expected = ElectionException.class)
 	public void testLoadDefsTestJunkDataMissingSeatNameInvalidLine() throws FileNotFoundException, ElectionException, IOException, NumbersException {
-		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_SeatName_InvalidLine");
+		testLoadDefs = new PrefElection("Test//TestLoadDefs_SeatName_InvalidLine");
 		testLoadDefs.loadDefs();
 	}	
 	
 	@Test(expected = ElectionException.class)
 	public void testLoadDefsTestJunkDataMissingSeatNameNullLine() throws FileNotFoundException, ElectionException, IOException, NumbersException {
-		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_SeatName_NullLine");
+		testLoadDefs = new PrefElection("Test//TestLoadDefs_SeatName_NullLine");
 		testLoadDefs.loadDefs();
 	}	
 	
 	@Test(expected = ElectionException.class)
 	public void testLoadDefsTestJunkDataMissingSeatNameMissingValue() throws FileNotFoundException, ElectionException, IOException, NumbersException {
-		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_SeatName_MissingValue");
+		testLoadDefs = new PrefElection("Test//TestLoadDefs_SeatName_MissingValue");
 		testLoadDefs.loadDefs();
 	}	
 	
 	@Test(expected = ElectionException.class)
 	public void testLoadDefsTestJunkDataEnrolmentInvalidData() throws FileNotFoundException, ElectionException, IOException, NumbersException {
-		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_Enrolment_InvalidData");
+		testLoadDefs = new PrefElection("Test//TestLoadDefs_Enrolment_InvalidData");
 		testLoadDefs.loadDefs();
 	}	
 	
 	@Test(expected = ElectionException.class)
 	public void testLoadDefsTestJunkDataEnrolmentNullLine() throws FileNotFoundException, ElectionException, IOException, NumbersException {
-		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_Enrolment_NullLine");
+		testLoadDefs = new PrefElection("Test//TestLoadDefs_Enrolment_NullLine");
 		testLoadDefs.loadDefs();
 	}
 	
 	@Test(expected = NumbersException.class)
 	public void testLoadDefsTestJunkDataEnrolmentNotNumber() throws FileNotFoundException, ElectionException, IOException, NumbersException {
-		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_Enrolment_NotNumber");
+		testLoadDefs = new PrefElection("Test//TestLoadDefs_Enrolment_NotNumber");
 		testLoadDefs.loadDefs();
 	}
 	
 	@Test(expected = ElectionException.class)
 	public void testLoadDefsTestJunkDataNumberCandidatesInvalidData() throws FileNotFoundException, ElectionException, IOException, NumbersException {
-		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_NumberCandidates_InvalidData");
+		testLoadDefs = new PrefElection("Test//TestLoadDefs_NumberCandidates_InvalidData");
 		testLoadDefs.loadDefs();
 	}	
 	
 	@Test(expected = ElectionException.class)
 	public void testLoadDefsTestJunkDataNumberCandidatesNullLine() throws FileNotFoundException, ElectionException, IOException, NumbersException {
-		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_NumberCandidates_NullLine");
+		testLoadDefs = new PrefElection("Test//TestLoadDefs_NumberCandidates_NullLine");
 		testLoadDefs.loadDefs();
 	}
 	
 	@Test(expected = NumbersException.class)
 	public void testLoadDefsTestJunkDataNumberCandidatesNotNumber() throws FileNotFoundException, ElectionException, IOException, NumbersException {
-		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_NumberCandidates_NotNumber");
+		testLoadDefs = new PrefElection("Test//TestLoadDefs_NumberCandidates_NotNumber");
 		testLoadDefs.loadDefs();
 	}
 	
 	@Test(expected = ElectionException.class)
 	public void testLoadDefsTestJunkDataMissingCandidatesZeroAvailableNullLine() throws FileNotFoundException, ElectionException, IOException, NumbersException {
-		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_ZeroCandidates_NullLine");
+		testLoadDefs = new PrefElection("Test//TestLoadDefs_ZeroCandidates_NullLine");
 		testLoadDefs.loadDefs();
 	}	
 	
 	@Test(expected = ElectionException.class)
 	public void testLoadDefsTestJunkDataMissingCandidatesOneAvailableNullLine() throws FileNotFoundException, ElectionException, IOException, NumbersException {
 		//Two candidates set in numCandidate - only one in load file
-		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_OneCandidates_NullLine");
+		testLoadDefs = new PrefElection("Test//TestLoadDefs_OneCandidates_NullLine");
 		testLoadDefs.loadDefs();
 	}
 	
 	@Test
 	public void testLoadDefsTestJunkDataCandidatesTwoOfTwoAvailable() throws FileNotFoundException, ElectionException, IOException, NumbersException {
 		//Two candidates set in numCandidate - Data for Two candidates available
-		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_TwoCandidates_Working");
+		testLoadDefs = new PrefElection("Test//TestLoadDefs_TwoCandidates_Working");
 		testLoadDefs.loadDefs();
 	}
 	
 	@Test(expected = ElectionException.class)
 	public void testLoadDefsTestJunkDataCandidateDataMissingValues() throws FileNotFoundException, ElectionException, IOException, NumbersException {
 		//Two candidates set in numCandidate - Data for Two candidates available
-		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_Candidates_MissingValue");
+		testLoadDefs = new PrefElection("Test//TestLoadDefs_Candidates_MissingValue");
 		testLoadDefs.loadDefs();
 	}
 	
 	@Test(expected = ElectionException.class)
 	public void testLoadDefsTestJunkDataCandidateDataInvalidLine() throws FileNotFoundException, ElectionException, IOException, NumbersException {
 		//Two candidates set in numCandidate - Data for Two candidates available
-		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_Candidates_InvalidLine");
+		testLoadDefs = new PrefElection("Test//TestLoadDefs_Candidates_InvalidLine");
 		testLoadDefs.loadDefs();
 	}
 	
 	@Test
 	public void testLoadDefsTestFullFileGetName() throws FileNotFoundException, ElectionException, IOException, NumbersException {
-		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_FullFile_FiveCandidates");
+		testLoadDefs = new PrefElection("Test//TestLoadDefs_FullFile_FiveCandidates");
 		testLoadDefs.loadDefs();
 		
 		assertEquals("MorgulVale", testLoadDefs.getName());
@@ -479,7 +481,7 @@ public class PrefElectionTests {
 	
 	@Test
 	public void testLoadDefsTestFullFileGetNumCandidates() throws FileNotFoundException, ElectionException, IOException, NumbersException {
-		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_FullFile_FiveCandidates");
+		testLoadDefs = new PrefElection("Test//TestLoadDefs_FullFile_FiveCandidates");
 		testLoadDefs.loadDefs();
 		
 		assertEquals(5, testLoadDefs.getNumCandidates());
@@ -487,7 +489,7 @@ public class PrefElectionTests {
 	
 	@Test
 	public void testLoadDefsTestFullFileGetCandidates() throws FileNotFoundException, ElectionException, IOException, NumbersException {
-		testLoadDefs = new PrefElection("\\Test\\TestLoadDefs_FullFile_FiveCandidates");
+		testLoadDefs = new PrefElection("Test//TestLoadDefs_FullFile_FiveCandidates");
 		testLoadDefs.loadDefs();
 		
 		java.util.Collection<Candidate> getCollection = testLoadDefs.getCandidates();
@@ -524,60 +526,51 @@ public class PrefElectionTests {
 	@Test(expected = FileNotFoundException.class)
 	public void testLoadVotesTestMissingFile() throws FileNotFoundException, ElectionException, IOException, NumbersException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		testLoadVotes = new PrefElection("MissingFile");
-		setNumberOfCandidatesLoadVotes(numberofLoadVotesTestCandidates);
+		setValueSuperObject(testLoadVotes, "numCandidates", numberofLoadVotesTestCandidates);
 		testLoadVotes.loadVotes();
 	}
-	
+
 	@Test(expected = IOException.class)
 	public void testLoadVotesTestLockedFile() throws FileNotFoundException, ElectionException, IOException, NumbersException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {		
 		@SuppressWarnings("resource")
-		RandomAccessFile lockFile = new RandomAccessFile(".//data//Test\\TestLoadVotes_LockedFile.vot", "rw");
+		RandomAccessFile lockFile = new RandomAccessFile(".//data//Test//TestLoadVotes_LockedFile.vot", "rw");
 		lockFile.getChannel().lock();
-		
-		testLoadVotes = new PrefElection("\\Test\\TestLoadVotes_LockedFile");
-		setNumberOfCandidatesLoadVotes(numberofLoadVotesTestCandidates);
+
+		testLoadVotes = new PrefElection("Test//TestLoadVotes_LockedFile");
+		setValueSuperObject(testLoadVotes, "numCandidates", numberofLoadVotesTestCandidates);
+		testLoadVotes.loadVotes();
+	}
+
+	@Test(expected = ElectionException.class)
+	public void testLoadVotesTestInvalidVoteLine() throws FileNotFoundException, ElectionException, IOException, NumbersException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		testLoadVotes = new PrefElection("Test//TestLoadVotes_InvalidVoteLine");
+		setValueSuperObject(testLoadVotes, "numCandidates", numberofLoadVotesTestCandidates);
+		testLoadVotes.loadVotes();
+	}
+
+	@Test(expected = NumbersException.class)
+	public void testLoadVotesTestInvalidNumber() throws FileNotFoundException, ElectionException, IOException, NumbersException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		testLoadVotes = new PrefElection("Test//TestLoadVotes_InvalidNumber");
+		setValueSuperObject(testLoadVotes, "numCandidates", numberofLoadVotesTestCandidates);
 		testLoadVotes.loadVotes();
 	}
 	
 	@Test
-	public void testLoadVotesTestFullFileWorking() throws FileNotFoundException, ElectionException, IOException, NumbersException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
-		testLoadVotes = new PrefElection("\\Test\\TestLoadVotes_FullFile_Working");
-		setNumberOfCandidatesLoadVotes(numberofLoadVotesTestCandidates);
+	public void testLoadVotesTestWorking() throws FileNotFoundException, ElectionException, IOException, NumbersException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		testLoadVotes = new PrefElection("Test//TestLoadVotes_Working");
+		setValueSuperObject(testLoadVotes, "numCandidates", numberofLoadVotesTestCandidates);
 		testLoadVotes.loadVotes();
-		
-		
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	@Test
+	public void testLoadVotesTestCountValidVotes() throws FileNotFoundException, ElectionException, IOException, NumbersException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		testLoadVotes = new PrefElection("Test//TestLoadVotes_Working");
+		setValueSuperObject(testLoadVotes, "numCandidates", numberofLoadVotesTestCandidates);
+		testLoadVotes.loadVotes();
+		
+		//Collection vc = (VoteCollection)testLoadVotes.GetType().GetField("vc").GetValue(testLoadVotes);
+		assertEquals(5, 8);
+	}
 	
 	
 	/*
@@ -626,44 +619,13 @@ public class PrefElectionTests {
 	
 	/*
 	 *    Private Helper methods
-	 */
-	private void setNumberOfVotesLarge(int numVotes) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{		
-		//Push into the instance of prefElectLarge
-		Field fieldLarge = Election.class.getDeclaredField("numVotes");
-		fieldLarge.setAccessible(true);
-		fieldLarge.set(prefElectLarge, numVotes);
-		fieldLarge.setAccessible(false);
-	}
-	
-	private void setNumberOfVotesSmall(int numVotes) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{		
-		//Push into the instance of prefElectSmall
-		Field fieldSmall = Election.class.getDeclaredField("numVotes");
-		fieldSmall.setAccessible(true);
-		fieldSmall.set(prefElectSmall, numVotes);
-		fieldSmall.setAccessible(false);
-	}
-	
-	private void setNumberOfCandidatesLoadVotes(int numCandi) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{
-		//Push into the instance of prefElectLarge
-		Field field = Election.class.getDeclaredField("numCandidates");
-		field.setAccessible(true);
-		field.set(testLoadVotes, numCandi);
-		field.setAccessible(false);
-	}
-	
-	private void setNumberOfCandidates(int numCandi) throws NoSuchFieldException, SecurityException, 
-			IllegalArgumentException, IllegalAccessException{
-		//Push into the instance of prefElectLarge
-		Field field = Election.class.getDeclaredField("numCandidates");
-		field.setAccessible(true);
-		field.set(prefElectLarge, numCandi);
-		field.setAccessible(false);
+	 */	
+	private void setValueSuperObject(Election elecObject, String declaredField, Object value) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{
 		
-		//Push into the instance of prefElectSmall
-		Field fieldSmall = Election.class.getDeclaredField("numCandidates");
-		fieldSmall.setAccessible(true);
-		fieldSmall.set(prefElectSmall, numCandi);
-		fieldSmall.setAccessible(false);
+		Field field = Election.class.getDeclaredField(declaredField);
+		field.setAccessible(true);
+		field.set(elecObject, value);
+		field.setAccessible(false);
 	}
 	
 	private void buildCandidateList() throws 
@@ -693,17 +655,8 @@ public class PrefElectionTests {
 			this.cds.put(new CandidateIndex(i+1), candidateArray[i]);
 		}
 		
-		//Push into the instance of prefElectLarge
-		Field field = Election.class.getDeclaredField("cds");
-		field.setAccessible(true);
-		field.set(prefElectLarge, cds);
-		field.setAccessible(false);
-		
-		//Push into the instance of prefElectSmall
-		Field fieldSmall = Election.class.getDeclaredField("cds");
-		fieldSmall.setAccessible(true);
-		fieldSmall.set(prefElectSmall, cds);
-		fieldSmall.setAccessible(false);
+		setValueSuperObject(prefElectLarge, "cds", cds);
+		setValueSuperObject(prefElectSmall, "cds", cds);
 	}
 	
 	private void buildLargeVoteCollection() throws NoSuchFieldException, 
@@ -1412,11 +1365,7 @@ public class PrefElectionTests {
 		addVoteToLargeList(buildVote("2,7,4,14,1,6,12,8,10,3,15,5,13,9,11"));
 		addVoteToLargeList(buildVote("7,15,8,6,2,5,3,10,1,14,13,12,9,4,11"));
 		
-		//Push into the instance of prefElectLarge
-		Field field = Election.class.getDeclaredField("vc");
-		field.setAccessible(true);
-		field.set(prefElectLarge, vcLarge);
-		field.setAccessible(false);
+		setValueSuperObject(prefElectLarge, "vc", vcLarge);
 	}
 	
 	private void addVoteToLargeList(Vote vote){
@@ -1439,11 +1388,7 @@ public class PrefElectionTests {
 		addVoteToSmallList(buildVote("14,11,9,10,15,2,13,4,3,7,8,12,5,6,1"));
 		addVoteToSmallList(buildVote("9,3,5,13,14,2,6,4,10,15,11,1,8,12,7"));
 		
-		//Push into the instance of prefElectSmall
-		Field field = Election.class.getDeclaredField("vc");
-		field.setAccessible(true);
-		field.set(prefElectSmall, vcSmall);
-		field.setAccessible(false);
+		setValueSuperObject(prefElectSmall, "vc", vcSmall);
 	}
 	
 	private void addVoteToSmallList(Vote vote){
@@ -1469,34 +1414,30 @@ public class PrefElectionTests {
 	}
 	
 	private boolean isFormal(Vote v) {
-		int voteValue, innerLoopCounter, outerLoopCounter;
-		Iterator<Integer> iter;
-		Object voteObject;
+		int innerLoopCounter, outerLoopCounter, zeroPreference;
 		
 		outerLoopCounter = 0;
-		iter = v.iterator();
+		zeroPreference = 0;
 		
-		
-		while(iter.hasNext()){
-			voteObject = iter.next();
-			voteValue = (int) voteObject;
+		for (int outerPreference : v){
 			outerLoopCounter++;
-			innerLoopCounter = 0;			
+			innerLoopCounter = 0;
 			
 			// Test to see if there is a duplicate vote
 			// Skipping the current vote being tested
-			for (Object obj : v){
+			for (int innerPreference : v){
 				innerLoopCounter++;
-				if (obj.equals(voteObject) && outerLoopCounter != innerLoopCounter){
+				if (outerPreference == innerPreference && outerLoopCounter != innerLoopCounter){
 					return false;
 				}
 			}
 			
-			//Test to see if the voted number is higher than the available candidates
-			if (voteValue > this.numberOfTestCandidates){
+			//Test to see if preference exceeds max and min range
+			if (outerPreference <= zeroPreference || outerPreference > this.numberOfTestCandidates){
 				return false;
 			}
 		}
+		
 		return true;
 	}
 	
