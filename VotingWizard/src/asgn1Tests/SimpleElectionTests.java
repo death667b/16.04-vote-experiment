@@ -3,10 +3,12 @@
  */
 package asgn1Tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Field;
-import java.util.Iterator;
 import java.util.TreeMap;
 
 import org.junit.Before;
@@ -22,7 +24,7 @@ import asgn1Election.VoteCollection;
 import asgn1Election.VoteList;
 
 /**
- * @author Ian
+ * @author n5372828 Ian Daniel
  *
  */
 public class SimpleElectionTests {
@@ -33,11 +35,11 @@ public class SimpleElectionTests {
 	private VoteCollection vcLarge;
 	private VoteCollection vcSmall;
 	private TreeMap<CandidateIndex, Candidate> cds;
-	
+
 	int numberOfTestCandidates = 15;
 	int largeNumberVotes = 702;
 	int smallNumberVotes = 10;
-	
+
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -47,39 +49,38 @@ public class SimpleElectionTests {
 		simpleElectSmall = new SimpleElection("testSmall");
 		vcLarge = new VoteCollection(numberOfTestCandidates);
 		vcSmall = new VoteCollection(numberOfTestCandidates);
-		
+
 		buildCandidateList();
 		buildLargeVoteCollection();
 		buildSmallVoteCollection();
-		
-		setValueElectionSuperObject(simpleElectLarge,"numCandidates",numberOfTestCandidates);
-		setValueElectionSuperObject(simpleElectSmall,"numCandidates",numberOfTestCandidates);
+
+		setValueElectionSuperObject(simpleElectLarge, "numCandidates", numberOfTestCandidates);
+		setValueElectionSuperObject(simpleElectSmall, "numCandidates", numberOfTestCandidates);
 		setValueElectionSuperObject(simpleElectLarge, "numVotes", largeNumberVotes);
 		setValueElectionSuperObject(simpleElectSmall, "numVotes", smallNumberVotes);
 	}
 
-	
 	/*
-	 *    Test Section for SimpleElection Constructor
+	 * Test Section for SimpleElection Constructor
 	 */
 	/**
-	 * Test method for {@link asgn1Election.SimpleElection#SimpleElection(java.lang.String)}.
+	 * Test method for
+	 * {@link asgn1Election.SimpleElection#SimpleElection(java.lang.String)}.
 	 */
 	@Test
 	public void testSimpleElectionNameSaved() {
 		assertEquals("testLarge", simpleElectLarge.getName());
 	}
-	
+
 	@Test
 	public void testSimpleElectionTwoObjectsDiffName() {
 		Election testSimple = new SimpleElection("other");
-		
+
 		assertNotEquals(testSimple.getName(), simpleElectLarge.getName());
 	}
-	
 
 	/*
-	 *    Test Section for SimpleElection.FindWinner()
+	 * Test Section for SimpleElection.FindWinner()
 	 */
 	/**
 	 * Test method for {@link asgn1Election.SimpleElection#findWinner()}.
@@ -87,171 +88,171 @@ public class SimpleElectionTests {
 	@Test
 	public void testFindWinnerLarge() {
 		String returnedStringLarge;
-		
+
 		returnedStringLarge = simpleElectLarge.findWinner();
-		
+
 		assertEquals(returnAssertedFindWinnerTextLarge(), returnedStringLarge);
 	}
-	
+
 	@Test
 	public void testFindWinnerSmall() {
 		String returnedStringSmall;
-		
+
 		returnedStringSmall = simpleElectSmall.findWinner();
-		
+
 		assertEquals(returnAssertedFindWinnerTextSmall(), returnedStringSmall);
 	}
 
-	
 	/*
-	 *    Test Section for SimpleElection.IsFormal()
+	 * Test Section for SimpleElection.IsFormal()
 	 */
 	/**
-	 * Test method for {@link asgn1Election.SimpleElection#isFormal(asgn1Election.Vote)}.
+	 * Test method for
+	 * {@link asgn1Election.SimpleElection#isFormal(asgn1Election.Vote)}.
 	 */
 	@Test
 	public void testIsFormalCorrect() {
 		testVote = new VoteList(numberOfTestCandidates);
-		
-		for (int i = 1; i <= numberOfTestCandidates; i++){
+
+		for (int i = 1; i <= numberOfTestCandidates; i++) {
 			testVote.addPref(i);
 		}
-		
+
 		assertTrue(simpleElectLarge.isFormal(testVote));
 	}
-	
+
 	@Test
 	public void testIsFormalAllOnesFail() {
-		//Fails because more than one '1'
+		// Fails because more than one '1'
 		testVote = new VoteList(numberOfTestCandidates);
-		
-		for (int i = 1; i <= numberOfTestCandidates; i++){
+
+		for (int i = 1; i <= numberOfTestCandidates; i++) {
 			testVote.addPref(1);
 		}
-		
+
 		assertFalse(simpleElectLarge.isFormal(testVote));
 	}
 
 	@Test
 	public void testIsFormalAllFifteensFail() {
-		//Fails because no '1'
+		// Fails because no '1'
 		testVote = new VoteList(numberOfTestCandidates);
-		
-		for (int i = 1; i <= numberOfTestCandidates; i++){
+
+		for (int i = 1; i <= numberOfTestCandidates; i++) {
 			testVote.addPref(15);
 		}
-		
+
 		assertFalse(simpleElectLarge.isFormal(testVote));
 	}
-	
+
 	@Test
 	public void testIsFormalVotesReversePass() {
 		testVote = new VoteList(numberOfTestCandidates);
-		
-		for (int i = numberOfTestCandidates; i >= 1; i--){
+
+		for (int i = numberOfTestCandidates; i >= 1; i--) {
 			testVote.addPref(i);
 		}
-		
+
 		assertTrue(simpleElectLarge.isFormal(testVote));
 	}
-	
+
 	@Test
 	public void testIsFormalDuplicateNumberFourPass() {
-		//Passes because there is only one '1'
+		// Passes because there is only one '1'
 		testVote = new VoteList(numberOfTestCandidates);
-		
-		for (int i = 1; i <= 4; i++){
+
+		for (int i = 1; i <= 4; i++) {
 			testVote.addPref(i);
 		}
 		testVote.addPref(4);
-		
-		for (int i = 6; i <= 10; i++){
+
+		for (int i = 6; i <= 10; i++) {
 			testVote.addPref(i);
 		}
 		testVote.addPref(4);
-		
-		for (int i = 12; i <= 15; i++){
+
+		for (int i = 12; i <= 15; i++) {
 			testVote.addPref(i);
 		}
-		
+
 		assertTrue(simpleElectLarge.isFormal(testVote));
 	}
-	
+
 	@Test
 	public void testIsFormalDuplicateOnBounderyFail() {
-		//Fails because there is no '1'
+		// Fails because there is no '1'
 		testVote = new VoteList(numberOfTestCandidates);
-		
+
 		testVote.addPref(15);
-		for (int i = 2; i <= 14; i++){
+		for (int i = 2; i <= 14; i++) {
 			testVote.addPref(i);
 		}
 		testVote.addPref(15);
 
 		assertFalse(simpleElectLarge.isFormal(testVote));
 	}
-	
+
 	@Test
 	public void testIsFormalDuplicatePrimaries() {
-		//Fails because there is two '1'
+		// Fails because there is two '1'
 		testVote = new VoteList(numberOfTestCandidates);
-		
-		for (int i = 2; i <= 5; i++){
+
+		for (int i = 2; i <= 5; i++) {
 			testVote.addPref(i);
 		}
 		testVote.addPref(1);
-		
-		for (int i = 6; i <= 10; i++){
+
+		for (int i = 6; i <= 10; i++) {
 			testVote.addPref(i);
 		}
 		testVote.addPref(1);
-		
-		for (int i = 11; i <= 14; i++){
+
+		for (int i = 11; i <= 14; i++) {
 			testVote.addPref(i);
 		}
 
 		assertFalse(simpleElectLarge.isFormal(testVote));
 	}
-	
+
 	@Test
 	public void testIsFormalBoundaryZeroFail() {
-		//Fail because of Zero
+		// Fail because of Zero
 		testVote = new VoteList(numberOfTestCandidates);
-		
+
 		testVote.addPref(0);
 		testVote.addPref(1);
 
 		assertFalse(simpleElectLarge.isFormal(testVote));
 	}
-	
+
 	@Test
 	public void testIsFormalBoundarySixteenFail() {
-		//Fail because exceeds numberOfTestCandidates(15)
+		// Fail because exceeds numberOfTestCandidates(15)
 		testVote = new VoteList(numberOfTestCandidates);
-		
+
 		testVote.addPref(16);
 		testVote.addPref(1);
 
 		assertFalse(simpleElectLarge.isFormal(testVote));
 	}
-	
+
 	@Test
-	public void testIsFormalBoundaryThreeFail() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
-		//Fail because exceeds max 2
+	public void testIsFormalBoundaryThreeFail()
+			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		// Fail because exceeds max 2
 		int numCandiForThisTest = 2;
-		
+
 		setValueElectionSuperObject(simpleElectLarge, "numCandidates", numCandiForThisTest);
 		testVote = new VoteList(numCandiForThisTest);
-		
+
 		testVote.addPref(3);
 		testVote.addPref(1);
 
 		assertFalse(simpleElectLarge.isFormal(testVote));
 	}
 
-	
 	/*
-	 *    Test Section for Election.getTypeString()
+	 * Test Section for Election.getTypeString()
 	 */
 	/**
 	 * Test method for {@link asgn1Election.Election#getTypeString()}.
@@ -260,8 +261,9 @@ public class SimpleElectionTests {
 	public void testGetTypeStringSimple() {
 		assertEquals("Simple Election", simpleElectLarge.getTypeString());
 	}
+
 	/*
-	 *    Test Section for Automatic Passes
+	 * Test Section for Automatic Passes
 	 */
 	/**
 	 * Test method for {@link asgn1Election.SimpleElection#toString()}.
@@ -271,51 +273,82 @@ public class SimpleElectionTests {
 		assertTrue(true);
 	}
 
-	
 	/*
-	 *    Private Helper methods
+	 * Private Helper methods
 	 */
-	private void setValueElectionSuperObject(Election elecObject, String declaredField, Object value) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{
-		
+	/**
+	 * Sets the <code>value</code> for the <code>declaredField</code> in the 
+	 * Election <code>elecObject</code>.  This uses 'Reflection' to force access
+	 * to a private or protected field.
+	 * 
+	 * @param elecObject <code>Election</code> object setting value to.
+	 * @param declaredField <code>String</code> name of field needing to set.
+	 * @param value <code>Object</code> that contains the new data.
+	 * @throws NoSuchFieldException
+	 * @throws SecurityException
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 */
+	private void setValueElectionSuperObject(Election elecObject, String declaredField, Object value)
+			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+
 		Field field = Election.class.getDeclaredField(declaredField);
 		field.setAccessible(true);
 		field.set(elecObject, value);
 		field.setAccessible(false);
 	}
-	
-	private void buildCandidateList() throws 
-	        ElectionException, NoSuchFieldException, SecurityException, 
-	        IllegalArgumentException, IllegalAccessException{
+
+	/**
+	 * Build a TreeMap for unit testing candidates.  
+	 * Saving <code>TreeMap</code> in large and small election objects
+	 * 
+	 * @throws ElectionException
+	 * @throws NoSuchFieldException
+	 * @throws SecurityException
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 */
+	private void buildCandidateList() throws ElectionException, NoSuchFieldException, SecurityException,
+			IllegalArgumentException, IllegalAccessException {
 
 		this.cds = new TreeMap<CandidateIndex, Candidate>();
 		Candidate[] candidateArray = new Candidate[numberOfTestCandidates];
-			
-		candidateArray[0] = new Candidate("Candidate1","Candidate1 Party","CP1", 0);
-		candidateArray[1] = new Candidate("Candidate2","Candidate2 Party","CP2", 0);
-		candidateArray[2] = new Candidate("Candidate3","Candidate3 Party","CP3", 0);
-		candidateArray[3] = new Candidate("Candidate4","Candidate4 Party","CP4", 0);
-		candidateArray[4] = new Candidate("Candidate5","Candidate5 Party","CP5", 0);
-		candidateArray[5] = new Candidate("Candidate6","Candidate6 Party","CP6", 0);
-		candidateArray[6] = new Candidate("Candidate7","Candidate7 Party","CP7", 0);
-		candidateArray[7] = new Candidate("Candidate8","Candidate8 Party","CP8", 0);
-		candidateArray[8] = new Candidate("Candidate9","Candidate9 Party","CP9", 0);
-		candidateArray[9] = new Candidate("Candidate10","Candidate10 Party","CP10", 0);
-		candidateArray[10] = new Candidate("Candidate11","Candidate11 Party","CP11", 0);
-		candidateArray[11] = new Candidate("Candidate12","Candidate12 Party","CP12", 0);
-		candidateArray[12] = new Candidate("Candidate13","Candidate13 Party","CP13", 0);
-		candidateArray[13] = new Candidate("Candidate14","Candidate14 Party","CP14", 0);
-		candidateArray[14] = new Candidate("Candidate15","Candidate15 Party","CP15", 0);
-		
-		for (int i = 0; i < candidateArray.length; i++){
-			this.cds.put(new CandidateIndex(i+1), candidateArray[i]);
+
+		candidateArray[0] = new Candidate("Candidate1", "Candidate1 Party", "CP1", 0);
+		candidateArray[1] = new Candidate("Candidate2", "Candidate2 Party", "CP2", 0);
+		candidateArray[2] = new Candidate("Candidate3", "Candidate3 Party", "CP3", 0);
+		candidateArray[3] = new Candidate("Candidate4", "Candidate4 Party", "CP4", 0);
+		candidateArray[4] = new Candidate("Candidate5", "Candidate5 Party", "CP5", 0);
+		candidateArray[5] = new Candidate("Candidate6", "Candidate6 Party", "CP6", 0);
+		candidateArray[6] = new Candidate("Candidate7", "Candidate7 Party", "CP7", 0);
+		candidateArray[7] = new Candidate("Candidate8", "Candidate8 Party", "CP8", 0);
+		candidateArray[8] = new Candidate("Candidate9", "Candidate9 Party", "CP9", 0);
+		candidateArray[9] = new Candidate("Candidate10", "Candidate10 Party", "CP10", 0);
+		candidateArray[10] = new Candidate("Candidate11", "Candidate11 Party", "CP11", 0);
+		candidateArray[11] = new Candidate("Candidate12", "Candidate12 Party", "CP12", 0);
+		candidateArray[12] = new Candidate("Candidate13", "Candidate13 Party", "CP13", 0);
+		candidateArray[13] = new Candidate("Candidate14", "Candidate14 Party", "CP14", 0);
+		candidateArray[14] = new Candidate("Candidate15", "Candidate15 Party", "CP15", 0);
+
+		for (int i = 0; i < candidateArray.length; i++) {
+			this.cds.put(new CandidateIndex(i + 1), candidateArray[i]);
 		}
-		
+
 		setValueElectionSuperObject(simpleElectLarge, "cds", cds);
 		setValueElectionSuperObject(simpleElectSmall, "cds", cds);
 	}
-	
-	private void buildLargeVoteCollection() throws NoSuchFieldException, 
-			SecurityException, IllegalArgumentException, IllegalAccessException{
+
+	/**
+	 * Build a large voteCollection - contains 702 valid and invalid votes
+	 * Saving <code>VoteCollection</code> in large election object
+	 * 
+	 * @throws NoSuchFieldException
+	 * @throws SecurityException
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 */
+	private void buildLargeVoteCollection()
+			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		addVoteToLargeList(buildVote("15,10,1,13,9,8,4,6,7,11,1,12,3,14,2"));
 		addVoteToLargeList(buildVote("7,15,8,6,2,5,3,10,14,14,13,12,9,4,11"));
 		addVoteToLargeList(buildVote("10,6,4,1,14,9,11,13,3,15,7,2,12,5,8"));
@@ -1019,19 +1052,38 @@ public class SimpleElectionTests {
 		addVoteToLargeList(buildVote("9,15,4,13,8,12,10,1,14,11,2,3,6,5,7"));
 		addVoteToLargeList(buildVote("2,7,4,14,1,6,12,8,10,3,15,5,13,9,11"));
 		addVoteToLargeList(buildVote("7,15,8,6,2,5,3,10,1,14,13,12,9,4,11"));
-		
+
 		setValueElectionSuperObject(simpleElectLarge, "vc", vcLarge);
 	}
-	
-	private void addVoteToLargeList(Vote vote){
+
+	/**
+	 * Using the built vote from 'BuildVote' 
+	 * add this to the Large VoteCollection object
+	 * Build as if it is in the main program
+	 * 
+	 * @param vote <code>Vote</code> to be added to the collection
+	 */
+	private void addVoteToLargeList(Vote vote) {
 		if ((vote == null) || (!isFormal(vote))) {
 			this.vcLarge.updateInformalCount();
 		} else {
 			this.vcLarge.includeFormalVote(vote);
 		}
 	}
-	
-	private void buildSmallVoteCollection() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{
+
+	/**
+	 * Build a small voteCollection - contains 10 valid votes.
+	 * No invalid votes.
+	 * 
+	 * Saving <code<VoteCollection</code> to small Election object
+	 * 
+	 * @throws NoSuchFieldException
+	 * @throws SecurityException
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 */
+	private void buildSmallVoteCollection()
+			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		addVoteToSmallList(buildVote("15,10,1,13,9,8,4,6,7,11,5,12,3,14,2"));
 		addVoteToSmallList(buildVote("7,15,8,6,2,5,3,10,14,1,13,12,9,4,11"));
 		addVoteToSmallList(buildVote("10,6,4,1,14,9,11,13,3,15,7,2,12,5,8"));
@@ -1042,63 +1094,92 @@ public class SimpleElectionTests {
 		addVoteToSmallList(buildVote("15,13,2,11,6,12,5,4,8,1,7,9,14,10,3"));
 		addVoteToSmallList(buildVote("14,11,9,10,15,2,13,4,3,7,8,12,5,6,1"));
 		addVoteToSmallList(buildVote("9,3,5,13,14,2,6,4,10,15,11,1,8,12,7"));
-		
+
 		setValueElectionSuperObject(simpleElectSmall, "vc", vcSmall);
 	}
-	
-	private void addVoteToSmallList(Vote vote){
+
+	/**
+	 * Using the built vote from 'BuildVote' 
+	 * add this to the Small VoteCollection object
+	 * Build as if it is in the main program
+	 * 
+	 * @param vote <code>Vote</code> to be added to the collection
+	 */
+	private void addVoteToSmallList(Vote vote) {
 		if ((vote == null) || (!isFormal(vote))) {
 			this.vcSmall.updateInformalCount();
 		} else {
 			this.vcSmall.includeFormalVote(vote);
 		}
 	}
-	
-	private Vote buildVote(String voteString){
+
+	/**
+	 * Uses a comma separated string to build a vote object.
+	 * This will be passed to either the Large or Small VoteCollection
+	 * 
+	 * @param voteString <code>String</code> containing the votes to be added.
+	 * @return Vote object containing the collected votes.
+	 */
+	private Vote buildVote(String voteString) {
 		Vote vote = new VoteList(numberOfTestCandidates);
-		
+
 		String[] votes = voteString.trim().split(",");
 		int singleVote;
-		
-		for (String singleString : votes){
+
+		for (String singleString : votes) {
 			singleVote = Integer.parseInt(singleString);
 			vote.addPref(singleVote);
 		}
-		
+
 		return vote;
 	}
-	
+
+	/**
+	 * Filters the vote looking for valid and invalid votes.
+	 * 
+	 * Copied from the main program and used for a helper in testing.
+	 * 
+	 * @param v <code>Vote</code> object to be tested
+	 * @return True if the vote is valid and False if invalid
+	 */
 	private boolean isFormal(Vote v) {
 		int innerLoopCounter, outerLoopCounter, zeroPreference;
-		
+
 		outerLoopCounter = 0;
 		zeroPreference = 0;
-		
-		for (int outerPreference : v){
+
+		for (int outerPreference : v) {
 			outerLoopCounter++;
 			innerLoopCounter = 0;
-			
+
 			// Test to see if there is a duplicate vote
 			// Skipping the current vote being tested
-			for (int innerPreference : v){
+			for (int innerPreference : v) {
 				innerLoopCounter++;
-				if (outerPreference == innerPreference && outerLoopCounter != innerLoopCounter){
+				if (outerPreference == innerPreference && outerLoopCounter != innerLoopCounter) {
 					return false;
 				}
 			}
-			
-			//Test to see if preference exceeds max and min range
-			if (outerPreference <= zeroPreference || outerPreference > this.numberOfTestCandidates){
+
+			// Test to see if preference exceeds max and min range
+			if (outerPreference <= zeroPreference || outerPreference > this.numberOfTestCandidates) {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
-	
-	private String returnAssertedFindWinnerTextLarge(){
+
+	/**
+	 * Returns a <code>String</code> containing a primary count of the
+	 * large <code>VoteCollection</code>.  This is shown in the 
+	 * console window on completion of each election.
+	 * 
+	 * @return <code>String</code> displaying winning console text for Large Simple Election
+	 */
+	private String returnAssertedFindWinnerTextLarge() {
 		String returnString;
-		
+
 		returnString = "Results for election: testLarge\n";
 		returnString += "Enrolment: 0\n\n";
 		returnString += "Candidate1          Candidate1 Party              (CP1)\n";
@@ -1136,13 +1217,20 @@ public class SimpleElectionTests {
 		returnString += "Informal                    14\n\n";
 		returnString += "Votes Cast                 702\n\n\n";
 		returnString += "Candidate Candidate9 (Candidate9 Party) is the winner with 108 votes...\n";
-		
+
 		return returnString;
 	}
-	
-	public String returnAssertedFindWinnerTextSmall(){
+
+	/**
+	 * Returns a <code>String</code> containing a primary count of the
+	 * Small <code>VoteCollection</code>.  This is shown in the 
+	 * console window on completion of each election.
+	 * 
+	 * @return <code>String</code> displaying winning console text for Small Simple Election
+	 */
+	public String returnAssertedFindWinnerTextSmall() {
 		String returnString;
-		
+
 		returnString = "Results for election: testSmall\n";
 		returnString += "Enrolment: 0\n\n";
 		returnString += "Candidate1          Candidate1 Party              (CP1)\n";

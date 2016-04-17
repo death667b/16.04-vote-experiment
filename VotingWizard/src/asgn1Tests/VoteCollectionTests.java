@@ -3,7 +3,9 @@
  */
 package asgn1Tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.TreeMap;
 
@@ -18,81 +20,82 @@ import asgn1Election.VoteCollection;
 import asgn1Election.VoteList;
 
 /**
- * @author Ian
+ * @author n5372828 Ian Daniel
  *
  */
 public class VoteCollectionTests {
 
 	private VoteCollection instanceCreateTest, vcSmall, vcLarge, vcBlank;
 	private TreeMap<CandidateIndex, Candidate> cds;
-	
+
 	int numberOfTestCandidates = 15;
-	
+
 	Vote voteBlank;
-	
+
 	@Before
-	public void setup() throws ElectionException{
+	public void setup() throws ElectionException {
 		vcSmall = new VoteCollection(numberOfTestCandidates);
 		vcLarge = new VoteCollection(numberOfTestCandidates);
 		vcBlank = new VoteCollection(5);
-		
+
 		buildCandidateList();
 		buildSmallVoteCollection();
 		buildLargeVoteCollection();
-		
+
 		voteBlank = buildVote("1,2,3,4,5,6,7,8,9,10,11,12,13,14,15");
 	}
-	
-	
+
 	/*
-	 *    Test Section for VoteCollection Constructor
+	 * Test Section for VoteCollection Constructor
 	 */
 	/**
 	 * Test method for {@link asgn1Election.VoteCollection#VoteCollection(int)}.
-	 * @throws ElectionException 
-	 */	
+	 * 
+	 * @throws ElectionException
+	 */
 	@Test(expected = ElectionException.class)
 	public void testVoteCollectionLowerBounderyFail() throws ElectionException {
 		instanceCreateTest = new VoteCollection(0);
 		assertNull(instanceCreateTest);
 	}
-	
+
 	@Test
 	public void testVoteCollectionLowerBounderyPass() throws ElectionException {
 		instanceCreateTest = new VoteCollection(1);
 		assertNotNull(instanceCreateTest);
 	}
-	
+
 	@Test(expected = ElectionException.class)
 	public void testVoteCollectionUpperBounderyFail() throws ElectionException {
 		instanceCreateTest = new VoteCollection(16);
 		assertNull(instanceCreateTest);
 	}
-	
+
 	@Test
 	public void testVoteCollectionUpperBounderyPass() throws ElectionException {
 		instanceCreateTest = new VoteCollection(15);
 		assertNotNull(instanceCreateTest);
 	}
 
-	
 	/*
-	 *    Test Section for VoteCollection.CountPrefVotes()
+	 * Test Section for VoteCollection.CountPrefVotes()
 	 */
 	/**
-	 * Test method for {@link asgn1Election.VoteCollection#countPrefVotes(java.util.TreeMap, asgn1Election.CandidateIndex)}.
-	 */	
+	 * Test method for
+	 * {@link asgn1Election.VoteCollection#countPrefVotes(java.util.TreeMap, asgn1Election.CandidateIndex)}
+	 * .
+	 */
 	@Test
 	public void testCountPrefVotesFirstPassCorrectCount() {
 		CandidateIndex elimCandi = new CandidateIndex(8);
 		vcLarge.countPrimaryVotes(cds);
 		cds.remove(elimCandi);
 		vcLarge.countPrefVotes(cds, elimCandi);
-		
+
 		Candidate changedCandi = cds.get(new CandidateIndex(1));
 		assertEquals(47, changedCandi.getVoteCount());
 	}
-		
+
 	@Test
 	public void testCountPrefVotesSecondPassCorrectCount() {
 		CandidateIndex elimCandi = new CandidateIndex(8);
@@ -102,11 +105,11 @@ public class VoteCollectionTests {
 		elimCandi = new CandidateIndex(2);
 		cds.remove(elimCandi);
 		vcLarge.countPrefVotes(cds, elimCandi);
-		
+
 		Candidate changedCandi = cds.get(new CandidateIndex(10));
 		assertEquals(50, changedCandi.getVoteCount());
 	}
-	
+
 	@Test
 	public void testCountPrefVotesThirdPassCorrectCount() {
 		CandidateIndex elimCandi = new CandidateIndex(8);
@@ -119,72 +122,73 @@ public class VoteCollectionTests {
 		elimCandi = new CandidateIndex(6);
 		cds.remove(elimCandi);
 		vcLarge.countPrefVotes(cds, elimCandi);
-		
+
 		Candidate changedCandi = cds.get(new CandidateIndex(4));
 		assertEquals(70, changedCandi.getVoteCount());
 	}
-		
+
 	@Test
 	public void testCountPrefVotesNoDuplicates() {
 		CandidateIndex elimCandi;
-		
+
 		vcLarge.countPrimaryVotes(cds);
 
-		for (int i = 1; i <= 14; i++){
+		for (int i = 1; i <= 14; i++) {
 			elimCandi = new CandidateIndex(i);
 			cds.remove(elimCandi);
 			vcLarge.countPrefVotes(cds, elimCandi);
 		}
-		
+
 		Candidate changedCandi = cds.get(new CandidateIndex(15));
 		assertEquals(689, changedCandi.getVoteCount());
 	}
-	
-	
+
 	/*
-	 *    Test Section for VoteCollection.CountPrimary()
+	 * Test Section for VoteCollection.CountPrimary()
 	 */
 	/**
-	 * Test method for {@link asgn1Election.VoteCollection#countPrimaryVotes(java.util.TreeMap)}.
+	 * Test method for
+	 * {@link asgn1Election.VoteCollection#countPrimaryVotes(java.util.TreeMap)}
+	 * .
 	 */
 	@Test
 	public void testCountPrimaryVotesLargeWinner() {
 		vcLarge.countPrimaryVotes(cds);
 		Candidate winCandi = cds.get(new CandidateIndex(9));
-		
+
 		assertEquals(108, winCandi.getVoteCount());
 	}
-	
+
 	@Test
 	public void testCountPrimaryVotesLargeLooser() {
 		vcLarge.countPrimaryVotes(cds);
 		Candidate looseCandi = cds.get(new CandidateIndex(8));
-		
+
 		assertEquals(26, looseCandi.getVoteCount());
 	}
-	
+
 	@Test
 	public void testCountPrimaryVotesSmallWinner() {
 		vcSmall.countPrimaryVotes(cds);
 		Candidate winCandi = cds.get(new CandidateIndex(4));
-		
+
 		assertEquals(3, winCandi.getVoteCount());
 	}
-	
+
 	@Test
 	public void testCountPrimaryVotesSmallLooser() {
 		vcSmall.countPrimaryVotes(cds);
 		Candidate looseCandi = cds.get(new CandidateIndex(2));
-		
+
 		assertEquals(0, looseCandi.getVoteCount());
 	}
 
-
 	/*
-	 *    Test Section for VoteCollection.EmptyTheCollection()
+	 * Test Section for VoteCollection.EmptyTheCollection()
 	 */
 	/**
-	 * Test method for {@link asgn1Election.VoteCollection#emptyTheCollection()}.
+	 * Test method for {@link asgn1Election.VoteCollection#emptyTheCollection()}
+	 * .
 	 */
 	@Test
 	public void testEmptyTheCollectionEmptyFormalCount() {
@@ -192,37 +196,36 @@ public class VoteCollectionTests {
 
 		assertEquals(0, vcLarge.getFormalCount());
 	}
-	
+
 	@Test
 	public void testEmptyTheCollectionEmptyInFormalCount() {
 		vcLarge.emptyTheCollection();
 
 		assertEquals(0, vcLarge.getInformalCount());
 	}
-	
+
 	@Test
 	public void testEmptyTheCollectionEmptyVoteList() {
 		Candidate testCandidate;
 		int highestVoteFound = 0;
-		
+
 		vcLarge.emptyTheCollection();
 		vcLarge.countPrimaryVotes(cds);
-		
-		//Every count should be zero after emptyTheCollection()
-		for (int i = 1; i <= numberOfTestCandidates; i++){
+
+		// Every count should be zero after emptyTheCollection()
+		for (int i = 1; i <= numberOfTestCandidates; i++) {
 			testCandidate = cds.get(new CandidateIndex(i));
-			
-			if (highestVoteFound <= testCandidate.getVoteCount()){
+
+			if (highestVoteFound <= testCandidate.getVoteCount()) {
 				highestVoteFound = testCandidate.getVoteCount();
-			}			
+			}
 		}
-		
+
 		assertEquals(0, highestVoteFound);
 	}
-	
 
 	/*
-	 *    Test Section for VoteCollection.getFormalCount()
+	 * Test Section for VoteCollection.getFormalCount()
 	 */
 	/**
 	 * Test method for {@link asgn1Election.VoteCollection#getFormalCount()}.
@@ -236,9 +239,9 @@ public class VoteCollectionTests {
 	public void testGetFormalCountSmall() {
 		assertEquals(10, vcSmall.getFormalCount());
 	}
-	
+
 	/*
-	 *    Test Section for VoteCollection.getFormalCount()
+	 * Test Section for VoteCollection.getFormalCount()
 	 */
 	/**
 	 * Test method for {@link asgn1Election.VoteCollection#getInformalCount()}.
@@ -248,82 +251,91 @@ public class VoteCollectionTests {
 		assertEquals(14, vcLarge.getInformalCount());
 	}
 
-	
 	/*
-	 *    Test Section for VoteCollection.includeFormalVote()
+	 * Test Section for VoteCollection.includeFormalVote()
 	 */
 	/**
-	 * Test method for {@link asgn1Election.VoteCollection#includeFormalVote(asgn1Election.Vote)}.
-	 * @throws ElectionException 
+	 * Test method for
+	 * {@link asgn1Election.VoteCollection#includeFormalVote(asgn1Election.Vote)}
+	 * .
+	 * 
+	 * @throws ElectionException
 	 */
 	@Test
 	public void testIncludeFormalVoteCountIncreases() throws ElectionException {
-		for (int i = 0; i < 5; i++){
+		for (int i = 0; i < 5; i++) {
 			vcBlank.includeFormalVote(voteBlank);
 		}
-		
+
 		assertEquals(5, vcBlank.getFormalCount());
 	}
 
 	@Test
 	public void testIncludeFormalVoteConfirmVoteCounting() throws ElectionException {
-		for (int i = 0; i < 5; i++){
+		for (int i = 0; i < 5; i++) {
 			vcBlank.includeFormalVote(voteBlank);
 		}
-		
+
 		vcBlank.countPrimaryVotes(cds);
-		
+
 		Candidate winCandi = cds.get(new CandidateIndex(1));
-		
+
 		assertEquals(5, winCandi.getVoteCount());
 	}
-	
-	
+
 	/*
-	 *    Test Section for VoteCollection.UpdateInformalCount()
+	 * Test Section for VoteCollection.UpdateInformalCount()
 	 */
 	/**
-	 * Test method for {@link asgn1Election.VoteCollection#updateInformalCount()}.
+	 * Test method for
+	 * {@link asgn1Election.VoteCollection#updateInformalCount()}.
 	 */
 	@Test
 	public void testUpdateInformalCount() {
-		for (int i = 0; i < 400; i++){
+		for (int i = 0; i < 400; i++) {
 			vcBlank.updateInformalCount();
 		}
-		
+
 		assertEquals(400, vcBlank.getInformalCount());
 	}
-	
-	
+
 	/*
-	 *    Private Helper methods
+	 * Private Helper methods
 	 */
-	private void buildCandidateList() throws ElectionException{
+	/**
+	 * Build a TreeMap for unit testing candidates
+	 * 
+	 * @throws ElectionException
+	 */
+	private void buildCandidateList() throws ElectionException {
 		this.cds = new TreeMap<CandidateIndex, Candidate>();
 		Candidate[] candidateArray = new Candidate[numberOfTestCandidates];
-			
-		candidateArray[0] = new Candidate("Candidate1","Candidate1 Party","CP1", 0);
-		candidateArray[1] = new Candidate("Candidate2","Candidate2 Party","CP2", 0);
-		candidateArray[2] = new Candidate("Candidate3","Candidate3 Party","CP3", 0);
-		candidateArray[3] = new Candidate("Candidate4","Candidate4 Party","CP4", 0);
-		candidateArray[4] = new Candidate("Candidate5","Candidate5 Party","CP5", 0);
-		candidateArray[5] = new Candidate("Candidate6","Candidate6 Party","CP6", 0);
-		candidateArray[6] = new Candidate("Candidate7","Candidate7 Party","CP7", 0);
-		candidateArray[7] = new Candidate("Candidate8","Candidate8 Party","CP8", 0);
-		candidateArray[8] = new Candidate("Candidate9","Candidate9 Party","CP9", 0);
-		candidateArray[9] = new Candidate("Candidate10","Candidate10 Party","CP10", 0);
-		candidateArray[10] = new Candidate("Candidate11","Candidate11 Party","CP11", 0);
-		candidateArray[11] = new Candidate("Candidate12","Candidate12 Party","CP12", 0);
-		candidateArray[12] = new Candidate("Candidate13","Candidate13 Party","CP13", 0);
-		candidateArray[13] = new Candidate("Candidate14","Candidate14 Party","CP14", 0);
-		candidateArray[14] = new Candidate("Candidate15","Candidate15 Party","CP15", 0);
-		
-		for (int i = 0; i < candidateArray.length; i++){
-			this.cds.put(new CandidateIndex(i+1), candidateArray[i]);
+
+		candidateArray[0] = new Candidate("Candidate1", "Candidate1 Party", "CP1", 0);
+		candidateArray[1] = new Candidate("Candidate2", "Candidate2 Party", "CP2", 0);
+		candidateArray[2] = new Candidate("Candidate3", "Candidate3 Party", "CP3", 0);
+		candidateArray[3] = new Candidate("Candidate4", "Candidate4 Party", "CP4", 0);
+		candidateArray[4] = new Candidate("Candidate5", "Candidate5 Party", "CP5", 0);
+		candidateArray[5] = new Candidate("Candidate6", "Candidate6 Party", "CP6", 0);
+		candidateArray[6] = new Candidate("Candidate7", "Candidate7 Party", "CP7", 0);
+		candidateArray[7] = new Candidate("Candidate8", "Candidate8 Party", "CP8", 0);
+		candidateArray[8] = new Candidate("Candidate9", "Candidate9 Party", "CP9", 0);
+		candidateArray[9] = new Candidate("Candidate10", "Candidate10 Party", "CP10", 0);
+		candidateArray[10] = new Candidate("Candidate11", "Candidate11 Party", "CP11", 0);
+		candidateArray[11] = new Candidate("Candidate12", "Candidate12 Party", "CP12", 0);
+		candidateArray[12] = new Candidate("Candidate13", "Candidate13 Party", "CP13", 0);
+		candidateArray[13] = new Candidate("Candidate14", "Candidate14 Party", "CP14", 0);
+		candidateArray[14] = new Candidate("Candidate15", "Candidate15 Party", "CP15", 0);
+
+		for (int i = 0; i < candidateArray.length; i++) {
+			this.cds.put(new CandidateIndex(i + 1), candidateArray[i]);
 		}
 	}
-	
-	private void buildLargeVoteCollection(){
+
+	/**
+	 * Build a large voteCollection - contains 702 valid and invalid votes
+	 */
+	private void buildLargeVoteCollection() {
 		addVoteToLargeList(buildVote("15,10,1,13,9,8,4,6,7,11,1,12,3,14,2"));
 		addVoteToLargeList(buildVote("7,15,8,6,2,5,3,10,14,14,13,12,9,4,11"));
 		addVoteToLargeList(buildVote("10,6,4,1,14,9,11,13,3,15,7,2,12,5,8"));
@@ -1028,16 +1040,27 @@ public class VoteCollectionTests {
 		addVoteToLargeList(buildVote("2,7,4,14,1,6,12,8,10,3,15,5,13,9,11"));
 		addVoteToLargeList(buildVote("7,15,8,6,2,5,3,10,1,14,13,12,9,4,11"));
 	}
-	
-	private void addVoteToLargeList(Vote vote){
+
+	/**
+	 * Using the built vote from 'BuildVote' 
+	 * add this to the Large VoteCollection object
+	 * Build as if it is in the main program
+	 * 
+	 * @param vote <code>Vote</code> to be added to the collection
+	 */
+	private void addVoteToLargeList(Vote vote) {
 		if ((vote == null) || (!isFormal(vote))) {
 			this.vcLarge.updateInformalCount();
 		} else {
 			this.vcLarge.includeFormalVote(vote);
 		}
 	}
-	
-	private void buildSmallVoteCollection(){
+
+	/**
+	 * Build a small voteCollection - contains 10 valid votes.
+	 * No invalid votes.
+	 */
+	private void buildSmallVoteCollection() {
 		addVoteToSmallList(buildVote("15,10,1,13,9,8,4,6,7,11,5,12,3,14,2"));
 		addVoteToSmallList(buildVote("7,15,8,6,2,5,3,10,14,1,13,12,9,4,11"));
 		addVoteToSmallList(buildVote("10,6,4,1,14,9,11,13,3,15,7,2,12,5,8"));
@@ -1049,54 +1072,76 @@ public class VoteCollectionTests {
 		addVoteToSmallList(buildVote("14,11,9,10,15,2,13,4,3,7,8,12,5,6,1"));
 		addVoteToSmallList(buildVote("9,3,5,13,14,2,6,4,10,15,11,1,8,12,7"));
 	}
-	
-	private void addVoteToSmallList(Vote vote){
+
+	/**
+	 * Using the built vote from 'BuildVote' 
+	 * add this to the Small VoteCollection object
+	 * Build as if it is in the main program
+	 * 
+	 * @param vote <code>Vote</code> to be added to the collection
+	 */
+	private void addVoteToSmallList(Vote vote) {
 		if ((vote == null) || (!isFormal(vote))) {
 			this.vcSmall.updateInformalCount();
 		} else {
 			this.vcSmall.includeFormalVote(vote);
 		}
 	}
-	
-	private Vote buildVote(String voteString){
+
+	/**
+	 * Uses a comma separated string to build a vote object.
+	 * This will be passed to either the Large or Small VoteCollection
+	 * 
+	 * @param voteString <code>String</code> containing the votes to be added.
+	 * @return Vote object containing the collected votes.
+	 */
+	private Vote buildVote(String voteString) {
 		Vote vote = new VoteList(numberOfTestCandidates);
-		
+
 		String[] votes = voteString.trim().split(",");
 		int singleVote;
-		
-		for (String singleString : votes){
+
+		for (String singleString : votes) {
 			singleVote = Integer.parseInt(singleString);
 			vote.addPref(singleVote);
 		}
-		
+
 		return vote;
 	}
-	
+
+	/**
+	 * Filters the vote looking for valid and invalid votes.
+	 * 
+	 * Copied from the main program and used for a helper in testing.
+	 * 
+	 * @param v <code>Vote</code> object to be tested
+	 * @return True if the vote is valid and False if invalid
+	 */
 	private boolean isFormal(Vote v) {
 		int innerLoopCounter, outerLoopCounter, zeroPreference;
-		
+
 		outerLoopCounter = 0;
 		zeroPreference = 0;
-		
-		for (int outerPreference : v){
+
+		for (int outerPreference : v) {
 			outerLoopCounter++;
 			innerLoopCounter = 0;
-			
+
 			// Test to see if there is a duplicate vote
 			// Skipping the current vote being tested
-			for (int innerPreference : v){
+			for (int innerPreference : v) {
 				innerLoopCounter++;
-				if (outerPreference == innerPreference && outerLoopCounter != innerLoopCounter){
+				if (outerPreference == innerPreference && outerLoopCounter != innerLoopCounter) {
 					return false;
 				}
 			}
-			
-			//Test to see if preference exceeds max and min range
-			if (outerPreference <= zeroPreference || outerPreference > numberOfTestCandidates){
+
+			// Test to see if preference exceeds max and min range
+			if (outerPreference <= zeroPreference || outerPreference > numberOfTestCandidates) {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 }

@@ -12,11 +12,14 @@ import java.util.List;
 
 /**
  * 
- * <p>Implementing class for the {@link asgn1Election.Vote} interface. <code>Vote</code> 
- * should be implemented as some sort of <code>List</code>, with 
- * <code>ArrayList<Integer></code> the default choice.</p>
+ * <p>
+ * Implementing class for the {@link asgn1Election.Vote} interface.
+ * <code>Vote</code> should be implemented as some sort of <code>List</code>,
+ * with <code>ArrayList<Integer></code> the default choice.
+ * </p>
  * 
  * @author hogan
+ * @auther n5372828 Ian Daniel
  * 
  */
 public class VoteList implements Vote {
@@ -27,19 +30,18 @@ public class VoteList implements Vote {
 	private int numCandidates;
 
 	/**
-	 * <p>Simple Constructor for the <code>VoteList</code> class. <code>numCandidates</code> 
-	 * is known to be in range through check on <code>VoteCollection</code>. 
+	 * <p>
+	 * Simple Constructor for the <code>VoteList</code> class.
+	 * <code>numCandidates</code> is known to be in range through check on
+	 * <code>VoteCollection</code>.
 	 * 
-	 * @param numCandidates <code>int</code> number of candidates competing for 
-	 * this seat. 
+	 * @param numCandidates <code>int</code> number of candidates competing for this seat.
 	 */
 	public VoteList(int numCandidates) {
-		
 		this.numCandidates = numCandidates;
 		vote = new ArrayList<Integer>();
 	}
 
-	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -47,8 +49,7 @@ public class VoteList implements Vote {
 	 */
 	@Override
 	public boolean addPref(int index) {
-		
-		if (vote.size() < numCandidates){
+		if (vote.size() < numCandidates) {
 			vote.add(index);
 			return true;
 		} else {
@@ -56,7 +57,6 @@ public class VoteList implements Vote {
 		}
 	}
 
-	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -64,40 +64,36 @@ public class VoteList implements Vote {
 	 */
 	@Override
 	public Vote copyVote() {
-		
 		Vote returnVote;
-		
+
 		returnVote = new VoteList(numCandidates);
-		
+
 		for (int preference : this.vote) {
 			returnVote.addPref(preference);
 		}
-		
+
 		return returnVote;
 	}
 
-	
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see asgn1Election.Vote#getPreference(int)
 	 */
 	@Override
-	public CandidateIndex getPreference(int cand) {	
-		
+	public CandidateIndex getPreference(int cand) {
 		int indexFound, indexAlignment, candidateNumber;
 		CandidateIndex returnIndex = null;
-		
+
 		indexAlignment = 1;
 		indexFound = vote.indexOf(cand);
 		candidateNumber = indexFound + indexAlignment;
-		
+
 		returnIndex = new CandidateIndex(candidateNumber);
-		
+
 		return returnIndex;
 	}
 
-	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -105,36 +101,32 @@ public class VoteList implements Vote {
 	 */
 	@Override
 	public Vote invertVote() {
-		
 		int arrayAlignment, preferenceToAdd;
 		Vote invertedVote;
-		
+
 		invertedVote = new VoteList(numCandidates);
 		arrayAlignment = 1;
-		
+
 		// Index becomes the value and value becomes the index
 		// 3 1 2 -> 2 3 1
-		for (int counter = 1; counter <= numCandidates; counter++){
+		for (int counter = 1; counter <= numCandidates; counter++) {
 			preferenceToAdd = vote.indexOf(counter) + arrayAlignment;
 			invertedVote.addPref(preferenceToAdd);
 		}
-		
+
 		return invertedVote;
 	}
 
-	
-	/* 
+	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see java.lang.Iterable#iterator()
 	 */
 	@Override
 	public Iterator<Integer> iterator() {
-		
 		return vote.iterator();
 	}
 
-	
 	/*
 	 * (non-Javadoc)
 	 * 

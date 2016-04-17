@@ -4,8 +4,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 /*
- * This is an example of how to construct a test suite
- * comprising two separate unit test classes
+ * Main test suite to run all tests at once
  */
 
 @RunWith(Suite.class)
@@ -17,6 +16,10 @@ import org.junit.runners.Suite;
 	SimpleElectionTests.class,
 	PrefElectionTests.class})
 
+/**
+ * @author n5372828 Ian Daniel
+ *
+ */
 public class asgn1Tests {
 
 }

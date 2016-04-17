@@ -45,7 +45,7 @@ public class ElectionManager {
 	public static final int FullPartyField = 30;
 
 	/** File specifying list of elections */
-	public static final String ElectionFile = ".//data//elections.lst";
+	public static final String ElectionFile = ".//data//electionsOneCandi.lst";
 
 	/** Data directory specification */
 	public static final String DataDir = ".//data//";
